@@ -9,7 +9,7 @@
 #include <functional>
 #include <time.h>
 #include <cstring>
-
+#pragma once
 namespace bokket
 {
 const char * LogLevel::ToString(LogLevel::Level level)

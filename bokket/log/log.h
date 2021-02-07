@@ -52,9 +52,13 @@ using namespace std;
 
 namespace bokket
 {
+
+
 class Logger;
 
 
+
+//日志级别
 class LogLevel
 {
 public:
@@ -73,7 +77,7 @@ public:
 
 
 
-
+//日志事件
 class LogEvent
 {
 public:
@@ -100,12 +104,12 @@ public:
     void fmt(const char* format,va_list vaList);
 
 private:
-    const char* m_file=NULL;
-    int32_t m_line=0;
-    uint32_t m_msec=0;
-    uint32_t m_threadId=0;
-    uint32_t m_coreadId=0;
-    uint64_t m_time=0;
+    const char* m_file=NULL;  //文件名
+    int32_t m_line=0;         //行号
+    uint32_t m_msec=0;        //程序启动开始到现在的毫秒
+    uint32_t m_threadId=0;    //线程ID
+    uint32_t m_coreadId=0;    //协程ID
+    uint64_t m_time=0;        //时间戳
 
     stringstream m_stream;
     shared_ptr<Logger> m_logger;
@@ -125,6 +129,8 @@ private:
     LogEvent::ptr m_event;
 };
 
+
+//日志格式器
 class LogFmtter
 {
 public:
@@ -154,12 +160,13 @@ private:
 };
 
 
-class LogPrint
+//日志输出器
+class LogAppender
 {
 public:
-    typedef shared_ptr<LogPrint> ptr;
+    typedef shared_ptr<LogAppender> ptr;
 public:
-    virtual ~LogPrint() {}
+    virtual ~LogAppender() {}
     virtual void log(shared_ptr<Logger> logger,LogLevel::Level level
                      ,LogEvent::ptr event)=0;
     void setFmtter(LogFmtter::ptr val) { m_fmtter=val; }
@@ -173,6 +180,8 @@ protected:
     LogFmtter::ptr  m_fmtter;
 };
 
+
+//日志器
 class Logger: public enable_shared_from_this<Logger>
 {
 public:
@@ -195,13 +204,14 @@ public:
     const string & getName() const { return m_name; }
 
 private:
-    string m_name;
-    LogLevel::Level m_lever;
-    list<LogPrint::ptr> m_printers;
+    string m_name;                      //日志名称
+    LogLevel::Level m_lever;            //日志级别
+    list<LogPrint::ptr> m_appenders;     //Appender集合，保存Appender地址
     LogFmtter::ptr m_fmtter;
 };
 
-class LogPrintStdout: public LogPrint
+//输出到控制台的Appender
+class LogPrintStdout: public LogAppender
 {
 public:
     typedef shared_ptr<LogPrintStdout> ptr;
@@ -209,8 +219,8 @@ public:
     void log(Logger::ptr logger,LogLevel::Level level,LogEvent::ptr event) override;
 };
 
-
-class LogPrintFile: public LogPrint
+//定义输出到文件的Appender
+class LogPrintFile: public LogAppender
 {
 public:
     typedef shared_ptr<LogPrintFile> ptr;
