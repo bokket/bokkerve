@@ -149,8 +149,9 @@ public:
         typedef shared_ptr<FmtItem> ptr;
     public:
         virtual ~FmtItem() {}
-        virtual void fmt(ostream& os,shared_ptr<Logger> logger,LogLevel::Level level
-                         ,LogEvent::ptr event)=0;
+        //virtual void fmt(ostream& os,shared_ptr<Logger> logger,LogLevel::Level level
+        //                 ,LogEvent::ptr event)=0;
+        virtual string fmt(LogEvent::ptr event)=0;
     };
     void init();
 private:
@@ -196,8 +197,8 @@ public:
     void error(LogEvent::ptr event);
     void fatal(LogEvent::ptr event);
 
-    void addPrint(LogPrint::ptr printer);
-    void delPrint(LogPrint::ptr printer);
+    void addAppender(LogPrint::ptr appender);
+    void delAppender(LogPrint::ptr appender);
 
     LogLevel::Level getLevel() const { return m_lever; }
     void setLevel(LogLevel::Level level) { m_lever=level; }
@@ -206,7 +207,7 @@ public:
 private:
     string m_name;                      //日志名称
     LogLevel::Level m_lever;            //日志级别
-    list<LogPrint::ptr> m_appenders;     //Appender集合，保存Appender地址
+    list<LogAppender::ptr> m_appenders;     //Appender集合，保存Appender地址
     LogFmtter::ptr m_fmtter;
 };
 
@@ -227,7 +228,8 @@ public:
 public:
     LogPrintFile(const string& filename);
     void log(Logger::ptr logger,LogLevel::Level level,LogEvent::ptr event) override;
-
+    
+    //重新打开文件，文件打开成功返回true
     bool reopen();
 
 private:

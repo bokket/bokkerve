@@ -218,27 +218,30 @@ LogEvent::LogEvent(shared_ptr <Logger> logger, LogLevel::Level level
                    ,m_coreadId(coread_id)
                    ,m_time(time)
 {}
+
+
+
 Logger::Logger(const string & name)
             :m_name(name)
             ,m_lever(LogLevel::DEBUG)
             ,m_fmtter()
 {
 }
-void Logger::addPrint(LogPrint::ptr printer)
+void Logger::addAppender(LogAppender::ptr appender)
 {
     if(!printer->getFmtter())
         printer->setFmtter(m_fmtter);
     else
     {
-        m_printers.push_back(printer);
+        m_appenders.push_back(appender);
     }
     
 }
-void Logger::delPrint(LogPrint::ptr printer)
+void Logger::delAppender(LogPrint::ptr appender)
 {
-    for(auto it=m_printers.begin();it!=m_printers.end();it++)
+    for(auto it=m_appenders.begin();it!=m_appenders.end();it++)
     {
-        if(*it==printer)
+        if(*it==appender)
         {
             m_printers.erase(it);
             break;
@@ -250,7 +253,7 @@ void Logger::log(LogLevel::Level level, LogEvent::ptr event)
     if(level>=m_lever)
     {
         auto it=shared_from_this();
-        for(auto & i:m_printers)
+        for(auto & i:m_appenders)
             i->log(it,level,event);
     }
 }
@@ -274,6 +277,10 @@ void Logger::fatal(LogEvent::ptr event)
 {
     log(LogLevel::FATAL,event);
 }
+
+
+
+
 LogPrintFile::LogPrintFile(const string &filename)
                             :m_filename(filename)
 {
@@ -295,6 +302,7 @@ bool LogPrintFile::reopen()
 
     return !!m_filestream;
 }
+
 void LogPrintStdout::log(Logger::ptr logger, LogLevel::Level level, LogEvent::ptr event)
 {
     if(level>=m_level)
