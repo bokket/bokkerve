@@ -142,16 +142,16 @@ public:
                ,LogLevel::Level level
                ,LogEvent::ptr event);
 
-public:
+private:
     class FmtItem
     {
     public:
         typedef shared_ptr<FmtItem> ptr;
     public:
         virtual ~FmtItem() {}
-        //virtual void fmt(ostream& os,shared_ptr<Logger> logger,LogLevel::Level level
+        virtual void fmt(ostream& os,shared_ptr<Logger> logger,LogLevel::Level level
         //                 ,LogEvent::ptr event)=0;
-        virtual string fmt(LogEvent::ptr event)=0;
+        //virtual string fmt(LogEvent::ptr event)=0;
     };
     void init();
 private:

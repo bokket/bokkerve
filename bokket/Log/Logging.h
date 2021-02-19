@@ -13,8 +13,8 @@
 #include <string>
 #include <stdio.h>
 
+using namespace std;
 
-using
 namespace bokket
 {
     class Logging
