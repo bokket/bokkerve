@@ -6,8 +6,7 @@
 #define BOKKET_LOGSTREAM_H
 
 
-#include "../MutexLock/noncopyable.hpp"
-#include "./FixedBuf.h"
+#include "FixedBuffer.h"
 
 namespace bokket
 {
@@ -20,8 +19,13 @@ public:
 
     typedef FixedBuffer<detail::kSmallBuffer> Buffer;
 public:
+    template<typename T>
+    void formatInteger(T);
 
-    self& operator<<(bool v)
+
+
+
+    self &operator << (bool v)
     {
         //v为真放1
         buffer_.append(v ? "1" : "0",1);
@@ -53,7 +57,7 @@ public:
         return *this;
     }
 
-    self& operator<<(char* v)
+    self& operator<<(const char* v)
     {
         buffer_.append(v,strlen(v));
         return *this;
@@ -70,20 +74,18 @@ public:
         buffer_.append(data,len);
     }
 
-    const Buffer & buffer() const { return buffer_; }
+    const Buffer & getBuf() const { return buffer_; }
 
-    void restBuffer() { buffer_.reset(); }
+    void resetBuffer() { buffer_.reset(); }
 
 private:
-
-
-    template<typename T>
-    void formatInteger(T);
 
     Buffer buffer_;
 
     static const int kMaxNumericSize=32;
 };
+
+
 
 
 /*

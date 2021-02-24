@@ -1,0 +1,3 @@
+/home/bokket/bokkerve/bokket/build/CMakeFiles/edit_cache.dir
+/home/bokket/bokkerve/bokket/build/CMakeFiles/rebuild_cache.dir
+/home/bokket/bokkerve/bokket/build/CMakeFiles/../test/logtest.dir

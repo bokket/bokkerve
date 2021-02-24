@@ -4,13 +4,10 @@
 
 #ifndef BOKKERVE_FIXEDBUF_H
 #define BOKKERVE_FIXEDBUF_H
-
-#pragma once
-
 #include <string>
 #include <cstdio>
 #include <cstring>
-#include "../MutexLock/noncopyable.hpp"
+#include "../base/noncopyable.h"
 
 using namespace std;
 
@@ -31,7 +28,6 @@ public:
     FixedBuffer()
                :cur_(data_)
     {}
-
     ~FixedBuffer() {}
 
     void append(const char* buf,size_t len)
@@ -42,6 +38,16 @@ public:
             cur_+=len;
         }
     }
+
+    void append(string& s,size_t len)
+    {
+        if(avail() > len )
+        {
+            memcpy(cur_,s.c_str(),len);
+            cur_+=len;
+        }
+    }
+
     int avail() const
     {
         //向上转换
@@ -61,13 +67,22 @@ public:
 
     void bzero() { ::bzero(data_,sizeof(data_) ); }
 
-    string asString() const { return string(data_,length() ); }
+    string toString() const { return string(data_,length() ); }
+
+
+    const char* debugString()
+    {
+        fprintf(stderr, "data:%s\nsize:%d\n", data_, length());
+        *cur_ = '\0';
+        return data_;
+    }
 private:
 
     const char* end() const { return data_+sizeof(data_); }
     char data_[SIZE];
     char* cur_;
 };
+
 }
 
 }

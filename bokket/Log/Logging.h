@@ -20,9 +20,21 @@ namespace bokket
     class Logging
     {
     public:
-        ~Logging();
+        enum LogLevel
+        {
+            TRACE,
+            DEBUG,
+            INFO,
+            WARN,
+            ERROR,
+            FATAL,
+            NUM_LOG_LEVELS,
+        };
+    public:
 
         Logging(const char *filename, int line);
+
+        ~Logging();
 
         LogStream &stream() { return impl_.stream_; }
 

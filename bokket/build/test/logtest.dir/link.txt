@@ -1,0 +1,1 @@
+/usr/bin/c++    -rdynamic CMakeFiles/../test/logtest.dir/test/LogStream_test.cpp.o CMakeFiles/../test/logtest.dir/Log/LogStream.cpp.o  -o ../test/logtest 

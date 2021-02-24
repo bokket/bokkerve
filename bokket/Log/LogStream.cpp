@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <stdint.h>
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 using namespace bokket;
@@ -31,6 +32,15 @@ const char* zero=digits+9;
 
     template class FixedBuffer<kSmallBuffer>;
     template class FixedBuffer<kLargeBuffer>;
+
+/*
+    template<int SIZE>
+    const char * FixedBuffer<SIZE>::debugString()
+    {
+        *cur_ = '\0';
+        return data_;
+    }*/
+
 
     template<typename T>
     size_t convert(char buf[],T value)
@@ -160,6 +170,7 @@ const char* zero=digits+9;
             cout<<"----"<<len<<endl;
             //返回v的字符串大小
             buffer_.add(len);
+            cout<<buffer_.toString()<<endl;
         }
         return *this;
     }
@@ -180,5 +191,7 @@ const char* zero=digits+9;
         }
         return *this;
     }
+
+
 }
 }
