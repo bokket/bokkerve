@@ -23,7 +23,17 @@ namespace net
     {
     public:
         using EventCallback=function<void()>;
+
     public:
+        enum Status
+        {
+            kNew=0,// 表示还没添加到 ChannelMap 中
+            kAdded,// 已添加到 ChannelMap 中
+            kDelete,// 无关心事件，已从 epoll 中删除相应文件描述符，但 ChannelMap 中有记录
+        };
+    public:
+
+
         Channel(EventLoop* loop,int fd);
         ~Channel();
 
@@ -85,12 +95,14 @@ namespace net
 
         int getFd() const { return fd_; }
         int getEvents() const { return events_; }
-        void setRevents(int revt) { revents_ = revt; } // used by pollers
+        void setRevents(int revt) { revents_ = revt; } // used by epoller
 
         void remove();
 
         void handleEvent();
 
+        int getStatusInEpoll() const { return status_; }
+        void setStatusInEpoll(Status status) { status_=status; }
 
         // for debug
         string eventsToString(int fd,int event) const;
@@ -101,6 +113,7 @@ namespace net
 
         void handleEventsWithGuard();
 
+        Status status_;
 
         static const int kNoneEvent;
         static const int kReadEvent;

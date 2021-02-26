@@ -21,6 +21,10 @@ namespace bokket
 {
 namespace net
 {
+
+class Channel;
+class Epoller;
+
 class EventLoop: public noncopyable
 {
 public:
@@ -48,7 +52,7 @@ public:
     void assertInLoopThread();
 
 
-    bool isInLoopThread() const { return threadId==CurrentThread::tid(); }
+    bool isInLoopThread() const { return threadId_==CurrentThread::tid(); }
     bool eventHandling() const { return eventHandling_; }
 
     static EventLoop* getEventLoopOfCurrentThread();
@@ -56,6 +60,8 @@ private:
     void handleRead();
     void doPendingFunctors();
 
+
+    bool looping_;
     //atomic<bool> quit_;
     atomic_bool quit_;
     //atomic<bool> eventHandling_;
@@ -63,18 +69,18 @@ private:
     //atomic<bool> callingPendingFunctors_;
     atomic_bool callingPendingFunctors_;
 
-    const pid_t threadId;
+    const pid_t threadId_;
     int wakeupFd_;// 用于eventfd
     unique_ptr<Channel> wakeupChannel_;// 该通道将会纳入poller_来管理
     unique_ptr<Epoller> poller_;
-    unique_ptr<TimerQueue> timerQueue_;
+    //unique_ptr<TimerQueue> timerQueue_;
 
     mutable MutexLock mutex_;
     vector<Functor> pendingFunctors_;//小任务列表
 
     using ChannelList=vector<Channel*>;
     ChannelList activeChannels_;//活跃通道列表 // Poller返回的活动通道
-    Channal* currentActiveChannel_;//当前正在处理的通道
+    Channel* currentActiveChannel_;//当前正在处理的通道
 
     Timestamp pollReturnTime_;//epoll_wait返回时间
 };

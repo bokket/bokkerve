@@ -21,6 +21,7 @@ Channel::Channel(EventLoop *loop, int fd)
                 ,fd_(fd)
                 ,events_(0)
                 ,revents_(0)
+                ,status_(kNew)
                 ,tied_(false)
                 ,eventHandling_(false)
 {}
