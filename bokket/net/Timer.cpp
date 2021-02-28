@@ -3,3 +3,4 @@
 //
 
 #include "Timer.h"
+atomic<int64_t> numCreated_;

@@ -38,14 +38,14 @@ namespace net
         bool hasChannel(Channel* channel) const;
 
         int getEventListSize() { return events_.size(); }
-        void setEventListSize(int size) { kInitEventListSize=size; }
+       // static void setEventListSize(int size) { kInitEventListSize=size; }
 
     private:
         void fillActiveChannels(int numEvents,ChannelList& activeChannels) const;
         void update(int op,Channel* channel);
         void assertInLoopThread() const;
 
-        static int kInitEventListSize=16;
+        static const int kInitEventListSize;
 
         using ChannelMap=map<int,Channel*>;
         ChannelMap channels_;
