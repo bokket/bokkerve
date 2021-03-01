@@ -66,8 +66,8 @@ private:
     bool repeat_; //是否重复
     bool canceled_;
     //long long	Signed
-    static atomic<int64_t> numCreated_;
-    const int64_t sequence_;
+    static atomic<int64_t> numCreated_;//创建个数
+    const int64_t sequence_;    // 定时器序列号
 };
 
 }

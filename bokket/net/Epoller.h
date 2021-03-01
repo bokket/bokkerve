@@ -33,6 +33,7 @@ namespace net
         ~Epoller();
 
         Timestamp poll(int timeoutMs,ChannelList& activeChannels);
+        void poll(ChannelList& activeChannels);
         void updateChannel(Channel* channel);
         void removeChannel(Channel* channel);
         bool hasChannel(Channel* channel) const;

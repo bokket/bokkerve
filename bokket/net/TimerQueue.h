@@ -27,7 +27,8 @@ namespace bokket
             explicit TimerQueue(EventLoop* loop);
             ~TimerQueue();
 
-            Timer* add
+            TimerId addTimer(TimerCallback cb,Timestamp when,chrono::nanoseconds interval);
+            void cancel(TimerId timerId);
 
 
         private:
@@ -41,7 +42,16 @@ namespace bokket
             const int timerfd_;
             Channel timerfdChannel_;
 
+            TimerList timers_; // timers_是按到期时间排序
+        private:
+            void addTimerInLoop(Timer* timer);
+            void cancelInLoop(TimerId timerId);
 
+            void handleRead();
+            vector<Entry> getExpired(Timestamp now);
+
+            void reset(const vector<Entry>& expired,Timestamp now);
+            bool insert(Timer* timer);
         };
     }
 }

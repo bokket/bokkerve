@@ -66,6 +66,30 @@ Timestamp Epoller::poll(int timeoutMs, ChannelList &activeChannels)
     return now;
 }
 
+void Epoller::poll(ChannelList &activeChannels)
+{
+    loop_->assertInLoopThread();
+    int maxEvents=static_cast<int>(events_.size());
+    int numEvents=epoll_wait(epollfd_,events_.data(),maxEvents,-1);
+
+    if(numEvents!=-1)
+    {
+        if(errno!=EINTR)
+        {}
+    }
+    else if(numEvents==0)
+    {
+
+    }
+    else
+    {
+        fillActiveChannels(numEvents,activeChannels);
+
+        if(static_cast<size_t>(numEvents)==maxEvents)
+            events_.resize(events_.size()*2);
+    }
+}
+
 
 void Epoller::fillActiveChannels(int numEvents, ChannelList& activeChannels) const
 {

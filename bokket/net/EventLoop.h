@@ -14,8 +14,9 @@
 #include <functional>
 #include <atomic>
 #include <thread>
+#include <memory>
+#include <mutex>
 
-using namespace std;
 
 namespace bokket
 {
@@ -42,7 +43,7 @@ public:
     void loop();
     void quit();
     void runInLoop(Functor cb);
-    void queueInLoop(Functor cb);
+    void queueInLoop(const Functor& cb);
 
     void wakeup();
     void updateChannel(Channel* channel);
@@ -53,9 +54,12 @@ public:
 
 
     bool isInLoopThread() const { return threadId_==CurrentThread::tid(); }
+
     bool eventHandling() const { return eventHandling_; }
 
     static EventLoop* getEventLoopOfCurrentThread();
+
+    void printActiveChannels() const;
 private:
     void handleRead();
     void doPendingFunctors();
@@ -71,11 +75,12 @@ private:
 
     const pid_t threadId_;
     int wakeupFd_;// 用于eventfd
-    unique_ptr<Channel> wakeupChannel_;// 该通道将会纳入poller_来管理
-    unique_ptr<Epoller> epoller_;
+    std::unique_ptr<Channel> wakeupChannel_;// 该通道将会纳入poller_来管理
+    std::unique_ptr<Epoller> epoller_;
     //unique_ptr<TimerQueue> timerQueue_;
 
-    mutable MutexLock mutex_;
+    //mutable MutexLock mutex_;
+    mutable std::mutex mutex_;
     vector<Functor> pendingFunctors_;//小任务列表
 
     using ChannelList=vector<Channel*>;

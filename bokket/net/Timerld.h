@@ -6,6 +6,7 @@
 #define BOKKET_TIMERLD_H
 
 #include "../base/copyable.h"
+#include <memory>
 
 namespace bokket
 {
@@ -17,22 +18,28 @@ class Timer;
 class TimerId: public copyable
 {
 public:
-    TimerId()
+    /*TimerId()
            :timer_(nullptr)
            ,sequence_(0)
     {}
-    TimerId(Timer* timer,int64_t seq)
+    TimerId(std::weak_ptr<Timer>& timer,int64_t seq)
            :timer_(timer)
            ,sequence_(seq);
+
     Timer* getTimer()
     {
         return timer_;
-    }
+    }*/
+
+    TimerId(std::weak_ptr<Timer>& timer,int64_t seq)
+            :timer_(timer)
+            ,sequence_(timer.lock() ? timer.lock()->getSequence() : 0)
+    {}
 
 
     friend class TimerQueue;
 private:
-    Timer* timer_;
+    std::weak_ptr<Timer> timer_;
     int64_t sequence_;
 };
 
