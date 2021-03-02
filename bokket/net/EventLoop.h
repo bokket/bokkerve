@@ -43,6 +43,7 @@ public:
     void loop();
     void quit();
     void runInLoop(Functor cb);
+    void setFrameFunctor(const Functor cb);
     void queueInLoop(const Functor& cb);
 
     void wakeup();
@@ -74,6 +75,7 @@ private:
     atomic_bool callingPendingFunctors_;
 
     const pid_t threadId_;
+    //const thread::id threadId_;
     int wakeupFd_;// 用于eventfd
     std::unique_ptr<Channel> wakeupChannel_;// 该通道将会纳入poller_来管理
     std::unique_ptr<Epoller> epoller_;
@@ -90,6 +92,8 @@ private:
     Channel* currentActiveChannel_;//当前正在处理的通道
 
     Timestamp pollReturnTime_;//epoll_wait返回时间
+
+    Functor functor_;
 };
 }
 }

@@ -7,6 +7,8 @@
 #include "Epoller.h"
 #include <signal.h>
 #include <sys/eventfd.h>
+#include <iostream>
+#include <sstream>
 
 
 using namespace bokket;
@@ -94,6 +96,8 @@ void EventLoop::loop()
         //epoller_->poll(10s);
         epoller_->poll(&activeChannels_);
 
+        printActiveChannels();
+
         eventHandling_= true;
 
         for(Channel* channel:activeChannels_)
@@ -109,6 +113,13 @@ void EventLoop::loop()
 
     }
     looping_= false;
+
+
+    std::ostringstream oss;
+    oss<<std::this_thread::get_id();
+    std::string stid=oss.str();
+
+    //LOG " Exiting Loop , EventLoop object : 0x%x, threadID: %s ",this,stid.str();
 }
 
 void EventLoop::quit()
@@ -128,6 +139,10 @@ void EventLoop::runInLoop(Functor cb)
     }
 }
 
+void EventLoop::setFrameFunctor(const Functor cb)
+{
+    functor_=cb;
+}
 
 void EventLoop::queueInLoop(const Functor& cb)
 {
@@ -153,6 +168,28 @@ void EventLoop::wakeup()
     if(n!=sizeof(one))
     {}
 }
+
+void EventLoop::updateChannel(Channel *channel)
+{
+    assert(channel->ownerLoop()== this);
+    assertInLoopThread();
+    epoller_->updateChannel(channel);
+}
+
+void EventLoop::removeChannel(Channel *channel)
+{
+    assert(channel->ownerLoop()==this);
+    assertInLoopThread();
+    epoller_->removeChannel(channel);
+}
+
+bool EventLoop::hasChannel(Channel *channel)
+{
+    assert(channel->ownerLoop()==this);
+    assertInLoopThread();
+    return epoller_->hasChannel(channel);
+}
+
 
 void EventLoop::assertInLoopThread()
 {

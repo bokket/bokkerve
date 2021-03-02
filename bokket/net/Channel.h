@@ -37,6 +37,9 @@ namespace net
         Channel(EventLoop* loop,int fd);
         ~Channel();
 
+
+        EventLoop* ownerLoop();
+
         void setReadCallback(EventCallback cb) { readCallback_=move(cb); }
         void setWriteCallback(EventCallback cb) { writeCallback_=move(cb); }
         void setCloseCallback(EventCallback cb) { closeCallback_=move(cb); }

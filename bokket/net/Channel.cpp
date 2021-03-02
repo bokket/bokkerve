@@ -32,6 +32,12 @@ Channel::~Channel()
     assert(!eventHandling_);
 }
 
+
+EventLoop * Channel::ownerLoop()
+{
+    return loop_;
+}
+
 void Channel::handleEvent()
 {
     loop_->assertInLoopThread();
