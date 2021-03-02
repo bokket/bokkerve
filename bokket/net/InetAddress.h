@@ -7,8 +7,7 @@
 
 #include "../base/copyable.h"
 #include <netinet/in.h>
-#include <string_view>
-
+#include <string>
 
 namespace bokket
 {
@@ -24,7 +23,7 @@ public:
     ~InetAddress();
 
 
-    InetAddress(std::string_view ip,uint16_t port);
+    InetAddress(const std::string & ip,uint16_t port);
 
     InetAddress(const struct sockaddr_in& addr)
                :addr_(addr)
@@ -35,19 +34,23 @@ public:
         addr_=addr;
     }
     
-    const struct sockaddr_in* getSockaddr() const
+    const struct sockaddr_in& getSockaddr() const
     {
-        return reinterpret_cast<const struct sockaddr*>(&addr_);
+        //return reinterpret_cast<const struct sockaddr*>(&addr_);
+        return addr_;
     }
+
 
     socklen_t getSocklen() const
     {
         return sizeof(addr_);
     }
      
-    string toIp() const;
+    std::string toIp() const;
 
-    string toIpPort() const;
+    std::string toIpPort() const;
+    uint16_t getPort() const;
+    uint32_t getIp() const;
 private:
     struct sockaddr_in addr_;
 };
