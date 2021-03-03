@@ -37,9 +37,14 @@ std::string InetAddress::toIp() const
     if(ret== nullptr)
     {
         buf[0]='\0';
-
     }
     return std::string(buf);
+}
+
+std::string InetAddress::toPort() const
+{
+    uint16_t port=be16toh(addr_.sin_port);
+    return std::to_string(port);
 }
 
 uint16_t InetAddress::getPort() const
@@ -56,5 +61,7 @@ std::string InetAddress::toIpPort() const
 {
     std::string ret=toIp();
     ret.push_back(':');
-    return ret.append(std::to_string(getPort()));
+
+
+    return ret.append(toPort());
 }

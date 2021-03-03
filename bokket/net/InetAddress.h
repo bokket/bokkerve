@@ -29,16 +29,17 @@ public:
                :addr_(addr)
     {}
     
-    void setAddress(const struct sockaddr_in& addr)
+    void setSockAddress(const struct sockaddr_in& addr)
     {
         addr_=addr;
     }
     
-    const struct sockaddr_in& getSockaddr() const
+    const struct sockaddr_in& getSockAddress() const
     {
         //return reinterpret_cast<const struct sockaddr*>(&addr_);
         return addr_;
     }
+
 
 
     socklen_t getSocklen() const
@@ -47,6 +48,7 @@ public:
     }
      
     std::string toIp() const;
+    std::string toPort() const;
 
     std::string toIpPort() const;
     uint16_t getPort() const;
