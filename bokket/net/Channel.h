@@ -8,6 +8,7 @@
 #include "../base/noncopyable.h"
 #include <functional>
 #include <memory>
+#include<sstream>
 
 
 using namespace std;

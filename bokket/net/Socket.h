@@ -8,6 +8,8 @@
 #include "../base/noncopyable.h"
 #include <netinet/tcp.h>
 #include <arpa/inet.h>
+#include <string>
+#include <ostream>
 
 
 namespace bokket
@@ -24,9 +26,9 @@ public:
     {}
     ~Socket();
 
-    bool getTcpInfoString(char* buf,int len) const;
+    std::string getTcpInfoString() const;
 
-    int getFd() const {  }
+    int getFd() const { return sockfd_; }
     void bindAddress(const InetAddress& localaddr);
 
     void listen();
@@ -50,16 +52,16 @@ private:
 namespace bokket::net::socks
 {
     int createNonblockingOrDie();
-
+    void setNonBlockAndCloseOnExec(int sockfd);
 
 
     int connect(int sockfd,const struct sockaddr_in& addr);
 
     int bindOrDie(int sockfd,const struct sockaddr_in& addr);
 
-    void listen(int sockfd);
+    void listenOrDie(int sockfd);
 
-    int accpet(int sockfd,struct sockaddr_in* addr);
+    int accpetOrDie(int sockfd,struct sockaddr_in* addr);
 
     //size_t 反映内存中对象的大小（以字节为单位）
     //ssize_t 供返回字节计数或错误提示的函数使用
