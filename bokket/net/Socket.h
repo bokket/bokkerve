@@ -9,7 +9,6 @@
 #include <netinet/tcp.h>
 #include <arpa/inet.h>
 #include <string>
-#include <ostream>
 
 
 namespace bokket
@@ -42,6 +41,8 @@ public:
     void setReusePort(bool on);
 
     void setKeepAlive(bool on);
+
+    void setReuseAddr(bool on);
 private:
     const int sockfd_;
 };
@@ -68,6 +69,9 @@ namespace bokket::net::socks
 
     ssize_t read(int sockfd,void *buf,size_t count);
     ssize_t write(int sockfd,void *buf,size_t count);
+
+    // Type of file sizes and offsets.
+    ssize_t sendfile(int outfd,int infd,off_t* offset,size_t count);
 
     void close(int sockfd);
 

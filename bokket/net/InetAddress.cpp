@@ -54,7 +54,7 @@ uint16_t InetAddress::getPort() const
 
 uint32_t InetAddress::getIp() const
 {
-    return ntohl(addr_.sin_addr);
+    return ntohl(addr_.sin_addr.s_addr);
 }
 
 std::string InetAddress::toIpPort() const

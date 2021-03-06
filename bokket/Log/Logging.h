@@ -20,15 +20,14 @@ namespace bokket
     class Logging
     {
     public:
-        enum LogLevel
+        enum class LogLevel
         {
             TRACE,
             DEBUG,
             INFO,
-            WARN,
+            WARNING,
             ERROR,
-            FATAL,
-            NUM_LOG_LEVELS,
+            FATAL
         };
     public:
 

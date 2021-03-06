@@ -7,7 +7,8 @@
 #include <sys/socket.h>
 #include <fcntl.h>
 #include <errno.h>
-#include<sstream>
+#include <sstream>
+#include <sys/sendfile.h>
 
 
 using namespace bokket;
@@ -21,26 +22,67 @@ Socket::~Socket()
 
 
 void Socket::bindAddress(const InetAddress &localaddr)
-{}
+{
+    net::socks::bindOrDie(sockfd_,localaddr.getSockAddress());
+}
 
 void Socket::listen()
-{}
+{
+    net::socks::listenOrDie(sockfd_);
+}
 
 
 int Socket::accpet(InetAddress *peeraddr)
-{}
+{
+    struct sockaddr_in addr;
+    memset(&addr,0,sizeof(addr));
+
+    int connfd=net::socks::accpetOrDie(sockfd_,&addr);
+
+    if(connfd >= 0)
+    {
+        peeraddr->setSockAddress(addr);
+    }
+
+    return connfd;
+}
 
 void Socket::shutdownWrite()
-{}
+{
+    net::socks::shutdownWrite(sockfd_);
+}
 
 void Socket::setTcpNoDelay(bool on)
-{}
+{
+    int optval= on ? 1: 0;
+    ::setsockopt(sockfd_,IPPROTO_TCP,TCP_NODELAY,&optval,static_cast<socklen_t>(sizeof(optval) ) );
+
+
+}
 
 void Socket::setKeepAlive(bool on)
-{}
+{
+    int optval= on ? 1: 0;
+    ::setsockopt(sockfd_,SOL_SOCKET,SO_KEEPALIVE,&optval,static_cast<socklen_t>(sizeof(optval) ) );
+}
 
 void Socket::setReusePort(bool on)
-{}
+{
+    int optval= on ? 1: 0;
+    int ret=::setsockopt(sockfd_,SOL_SOCKET,SO_REUSEPORT,&optval,static_cast<socklen_t>(sizeof(optval) )  );
+
+    if(ret<0 && on)
+    {}
+}
+
+void Socket::setReuseAddr(bool on)
+{
+    int optval= on ? 1: 0;
+    int ret=::setsockopt(sockfd_,SOL_SOCKET,SO_REUSEADDR,&optval,static_cast<socklen_t>(sizeof(optval) )  );
+
+    if(ret<0 && on)
+    {}
+}
 
 std::string Socket::getTcpInfoString() const
 {
@@ -116,9 +158,6 @@ void net::socks::listenOrDie(int sockfd)
 int net::socks::accpetOrDie(int sockfd, struct sockaddr_in *addr)
 {
     int ret=::accept4(sockfd,static_cast<struct sockaddr*>(implict_cast<void*>(addr)),sizeof(addr),SOCK_NONBLOCK | SOCK_CLOEXEC);
-
-
-
 }
 
 int net::socks::bindOrDie(int sockfd, const struct sockaddr_in &addr)
@@ -148,6 +187,11 @@ ssize_t net::socks::read(int sockfd, void *buf, size_t count)
 ssize_t net::socks::write(int sockfd, void *buf, size_t count)
 {
     return ::write(sockfd,buf,count);
+}
+
+ssize_t net::socks::sendfile(int outfd, int infd, off_t *offset, int count)
+{
+    return ::sendfile(outfd,infd,offset,count);
 }
 
 void net::socks::shutdownWrite(int sockfd)
