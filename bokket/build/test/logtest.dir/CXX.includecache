@@ -19,6 +19,8 @@ cstring
 ../Log/LogStream.h
 FixedBuffer.h
 ../Log/FixedBuffer.h
+iostream
+-
 
 ../base/noncopyable.h
 
@@ -45,14 +47,14 @@ algorithm
 -
 stdint.h
 -
-iostream
--
 cmath
 -
 
 /home/bokket/bokkerve/bokket/Log/LogStream.h
 FixedBuffer.h
 /home/bokket/bokkerve/bokket/Log/FixedBuffer.h
+iostream
+-
 
 /home/bokket/bokkerve/bokket/base/noncopyable.h
 

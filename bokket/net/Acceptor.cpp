@@ -15,11 +15,13 @@ Acceptor::Acceptor(EventLoop *loop, const InetAddress &listenAddr)
                   ,accpetChannel_(loop,accpetSocket_.getFd())
                   ,localaddr_(listenAddr)
                   ,listening_(false)
+                  ,clinetCount_(0)
 {
     accpetSocket_.setReuseAddr(true);
     accpetSocket_.setReusePort(true);
     accpetSocket_.bindAddress(localaddr_);
     accpetChannel_.setReadCallback(std::bind(&Acceptor::handleRead,this));
+    clinetCount_++;
 }
 
 Acceptor::~Acceptor()
@@ -46,19 +48,9 @@ void Acceptor::handleRead()
     InetAddress peerAddr(0);
 
     int connfd=accpetSocket_.accpet(&peerAddr);
-    if(connfd > 0)
-    {
-        if(newConnectionCallback_)
-            newConnectionCallback_(connfd,peerAddr);
-        else
-            net::socks::close(connfd);
-    }
+    if(newConnectionCallback_)
+        newConnectionCallback_(connfd,peerAddr);
     else
-    {
-        if(errno==EMFILE)
-        {
-
-        }
-    }
+        net::socks::close(connfd);
 
 }

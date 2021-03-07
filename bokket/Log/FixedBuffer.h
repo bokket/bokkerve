@@ -67,7 +67,7 @@ public:
 
     void bzero() { ::bzero(data_,sizeof(data_) ); }
 
-    string toString() const { return string(data_,length() ); }
+    string toString() const { return std::string(data_,length() ); }
 
 
     const char* debugString()

@@ -20,7 +20,7 @@ namespace bokket
     class Logging
     {
     public:
-        enum class LogLevel
+        enum class LogLevel:int
         {
             TRACE,
             DEBUG,
@@ -54,7 +54,7 @@ namespace bokket
     };
 
 
-#define LOG Logger(__FILE__,__LINE__).stream()
+#define LOG Logger(__FILE__,__LINE__)
 
 }
 

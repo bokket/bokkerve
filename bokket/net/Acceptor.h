@@ -11,7 +11,7 @@
 #include "InetAddress.h"
 #include "EventLoop.h"
 #include <functional>
-
+#include <atomic>
 namespace bokket
 {
 namespace net
@@ -35,6 +35,20 @@ public:
     //设置新连接到来的回调函数
     void setNewConnectionCallback(NewConnectionCallback cb) { newConnectionCallback_=std::move(cb); }
 
+    InetAddress getLocalAddr() const
+    {
+        return localaddr_;
+    }
+
+    int getClinetCount() const
+    {
+        return clinetCount_;
+    }
+
+    bool isListening() const
+    {
+        return listening_;
+    }
 
 private:
     void handleRead();
@@ -46,6 +60,8 @@ private:
 
     InetAddress localaddr_;
     NewConnectionCallback newConnectionCallback_;
+
+    std::atomic<int> clinetCount_;
 };
 
 }

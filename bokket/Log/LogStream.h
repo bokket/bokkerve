@@ -7,6 +7,7 @@
 
 
 #include "FixedBuffer.h"
+#include <iostream>
 
 namespace bokket
 {
@@ -15,15 +16,11 @@ namespace detail
 class LogStream: public noncopyable
 {
 public:
-    typedef LogStream self;
-
-    typedef FixedBuffer<detail::kSmallBuffer> Buffer;
+    using self=LogStream;
+    using Buffer= FixedBuffer<bokket::detail::kSmallBuffer>;
 public:
     template<typename T>
     void formatInteger(T);
-
-
-
 
     self &operator << (bool v)
     {
@@ -54,18 +51,21 @@ public:
     self& operator<<(char v)
     {
         buffer_.append(&v,1);
+        cout<<buffer_.toString()<<endl;
         return *this;
     }
 
     self& operator<<(const char* v)
     {
         buffer_.append(v,strlen(v));
+        cout<<buffer_.toString()<<endl;
         return *this;
     }
 
     self& operator<<(const string& v)
     {
         buffer_.append(v.c_str(), v.size());
+        cout<<buffer_.toString()<<endl;
         return *this;
     }
 
@@ -74,7 +74,7 @@ public:
         buffer_.append(data,len);
     }
 
-    const Buffer & getBuf() const { return buffer_; }
+    Buffer & getBuf() { return buffer_; }
 
     void resetBuffer() { buffer_.reset(); }
 
@@ -100,14 +100,11 @@ public:
 private:
     char buf_[32];
     int length_;
-};
+};*/
 
-LogStream& operator<<(LogStream& s,const Fmt& fmt)
-{
-    s.append(fmt.data(),fmt.length());
-    return s;
-}
- */
+/*template<class T>
+inline LogStream& operator<<(LogStream& s,T data);*/
+
 }
 }
 

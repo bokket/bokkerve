@@ -19,10 +19,13 @@ int main()
 
     bokket::detail::FixedBuffer<1000> buffer;
     buffer.append("wxz",3);
+    
+    
 
-    stream<<2.123454678<<true<< false<<string("pow:")<<::pow(2,10)
-            <<"wxz\n"<<i<<'t'<<p;
+    stream<<buffer.toString()<<2.123454678<<true<< false<<string("pow:")<<::pow(2,10)
+            << "wxz\n"<<i<<'t'<<p;
 
     auto &e=stream.getBuf();
     e.toString();
+    e.debugString();
 }

@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include <algorithm>
 #include <stdint.h>
-#include <iostream>
 #include <cmath>
 
 using namespace std;
@@ -111,6 +110,7 @@ const char* zero=digits+9;
             size_t len=convert(buffer_.currunt(),v);
             //不用说了直接放
             buffer_.add(len);
+            cout<<buffer_.toString()<<endl;
         }
     }
 
@@ -167,7 +167,6 @@ const char* zero=digits+9;
         if(buffer_.avail()>=kMaxNumericSize)
         {
             int len=snprintf(buffer_.currunt(),kMaxNumericSize,"%.12g",v);
-            cout<<"----"<<len<<endl;
             //返回v的字符串大小
             buffer_.add(len);
             cout<<buffer_.toString()<<endl;
@@ -188,6 +187,7 @@ const char* zero=digits+9;
 
             size_t len=convertHex(buf+2,v);
             buffer_.add(len+2);
+            cout<<buffer_.toString()<<endl;
         }
         return *this;
     }
