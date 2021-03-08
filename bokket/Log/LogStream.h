@@ -74,7 +74,7 @@ public:
         buffer_.append(data,len);
     }
 
-    Buffer & getBuf() { return buffer_; }
+    const Buffer & getBuf() const { return buffer_; }
 
     void resetBuffer() { buffer_.reset(); }
 

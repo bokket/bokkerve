@@ -26,6 +26,7 @@ int main()
             << "wxz\n"<<i<<'t'<<p;
 
     auto &e=stream.getBuf();
+    
     e.toString();
     e.debugString();
 }

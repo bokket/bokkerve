@@ -67,17 +67,16 @@ public:
 
     void bzero() { ::bzero(data_,sizeof(data_) ); }
 
-    string toString() const { return std::string(data_,length() ); }
+    std::string toString() const { return std::string(data_,length() ); }
 
-
-    const char* debugString()
+    
+    const char* debugString() const
     {
         fprintf(stderr, "data:%s\nsize:%d\n", data_, length());
         *cur_ = '\0';
         return data_;
     }
 private:
-
     const char* end() const { return data_+sizeof(data_); }
     char data_[SIZE];
     char* cur_;
