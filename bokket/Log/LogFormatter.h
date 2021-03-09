@@ -6,7 +6,8 @@
 #define BOKKET_LOGFORMATTER_H
 
 #include <memory>
-
+#include <chrono>
+#include <iomanip>
 #include "Logger.h"
 #include "LogEvent.h"
 #include "LogLevel.h"

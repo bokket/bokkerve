@@ -63,11 +63,13 @@ public:
     {
         std::tm tm;
         time_t time=static_cast<time_t>(event->getTime());
-        ::localtime_r(&time,&tm);
+        //::localtime_r(&time,&tm);
 
-        char buf[128]={0};
+        stream<<std::put_time(::localtime_r(&time,&tm),format_.c_str());
+
+        /*char buf[128]={0};
         strftime(buf,sizeof(buf),format_.c_str(),&tm);
-        stream<<buf;
+        stream<<buf;*/
     }
     void format(std::ostream& stream,LogEvent::ptr event) override
     {
@@ -78,7 +80,7 @@ public:
         std::tm tm;
         time_t time=static_cast<time_t>(event->getTime());
 
-        ::localtime_r(&time,&tm);
+        //::localtime_r(&time,&tm);
 
         auto now=event->getTimeNow();
 
@@ -86,13 +88,13 @@ public:
         uint64_t microseconds=std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count()
                               -std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count()*1000;
 
-        localtime_r(&time,&tm);
+        stream<<std::put_time(::localtime_r(&time,&tm),"%04d-%02d-%02d-%02d-%02d-%02d-%06d");
 
-        char buf[32]={0};
+        /*char buf[32]={0};
         snprintf(buf,sizeof(buf),"%04d-%02d-%02d-%02d-%02d-%02d-%06d", 1900 + tm.tm_year,
                  1 + tm.tm_mon, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec,static_cast<int>(microseconds));
 
-        stream<<buf;
+        stream<<buf;*/
     }
 
 private:

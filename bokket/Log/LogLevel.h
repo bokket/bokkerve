@@ -10,6 +10,7 @@
 
 namespace bokket
 {
+
 enum class LogLevel:uint8_t
 {
     UNKNOW,
