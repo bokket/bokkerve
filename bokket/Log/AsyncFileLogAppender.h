@@ -30,6 +30,7 @@ public:
 
 private:
     void threadFunc();
+    
 
     std::atomic_bool started_;
 

@@ -11,22 +11,22 @@
 #include <memory>
 #include <mutex>
 #include <thread>
-#include <sstream>
 #include <list>
+#include <map>
 #include "LogAppender.h"
 #include "LogLevel.h"
 #include "LogStream.h"
 #include "LogEvent.h"
 #include "../base/noncopyable.h"
-#include "../net/Timestamp.h"
 
 using namespace bokket;
-using namespace bokket::detail;
+
 
 namespace bokket
 {
 
 class LogSteam;
+class LogEvent;
 
 class Logger: public std::enable_shared_from_this<Logger>
 {
@@ -34,16 +34,16 @@ class Logger: public std::enable_shared_from_this<Logger>
 public:
     using ptr=std::shared_ptr<Logger>;
 public:
-    Logger(const std::string& name="root");
+    Logger(const std::string& basename="root");
     ~Logger();
 
     void append(LogLevel level,LogEvent::ptr event);
 
-    void info(LogEvent::ptr);
-    void debug(LogEvent::ptr);
-    void error(LogEvent::ptr);
-    void fatal(LogEvent::ptr);
-    void warn(LogEvent::ptr);
+    void info(LogEvent::ptr event);
+    void debug(LogEvent::ptr event);
+    void error(LogEvent::ptr event);
+    void fatal(LogEvent::ptr event);
+    void warn(LogEvent::ptr event);
 
     void addAppender(const std::string& appendername
                      ,LogAppender::ptr appender);
@@ -53,19 +53,18 @@ public:
 
     void clearAppender();
 
-    LogLevel getLogLevel() const;
+    LogLevel getLogLevel() const { return level_; }
 
 
-    LogSteam &steam() { return stream_; }
+    bokket::detail::LogStream &steam() { return stream_; }
+
+    std::string& getBaseName() { return basename_; }
+
 
 
 private:
-    const char* logLevelToString(LogLevel level) const;
-    LogLevel FromString(const std::string & str) const;
-
-
     LogLevel level_;
-    LogStream stream_;
+    bokket::detail::LogStream stream_;
 
 
     //std::string filename_;

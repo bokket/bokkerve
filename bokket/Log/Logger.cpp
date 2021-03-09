@@ -7,9 +7,8 @@
 
 namespace bokket
 {
-
-Logger::Logger(const std::string &name)
-              :basename_(name)
+Logger::Logger(const std::string &basename)
+              :basename_(basename)
               ,level_(LogLevel::DEBUG)
 {
 
@@ -45,10 +44,13 @@ void Logger::delAppender(const std::string &appendername, LogAppender::ptr appen
     std::lock_guard<std::mutex> lockGuard(mutex_);
     for(auto item=appenders_.begin();item!=appenders_.end();item++)
     {
-        if(item->)
+        if(item)
     }
 }
 
+void Logger::clearAppender()
+{
 
+}
 
 }

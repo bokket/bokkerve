@@ -6,6 +6,8 @@
 #include "FixedBuffer.h"
 #include <cmath>
 #include <iostream>
+
+
 int main()
 {
     bokket::detail::LogStream stream;

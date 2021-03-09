@@ -8,6 +8,7 @@
 #include <string>
 #include <memory>
 #include <mutex>
+#include <thread>
 #include "LogLevel.h"
 
 
@@ -20,10 +21,6 @@ public:
 public:
     virtual ~LogAppender();
     virtual void append(const std::string& msg,int32_t line)=0;
-/*
-protected:
-    LogLevel level=LogLevel::DEBUG;
-    std::mutex mutex_;*/
 };
 
 }
