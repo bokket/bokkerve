@@ -12,9 +12,9 @@ public:
     MessageFormatImpl(const std::string& str="")
     {}
 
-    void format(std::ostream& stream,LogEvent::ptr event) override
+    void format(std::ostream& os,LogEvent::ptr event) override
     {
-        stream<<event->getContent();
+        os<<event->getContent();
     }
 };
 
@@ -24,9 +24,22 @@ class LevelFormatImpl: public LogFormatter::Impl
 public:
     LevelFormatImpl(const std::string& str="")
     {}
-    void format(std::ostream& stream,LogEvent::ptr event) override
+    void format(std::ostream& os,LogEvent::ptr event) override
     {
-        stream<<bokket::getLogLevelToString(event->getLevel());
+        os<<bokket::getLogLevelToString(event->getLevel());
+    }
+};
+
+
+class ElapseFormatImpl: public LogFormatter::Impl
+{
+public:
+    ElapseFormatImpl(const std::string& str="")
+    {}
+
+    void format(std::ostream& os,LogEvent::ptr event) override
+    {
+        os<<event->getElapse();
     }
 };
 
@@ -36,9 +49,9 @@ public:
     FileNameFormatImpl(const std::string& str="")
     {}
 
-    void format(std::ostream& stream,LogEvent::ptr event) override
+    void format(std::ostream& os,LogEvent::ptr event) override
     {
-        stream<<event->getFilename();
+        os<<event->getFilename();
     }
 };
 
@@ -59,19 +72,19 @@ public:
             format_="%Y-%m-%d %H:%M:%S";
         }
     }
-    void formatByStrf(std::ostream& stream,LogEvent::ptr event)
+    void format(std::ostream& os,LogEvent::ptr event)
     {
         std::tm tm;
         time_t time=static_cast<time_t>(event->getTime());
-        //::localtime_r(&time,&tm);
+        ::localtime_r(&time,&tm);
 
-        stream<<std::put_time(::localtime_r(&time,&tm),format_.c_str());
+        //os<<std::put_time(::localtime_r(&time,&tm),format_.c_str());
 
-        /*char buf[128]={0};
-        strftime(buf,sizeof(buf),format_.c_str(),&tm);
-        stream<<buf;*/
+        char buf[64]={0};
+        ::strftime(buf,sizeof(buf),format_.c_str(),&tm);
+        os<<string(buf);
     }
-    void format(std::ostream& stream,LogEvent::ptr event) override
+    void formatByLocal(std::ostream& os,LogEvent::ptr event) override
     {
         //now() 当前时间time_point
         //to_time_t() time_point转换成time_t秒
@@ -88,7 +101,7 @@ public:
         uint64_t microseconds=std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count()
                               -std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count()*1000;
 
-        stream<<std::put_time(::localtime_r(&time,&tm),"%04d-%02d-%02d-%02d-%02d-%02d-%06d");
+        os<<std::put_time(::localtime_r(&time,&tm),"%04d-%02d-%02d-%02d-%02d-%02d-%06d");
 
         /*char buf[32]={0};
         snprintf(buf,sizeof(buf),"%04d-%02d-%02d-%02d-%02d-%02d-%06d", 1900 + tm.tm_year,
@@ -105,11 +118,11 @@ private:
 class FunctionFormatImpl: public LogFormatter::Impl
 {
 public:
-    FunctionFormatImpl(const std::string="")
+    FunctionFormatImpl(const std::string& str="")
     {}
-    void format(std::ostream& stream,LogEvent::ptr event) override
+    void format(std::ostream& os,LogEvent::ptr event) override
     {
-        stream<<event->getFunc();
+        os<<event->getFunc();
     }
 };
 
@@ -118,9 +131,9 @@ class LogNameFormatImpl: public LogFormatter::Impl
 public:
     LogNameFormatImpl(const std::string="")
     {}
-    void format(std::ostream& stream,LogEvent::ptr event) override
+    void format(std::ostream& ps,LogEvent::ptr event) override
     {
-        stream<<event->getLogger()->getBaseName();
+        os<<event->getLogger()->getBaseName();
     }
 };
 
@@ -129,9 +142,9 @@ class LineFormatImpl: public LogFormatter::Impl
 public:
     LineFormatImpl(const std::string="")
     {}
-    void format(std::ostream& stream,LogEvent::ptr event) override
+    void format(std::ostream& os,LogEvent::ptr event) override
     {
-        stream<<event->getLine();
+        os<<event->getLine();
     }
 };
 

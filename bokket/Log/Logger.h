@@ -19,14 +19,12 @@
 #include "LogEvent.h"
 #include "../base/noncopyable.h"
 
-using namespace bokket;
-
-
 namespace bokket
 {
 
 class LogSteam;
 class LogEvent;
+
 
 class Logger: public std::enable_shared_from_this<Logger>
 {
@@ -34,16 +32,18 @@ class Logger: public std::enable_shared_from_this<Logger>
 public:
     using ptr=std::shared_ptr<Logger>;
 public:
-    Logger(const std::string& basename="root");
+    Logger(const std::string& basename="root") {
+        basename_=basename;
+    }
     ~Logger();
 
     void append(LogLevel level,LogEvent::ptr event);
 
-    void info(LogEvent::ptr event);
-    void debug(LogEvent::ptr event);
-    void error(LogEvent::ptr event);
-    void fatal(LogEvent::ptr event);
-    void warn(LogEvent::ptr event);
+    void info(typename LogEvent::ptr event);
+    void debug(typename LogEvent::ptr event);
+    void error(typename LogEvent::ptr event);
+    void fatal(typename LogEvent::ptr event);
+    void warn(typename LogEvent::ptr event);
 
     void addAppender(const std::string& appendername
                      ,LogAppender::ptr appender);

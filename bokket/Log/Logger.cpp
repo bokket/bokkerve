@@ -3,6 +3,7 @@
 //
 
 #include "Logger.h"
+#include "LogEvent.h"
 
 
 namespace bokket

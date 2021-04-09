@@ -16,6 +16,8 @@
 namespace bokket
 {
 
+class Logger;
+
 class LogEvent
 {
 public:

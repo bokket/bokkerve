@@ -21,7 +21,9 @@ public:
     using ptr=std::shared_ptr<LogAppender>;
 public:
     virtual ~LogAppender();
-    virtual void append(const std::string& msg,int32_t line)=0;
+    virtual void append(const std::string& msg,int32_t len)=0;
+
+    virtual void flush()=0;
 
 };
 

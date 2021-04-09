@@ -27,16 +27,17 @@ public:
         using ptr=std::shared_ptr<LogFormatter::Impl>;
     public:
         virtual ~Impl() {}
-        virtual void format(std::ostream& stream,LogEvent::ptr event)=0;
+        virtual void format(std::ostream& os,LogEvent::ptr event)=0;
     };
 public:
     void init();
 
     bool isError() const { return error_; }
 private:
-    std::ostream stream_;
     bool error_=false;
 };
+
+
 }
 
 
