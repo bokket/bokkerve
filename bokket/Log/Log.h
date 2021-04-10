@@ -13,8 +13,10 @@
 #include <list>
 #include <map>
 #include <vector>
+#include <condition_variable>
 #include "./LogLevel.h"
 #include "./LogStream.h"
+#include "./FileWriterType.h"
 #include "../base/noncopyable.h"
 #include "../base/SpinLock.h"
 
@@ -111,9 +113,12 @@ public:
 
     std::string format(LogEvent::ptr event);
 
+    std::ostream& format(std::ostream& ostream,LogEvent::ptr event);
+
     bool getError() const { return error_; }
 
 private:
+    std::vector<std::tuple<std::string,std::string,int>> vec_;
     std::vector<Impl::ptr> items_;
     std::string pattern_;
     bool error_=false;
@@ -126,14 +131,15 @@ public:
     using ptr=std::shared_ptr<LogAppender>;
 public:
     virtual ~LogAppender();
-    virtual void append(const std::string& msg,int32_t len)=0;
-    virtual void flush()=0;
+    //virtual void append(const std::string& msg,int32_t len,LogLevel level,LogEvent::ptr event)=0;
+    virtual void append(shared_ptr<Logger> logger,LogLevel level,LogEvent::ptr event)=0;
 
+    //virtual void flush() =0;
 
-    void setFormatter(LogFormatter::ptr val) { formatter_=val; }
+    void setFormatter(LogFormatter::ptr val) ;
     void setLevel(LogLevel level) { level_=level; }
 
-    LogFormatter::ptr getFormatter() const { return formatter_; }
+    LogFormatter::ptr getFormatter() ;
     LogLevel getLevel() const { return level_; }
 
     std::mutex& getMutex() { return mutex_; }
@@ -208,7 +214,82 @@ private:
     //Logger::ptr root_;
 };
 
+class LogAppenderFile: public LogAppender
+{
+public:
+    using ptr=std::shared_ptr<LogAppenderFile>;
+public:
+    LogAppenderFile(const std::string basename,size_t rollSize,int flushInterval,int check_freq_count,FileWriterType writerType);
 
+
+    ~LogAppenderFile();
+
+    //void append(const std::string& msg,int32_t len,LogLevel level) override;
+    void append(shared_ptr<Logger> logger,LogLevel level,LogEvent::ptr event) override;
+
+    void flush();
+
+    bool rollFile();
+private:
+
+    void append_unlocked(const std::string& msg,int32_t len);
+
+    const std::string basename_;
+
+    const size_t rollSize_; // 日志文件达到rolSize_换一个新文件
+    const int flushInterval_;
+    const int check_freq_count_;
+
+    int count_;
+    //std::unique_ptr<std::mutex> mutex_;
+    time_t startOfPeriod_;	// 开始记录日志时间（调整至零点的时间）
+    time_t lastRoll_;			// 上一次滚动日志文件时间
+    time_t lastFlush_;		// 上一次日志写入文件时间
+
+    std::unique_ptr<FileWriter> file_;
+
+    FileWriterType writerType_;
+    constexpr static int kRollPerSeconds=60*60*24;
+};
+
+class LogAppenderStdout: public LogAppender
+{
+public:
+    using ptr=std::shared_ptr<LogAppenderStdout>;
+public:
+     //void append(const std::string& msg,int32_t len,LogLevel level,LogEvent::ptr event) override;
+     void append(shared_ptr<Logger> logger,LogLevel level,LogEvent::ptr event) override;
+};
+
+/*
+class LogAppenderAsyncFile: public LogAppender
+{
+public:
+    LogAppenderAsyncFile(const std::string& filename);
+    ~LogAppenderAsyncFile();
+
+    //void append(const std::string& msg,int32_t line,LogLevel level,LogEvent::ptr event) override;
+    void append(shared_ptr<Logger> logger,LogLevel level,LogEvent::ptr event) override;
+
+
+    void start();
+    void stop();
+
+private:
+    void threadFunc();
+    
+
+    std::atomic_bool started_;
+
+    //time_t ;
+    std::string filename_;
+
+    mutable std::mutex mutex_;
+    std::thread thread_;
+    std::condition_variable conditionVariable_;
+    //bokket::net::CountDownLatch latch_;
+
+};*/
 
 
 }

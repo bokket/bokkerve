@@ -9,6 +9,7 @@
 #include <functional>
 #include <iomanip>
 #include <tuple>
+#include <cstdarg>
 
 
 namespace bokket {
@@ -27,11 +28,15 @@ void Logger::append(LogLevel level, LogEvent::ptr event)
         auto self = shared_from_this();
         std::lock_guard <std::mutex> lockGuard(mutex_);
 
-        auto log=self->getLogFormatter()->format(event);
+        //auto log=self->getLogFormatter()->format(event);
 
-        for (const auto &appender:appenders_) {
-            appender.second->append(log,log.size());
+
+        for(const auto & [appendname,append] : appenders_) {
+            append->append(self,level,event);
         }
+       // for (const auto &appender:appenders_) {
+       //     appender.second->append(log,log.size());
+       // }
         /*
         if(!appenders_.empty())
         {
@@ -94,7 +99,6 @@ void Logger::setFormatter(LogFormatter::ptr val)
         //如果appender没有formatter
         if(!appender->getError()) {
             appender->setFormatter(formatter_);
-            appender->setError(true);
         }
     }
 }
@@ -428,8 +432,6 @@ public:
 
 std::vector<std::tuple<std::string,std::string,int>>& LogFormatter::parse()
 {
-    std::vector<std::tuple<std::string,std::string,int>> vec;
-
     enum class parse:uint8_t {
         INIT,
         ITEM, //%
@@ -451,7 +453,7 @@ std::vector<std::tuple<std::string,std::string,int>>& LogFormatter::parse()
         item=pattern_[i];
         format="";
         if(error_) {
-            vec.emplace_back(std::make_tuple("<<pattern_error>>",format,0));
+            vec_.emplace_back(std::make_tuple("<<pattern_error>>",format,0));
             break;
         }
         switch(pattern_[i])
@@ -480,18 +482,18 @@ std::vector<std::tuple<std::string,std::string,int>>& LogFormatter::parse()
                 item="";
                 end=i;
                 format=pattern_.substr(begin+1,end-begin-1);    
-                vec.emplace_back(std::make_tuple(item,format,1));
+                vec_.emplace_back(std::make_tuple(item,format,1));
                 break;
             case '%':
                 item=pattern_[++i];
-                vec.emplace_back(std::make_tuple(item,format,1));
+                vec_.emplace_back(std::make_tuple(item,format,1));
                 break;
             case '[':
             //[%p]
-                vec.emplace_back(std::make_tuple(item,format,0));             
+                vec_.emplace_back(std::make_tuple(item,format,0));             
                 break;
             case ']':
-                vec.emplace_back(std::make_tuple(item,format,0));
+                vec_.emplace_back(std::make_tuple(item,format,0));
                 break;
             default:
                 break;
@@ -580,7 +582,7 @@ std::vector<std::tuple<std::string,std::string,int>>& LogFormatter::parse()
                 break;
         }
     }*/
-    return vec;
+    return vec_;
 }
 
 
@@ -653,13 +655,143 @@ LogFormatter::LogFormatter(const std::string &pattern)
 std::string LogFormatter::format(LogEvent::ptr event)
 {
     std::stringstream ss;
-    for(auto &i:items_)
-    {
+    for(auto &i:items_) {
         i->format(ss,event);
     }
     return ss.str();
 }
 
+std::ostream & LogFormatter::format(std::ostream &ostream, LogEvent::ptr event)
+{
+    for(auto& i:items_) {
+        i->format(ostream,event);
+    }
+    return ostream;
+}
+
+
+void LogAppender::setFormatter(LogFormatter::ptr val)
+{
+    std::lock_guard<std::mutex> lockGuard(mutex_);
+    formatter_=val;
+    if(formatter_) {
+        hasFormatter_=true;
+    } else {
+        hasFormatter_= false;
+    }
+}
+
+
+LogFormatter::ptr LogAppender::getFormatter() 
+{
+    std::lock_guard<std::mutex> lockGuard(mutex_);
+    return formatter_;
+}
+
+LogAppenderFile::LogAppenderFile(const std::string basename, size_t rollSize, int flushInterval, int check_freq_count,
+                                 FileWriterType writerType)
+                                 :basename_(basename),rollSize_(rollSize),flushInterval_(flushInterval),check_freq_count_(check_freq_count)
+                                 ,count_(0),startOfPeriod_(0),lastRoll_(0),lastFlush_(0)
+                                 //,mutex_(std::make_unique<std::mutex>())
+{
+    /*auto now=std::chrono::system_clock::now();
+    time_t time=std::chrono::system_clock::to_time_t(now);
+    std::string filename=getLogFileName(basename_,&time);*/
+    //time_t time=static_cast<time_t>(event->getTime());
+    time_t time=0;
+    std::string filename=getLogFileName(basename_,&time);
+
+    if(writerType==FileWriterType::MMAPFILE)
+        file_=std::make_unique<MmapFileWrite>(filename,rollSize_);
+    else
+        file_=std::make_unique<AppendFileWriter>(filename);
+
+    writerType_=writerType;
+
+    rollFile();
+}
+
+
+void LogAppenderFile::append(shared_ptr <Logger> logger, LogLevel level, LogEvent::ptr event)
+{
+    /*if(mutex_)
+    {
+        //std::unique_lock<std::mutex> lock(*mutex_);
+        append_unlocked(msg,len);
+    }*/
+    //LogAppender的锁
+    std::unique_lock<std::mutex> uniqueLock(mutex_);
+    auto log=logger->getLogFormatter()->format(event);
+    append_unlocked(log.data(),log.size());
+    
+}
+
+void LogAppenderFile::append_unlocked(const std::string &msg, int32_t len)
+{
+    file_->append(msg,len);
+
+    if(file_->getWrittenBytes() > rollSize_) {
+        rollFile();
+    } else {
+        ++count_;
+        //隔多久需要检查一下
+        if(count_ >= check_freq_count_) {
+            count_=0;
+            time_t now = ::time(nullptr);
+            time_t thisPeriod=now/kRollPerSeconds*kRollPerSeconds;
+            if(thisPeriod!=startOfPeriod_) {
+                rollFile();
+            } else if(now-lastFlush_ > flushInterval_) {
+                lastFlush_=now;
+                file_->flush();
+            }
+        }
+    }
+}
+
+
+void LogAppenderFile::flush()
+{
+    /*if(mutex_)
+    {
+        std::unique_lock<std::mutex> lock(*mutex_);
+        file_->flush();
+    }*/
+    std::unique_lock<std::mutex> uniqueLock(mutex_);
+    file_->flush();
+}
+
+bool LogAppenderFile::rollFile()
+{
+
+    //time_t now=static_cast<time_t>(event->getTime());
+    time_t now=0;
+    std::string filename=getLogFileName(basename_,&now);
+
+    time_t start=now/kRollPerSeconds*kRollPerSeconds;
+
+    if(now>lastRoll_)
+    {
+        lastRoll_=now;
+        lastFlush_=now;
+        startOfPeriod_=start;
+
+        if(writerType_==FileWriterType::APPENDFILE)
+            file_.reset(new AppendFileWriter(filename));
+        else
+            file_.reset(new MmapFileWrite(filename,rollSize_));
+        return true;
+    }
+    return false;
+}
+
+void LogAppenderStdout::append(shared_ptr <Logger> logger, LogLevel level, LogEvent::ptr event)
+{
+    if(level_>=level) {
+        std::lock_guard<std::mutex> lockGuard(mutex_);
+        formatter_->format(std::cout,event);
+    }
+}
 
 }
 

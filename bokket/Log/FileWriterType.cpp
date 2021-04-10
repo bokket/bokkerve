@@ -95,6 +95,7 @@ MmapFileWrite::~MmapFileWrite()
     {
         ::close(fd_);
         fd_=-1;
+        buffer_=nullptr;
     }
     if(buffer_!=MAP_FAILED)
         munmap(buffer_,memSize_);

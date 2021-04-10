@@ -13,7 +13,7 @@ namespace bokket
 {
 namespace detail
 {
-class LogStream: public noncopyable
+class LogStream: public ostream ,public noncopyable
 {
 public:
     using self=LogStream;

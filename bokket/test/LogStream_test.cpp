@@ -17,7 +17,7 @@ int main()
 
 
     void* p= nullptr;
-   int* d=&t;
+    int* d=&t;
 
     bokket::detail::FixedBuffer<1000> buffer;
     buffer.append("wxz",3);

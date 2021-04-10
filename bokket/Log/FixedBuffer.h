@@ -7,6 +7,7 @@
 #include <string>
 #include <cstdio>
 #include <cstring>
+#include <streambuf>
 #include "../base/noncopyable.h"
 
 using namespace std;
@@ -22,7 +23,7 @@ namespace detail
 
     //非类型参数
     template <int SIZE>
-class FixedBuffer: public noncopyable
+class FixedBuffer: public streambuf ,public noncopyable
 {
 public:
     FixedBuffer()

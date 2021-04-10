@@ -5,14 +5,14 @@
 #ifndef BOKKET_FILEWRITERTYPE_H
 #define BOKKET_FILEWRITERTYPE_H
 
-#include "LogAppender.h"
 
 #include <stdint.h>
 #include <unistd.h>
 #include <string>
 #include <stdio.h>
 #include <memory>
-
+#include <sstream>
+#include <iomanip>
 
 namespace bokket
 {
@@ -25,7 +25,6 @@ enum class FileWriterType:uint8_t
 class FileWriter
 {
 public:
-    FileWriter()=default;
     virtual ~FileWriter();
 
     virtual void append(const std::string& msg,int32_t len)=0;
@@ -94,6 +93,7 @@ std::string getHostName()
     }
 }
 
+
 std::string getLogFileName(const std::string& basename,time_t* now)
 {
     std::string filename;
@@ -103,22 +103,32 @@ std::string getLogFileName(const std::string& basename,time_t* now)
 
     filename=basename;
 
-    char timebuf[32];
+    //char timebuf[32];
+    std::stringstream ss;
     std::tm tm;
+    //gmtime_r转出来的是0时区的标准时间
     ::gmtime_r(now,&tm);
 
-    strftime(timebuf,sizeof(timebuf),".%Y%m%d-%H%M%S.", &tm);
-    filename+=timebuf;
+
+    ss<<filename;
+    ss<<getHostName();
+    //os<<std::put_time(::localtime_r(&time,&tm),"%04d-%02d-%02d-%02d-%02d-%02d-%06d");
+    ss<<std::put_time(::gmtime_r(now,&tm),".%Y%m%d-%H%M%S.");
+    ss<<".log";
+
+    return ss.str();
+    //strftime(timebuf,sizeof(timebuf),".%Y%m%d-%H%M%S.", &tm);
+    //filename+=timebuf;
 
 
-    filename+=getHostName();
+    //filename+=getHostName();
 
     /*char pidbuf[32];
     snprintf(pidbuf, sizeof pidbuf, ".%d", ::getpid());
     filename += pidbuf;*/
 
-    filename+=".log";
-    return filename;
+    //filename+=".log";
+    //return filename;
 }
 
 }
