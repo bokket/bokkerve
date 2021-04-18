@@ -5,20 +5,60 @@
 #ifndef BOKKERVE_LOG_H
 #define BOKKERVE_LOG_H
 
-#include <string>
-#include <sstream>
-#include <memory>
-#include <mutex>
-#include <thread>
-#include <list>
+
 #include <map>
+#include <list>
+#include <mutex>
 #include <vector>
+#include <string>
+#include <memory>
+#include <thread>
+#include <cstdarg>
+#include <sstream>
+#include <fstream>
 #include <condition_variable>
 #include "./LogLevel.h"
 #include "./LogStream.h"
 #include "./FileWriterType.h"
 #include "../base/noncopyable.h"
 #include "../base/SpinLock.h"
+#include "../base/Singleton.h"
+#include "../base/Thread.h"
+
+
+
+//LogEventWrap对象初始化 传参为LogEvent::ptr智能指针 
+//LogEvent::ptr new() 一个指针初始化为其本身对象LogEvent(把LogEvent传入LogEvent::ptr)
+#define BOKKET_LOG_LEVEL(logger,level) \
+    if(logger->getLevel() <= level )   \
+        bokket::LogEventWrap(bokket::LogEvent::ptr (new bokket::LogEvent(logger,level,\
+                __FILE__,__FUNCTION__,__LINE__,this_thread::get_id(),bokket::CurrentThread::tidString(),\
+                0,time(nullptr) ) )).stream()
+//bokket::getFiberId()
+
+
+#define BOKKET_LOG_DEBUG(logger) BOKKET_LOG_LEVEL(logger,bokket::LogLevel::DEBUG)
+#define BOKKET_LOG_INFO(logger) BOKKET_LOG_LEVEL(logger,bokket::LogLevel::INFO)
+#define BOKKET_LOG_WARN(logger) BOKKET_LOG_LEVEL(logger,bokket::LogLevel::WARNNING)
+#define BOKKET_LOG_ERROR(logger) BOKKET_LOG_LEVEL(logger,bokket::LogLevel::ERROR)
+#define BOKKET_LOG_FATAL(logger) BOKKET_LOG_LEVEL(logger,bokket::LogLevel::FATAL)
+
+
+#define BOKKET_LOG_FMT_LEVEL(logger,level,fmt,...) \
+    if(logger->getLevel() <= level )   \
+        bokket::LogEventWrap(bokket::LogEvent::ptr std::make_shared<bokket::LogEvent>(logger,level,\
+                __FILE__,__FUNC__,__LINE__,bokket::getThreadId(),bokket::getFiberId(),bokket::Thread::GetName()\
+                0,time(nullptr)) ).getEvent->formt(fmt,__VA_ARGS__)
+
+
+#define BOKKET_LOG_FMT_DEBUG(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::DEBUG,fmt,_VA_ARGS_)
+#define BOKKET_LOG_FMT_INFO(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::INFO,fmt,_VA_ARGS_)
+#define BOKKET_LOG_FMT_WARN(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::WARNNING,fmt,_VA_ARGS_)
+#define BOKKET_LOG_FMT_ERROR(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::ERROR,fmt,_VA_ARGS_)
+#define BOKKET_LOG_FMT_FATAL(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::FATAL,fmt,_VA_ARGS_)
+
+
+//#define BOKKET_LOG_ROOT() bokket::LoggerMgr::GetInstance()->get
 
 
 namespace bokket
@@ -34,9 +74,10 @@ public:
 
 public:
     LogEvent(std::shared_ptr<Logger> logger,LogLevel level
-             ,const std::string& filename,const std::string& func
-             ,thread::id threadId,uint32_t fiber_id,const std::string& threadName
-             ,int32_t line,uint32_t elapse,uint64_t time);
+             ,const std::string& filename,const std::string& func,int32_t line
+             ,thread::id threadId,const std::string& threadName
+             ,uint32_t elapse,uint64_t time);
+    //uint32_t fiberId
     ~LogEvent();
 
     const std::string& getFilename() const { return filename_; }
@@ -62,12 +103,14 @@ public:
     std::shared_ptr<Logger> getLogger() const { return logger_; }
 
     std::stringstream& getStringStream() { return stringStream_; }
+    bokket::detail::LogStream & steam() { return stream_;}
+
 
     void format(const char* fmt,...);
     void format(const char* fmt,va_list al);
 
 
-    static std::chrono::system_clock::time_point getTimeNow();
+    //static std::chrono::system_clock::time_point getTimeNow();
 
 private:
 
@@ -85,9 +128,24 @@ private:
     uint64_t time_;
 
     std::stringstream stringStream_;
+    bokket::detail::LogStream stream_;
 
     std::shared_ptr<Logger> logger_;
     LogLevel level_;
+};
+
+class LogEventWrap
+{
+public:
+    LogEventWrap(LogEvent::ptr event);
+    ~LogEventWrap();
+    LogEvent::ptr getEvent() const { return event_; }
+    std::stringstream & getSS();
+
+    std::ostream& stream();
+    //bokket::detail::LogStream & stream();
+private:
+    LogEvent::ptr event_;
 };
 
 
@@ -114,6 +172,8 @@ public:
     std::string format(LogEvent::ptr event);
 
     std::ostream& format(std::ostream& ostream,LogEvent::ptr event);
+
+    //void format(const std::string& msg,int32_t len);
 
     bool getError() const { return error_; }
 
@@ -187,10 +247,10 @@ public:
 
     LogFormatter::ptr getLogFormatter();
 
-    LogLevel getLogLevel() const { return level_; }
+    LogLevel getLevel() const { return level_; }
 
 
-    bokket::detail::LogStream &steam() { return stream_; }
+    //bokket::detail::LogStream &steam() { return stream_; }
 
     std::string& getBaseName() { return basename_; }
 
@@ -198,7 +258,7 @@ public:
 
 private:
     LogLevel level_;
-    bokket::detail::LogStream stream_;
+    //bokket::detail::LogStream stream_;
 
 
     //std::string filename_;
@@ -230,11 +290,17 @@ public:
     void flush();
 
     bool rollFile();
+
+    //bool reopen();
 private:
 
     void append_unlocked(const std::string& msg,int32_t len);
 
     const std::string basename_;
+
+    std::ofstream filestream_;
+    bokket::detail::LogStream stream_;
+
 
     const size_t rollSize_; // 日志文件达到rolSize_换一个新文件
     const int flushInterval_;
@@ -291,6 +357,16 @@ private:
 
 };*/
 
+/*
+class LogAppenderAsyncFile: public LogAppender
+{
+public:
+    LogAppenderAsyncFile();
+
+}*/
+
+
+using LoggerMgr=bokket::Singleton<Logger>;
 
 }
 

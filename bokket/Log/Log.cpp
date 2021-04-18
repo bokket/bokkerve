@@ -9,10 +9,35 @@
 #include <functional>
 #include <iomanip>
 #include <tuple>
-#include <cstdarg>
 
 
 namespace bokket {
+
+LogEventWrap::LogEventWrap(LogEvent::ptr event)
+                          :event_(event)
+{}
+
+LogEventWrap::~LogEventWrap()
+{
+    event_->getLogger()->append(event_->getLevel(),event_);
+}
+
+std::stringstream & LogEventWrap::getSS()
+{
+    return event_->getStringStream();
+}
+
+std::ostream & LogEventWrap::stream()
+{
+    return event_->steam();
+}
+
+/*bokket::detail::LogStream & LogEventWrap::stream()
+{
+    return event_->steam();
+}*/
+
+
 
 Logger::Logger(const std::string &basename)
               :basename_(basename)
@@ -157,16 +182,16 @@ void Logger::clearAppender()
 
 
 LogEvent::LogEvent(std::shared_ptr <Logger> logger, LogLevel level, const std::string &filename,
-                   const std::string &func, thread::id threadId, uint32_t fiberId, const std::string &threadName,
-                   int32_t line, uint32_t elapse, uint64_t time)
+                   const std::string &func, int32_t line, thread::id threadId,
+                   const std::string &threadName, uint32_t elapse, uint64_t time)
                    :logger_(logger)
                    ,level_(level)
                    ,filename_(filename)
                    ,func_(func)
-                   ,threadId_(std::move(threadId))
-                   ,fiberId_(fiberId)
-                   ,threadName_(threadName)
                    ,line_(line)
+                   ,threadId_(std::move(threadId))
+                   //,fiberId_(fiberId)
+                   ,threadName_(threadName)
                    ,elapse_(elapse)
                    ,time_(time)
 {}
@@ -190,10 +215,10 @@ void LogEvent::format(const char *fmt, va_list al)
     }
 }
 
-std::chrono::system_clock::time_point LogEvent::getTimeNow()
+/*std::chrono::system_clock::time_point LogEvent::getTimeNow()
 {
     return std::chrono::system_clock::now();
-}
+}*/
 
 
 class MessageFormatImpl: public LogFormatter::Impl
@@ -216,7 +241,7 @@ public:
     {}
     void format(std::ostream& os,LogEvent::ptr event) override
     {
-        os<<bokket::getLogLevelToString(event->getLevel());
+        os<<getLogLevelToString(event->getLevel());
     }
 };
 
@@ -320,11 +345,11 @@ public:
 
         if(format_.compare("%04d-%02d-%02d-%02d-%02d-%02d-%06d"))
         {
-            auto now=event->getTimeNow();
+            auto now=event->getTime();
 
 
-            uint64_t microseconds=std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count()
-                                  -std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count()*1000;
+            /*uint64_t microseconds=std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count()
+                                  -std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count()*1000;*/
 
             os<<std::put_time(::localtime_r(&time,&tm),"%04d-%02d-%02d-%02d-%02d-%02d-%06d");
         }
@@ -692,6 +717,7 @@ LogAppenderFile::LogAppenderFile(const std::string basename, size_t rollSize, in
                                  FileWriterType writerType)
                                  :basename_(basename),rollSize_(rollSize),flushInterval_(flushInterval),check_freq_count_(check_freq_count)
                                  ,count_(0),startOfPeriod_(0),lastRoll_(0),lastFlush_(0)
+                                 //,stream_()
                                  //,mutex_(std::make_unique<std::mutex>())
 {
     /*auto now=std::chrono::system_clock::now();
@@ -720,7 +746,8 @@ void LogAppenderFile::append(shared_ptr <Logger> logger, LogLevel level, LogEven
         append_unlocked(msg,len);
     }*/
     //LogAppender的锁
-    std::unique_lock<std::mutex> uniqueLock(mutex_);
+    std::lock_guard<std::mutex> uniqueLock(mutex_);
+    //formatter_->format(filestream_,event);
     auto log=logger->getLogFormatter()->format(event);
     append_unlocked(log.data(),log.size());
     
@@ -757,7 +784,7 @@ void LogAppenderFile::flush()
         std::unique_lock<std::mutex> lock(*mutex_);
         file_->flush();
     }*/
-    std::unique_lock<std::mutex> uniqueLock(mutex_);
+    std::lock_guard<std::mutex> uniqueLock(mutex_);
     file_->flush();
 }
 

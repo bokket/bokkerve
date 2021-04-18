@@ -19,7 +19,7 @@ namespace bokket {
         // 线程真实pid（tid）的缓存，
         // 是为了减少::syscall(SYS_gettid)系统调用的次数
         // 提高获取tid的效率
-        thread_local string t_tidString="";
+        thread_local string t_tidString="UNKOWN";
     }
     namespace detail
     {

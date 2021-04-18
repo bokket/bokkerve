@@ -19,7 +19,7 @@ namespace bokket
 class Thread: public noncopyable
 {
 public:
-    typedef function<void()> ThreadFunc;
+    using ThreadFunc=function<void()> ;
 
 public:
     explicit Thread(const ThreadFunc&,const string& name=string());

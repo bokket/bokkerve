@@ -32,9 +32,10 @@ namespace CurrentThread
         return t_cachedTid;
     }
 
-    inline const char* tidString() // for logging
+    inline const string tidString() // for logging
     {
-        return t_tidString.c_str();
+        //return t_tidString.c_str();
+        return t_tidString;
     }
 
     bool isMainThread();
