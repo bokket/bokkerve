@@ -25,6 +25,41 @@ public:
         READY,
         EXCEPT
     };
+
+private:
+    Fiber();
+
+public:
+    Fiber(std::function<void()>cb, size_t stacksize =0,bool use = false);
+    ~Fiber();
+
+    void reset(std::function<void()> cb);
+
+    void swapIn();
+
+    void swapOut();
+
+    void call();
+
+    void back();
+
+    uint64_t getId() const { return id_; }
+
+    Status getStatus() const { return status_; }
+public:
+    static void setThis(Fiber* fiber);
+
+    static Fiber::ptr getThis();
+
+    static void yieldToReady();
+
+    static uint64_t totalFibers();
+
+    static void mainFunc();
+
+    static void callerMainFunc();
+
+    static uint64_t getFiberId();
 private:
     uint64_t id_ = 0;
     uint32_t stackSize_=0;
