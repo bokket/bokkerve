@@ -55,10 +55,16 @@ void Logger::append(LogLevel level, LogEvent::ptr event)
 
         //auto log=self->getLogFormatter()->format(event);
 
-
-        for(const auto & [appendname,append] : appenders_) {
-            append->append(self,level,event);
+        if(! appenders_.empty()) {
+            for(auto &it: appenders_) {
+                it->append(self,level,event);
+            }
+        } else if(root_) {
+            root_->append(level,event);
         }
+        /*for(const auto & [appendname,append] : appenders_) {
+            append->append(self,level,event);
+        }*/
        // for (const auto &appender:appenders_) {
        //     appender.second->append(log,log.size());
        // }
@@ -119,11 +125,12 @@ void Logger::setFormatter(LogFormatter::ptr val)
     std::lock_guard<std::mutex> lockGuard(mutex_);
     formatter_=val;
 
-    for(auto &[appendname,appender] : appenders_) {
-        std::lock_guard<std::mutex> lockGuardll(appender->getMutex());
+    //for(auto &[appendname,appender] : appenders_) {
+    for(auto& it:appenders_) {
+        std::lock_guard<std::mutex> lockGuardll(it->getMutex());
         //如果appender没有formatter
-        if(!appender->getError()) {
-            appender->setFormatter(formatter_);
+        if(!it->getError()) {
+            it->setFormatter(formatter_);
         }
     }
 }
@@ -132,7 +139,7 @@ void Logger::setFormatter(const std::string &str)
 {
     std::cout<<"[Logger::setFotmatter]:"<<std::endl;
 
-    LogFormatter::ptr new_formatter=make_shared<LogFormatter>(str);
+    LogFormatter::ptr new_formatter=std::make_shared<LogFormatter>(str);
 
     //是否能设置成功
     if(new_formatter->getError()) {
@@ -144,6 +151,7 @@ void Logger::setFormatter(const std::string &str)
     setFormatter(new_formatter);
 }
 
+/*
 void Logger::addAppender(const std::string &appendername, LogAppender::ptr appender)
 {
     std::lock_guard<std::mutex> lockGuard(mutex_);
@@ -153,11 +161,12 @@ void Logger::addAppender(const std::string &appendername, LogAppender::ptr appen
 
     }
     appenders_[appendername]=appender;
-}
+}*/
 
+/*
 void Logger::delAppender(const std::string &appendername, LogAppender::ptr appender)
 {
-    std::lock_guard<std::mutex> lockGuard(mutex_);
+    std::lock_guard<std::mutex> lockGuard(mutex_);*/
     /*for(auto item=appenders_.begin();item!=appenders_.end();)
     {
         if(item->first==appendername) {
@@ -166,9 +175,29 @@ void Logger::delAppender(const std::string &appendername, LogAppender::ptr appen
             ++item;
         }
     }*/
+    /*
     for(auto& [appendername_,appender_] : appenders_) {
         if(appendername_==appendername) {
             appenders_.erase(appendername);
+            break;
+        }
+    }
+}*/
+
+void Logger::addAppender(LogAppender::ptr appender) {
+    std::lock_guard<std::mutex> lockGuard(mutex_);
+    if(!appender->getFormatter()) {
+        std::lock_guard<std::mutex> lockGuardll(appender->getMutex());
+        appender->setFormatter(formatter_);
+    }
+    appenders_.emplace_back(appender);
+}
+
+void Logger::delAppender(LogAppender::ptr appender) {
+    std::lock_guard<std::mutex> lockGuard(mutex_);
+    for(auto it=appenders_.begin();it != appenders_.end();++it) {
+        if(*it==appender) {
+            appenders_.erase(it);
             break;
         }
     }
@@ -181,15 +210,18 @@ void Logger::clearAppender()
 }
 
 
-LogEvent::LogEvent(std::shared_ptr <Logger> logger, LogLevel level, const std::string &filename,
+/*LogEvent::LogEvent(std::shared_ptr <Logger> logger, LogLevel level, const std::string &filename,
                    const std::string &func, int32_t line, thread::id threadId,
-                   const std::string &threadName, uint32_t elapse, uint64_t time)
+                   const std::string &threadName, uint32_t elapse, uint64_t time)*/
+LogEvent::LogEvent(std::shared_ptr <Logger> logger, LogLevel level, const std::string &filename,
+                   const std::string &func, int32_t line, int threadId, const std::string &threadName, uint32_t elapse,
+                   std::time_t time)
                    :logger_(logger)
                    ,level_(level)
                    ,filename_(filename)
                    ,func_(func)
                    ,line_(line)
-                   ,threadId_(std::move(threadId))
+                   ,threadId_(threadId)
                    //,fiberId_(fiberId)
                    ,threadName_(threadName)
                    ,elapse_(elapse)
@@ -241,7 +273,7 @@ public:
     {}
     void format(std::ostream& os,LogEvent::ptr event) override
     {
-        os<<getLogLevelToString(event->getLevel());
+        os<<bokket::getLogLevelToString(event->getLevel());
     }
 };
 
@@ -383,7 +415,7 @@ public:
 
         os<<std::put_time(::localtime_r(&time,&tm),"%04d-%02d-%02d-%02d-%02d-%02d-%06d");
 
-        /*char buf[32]={0};
+        char buf[32]={0};
         snprintf(buf,sizeof(buf),"%04d-%02d-%02d-%02d-%02d-%02d-%06d", 1900 + tm.tm_year,
                  1 + tm.tm_mon, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec,static_cast<int>(microseconds));
 
@@ -818,6 +850,28 @@ void LogAppenderStdout::append(shared_ptr <Logger> logger, LogLevel level, LogEv
         std::lock_guard<std::mutex> lockGuard(mutex_);
         formatter_->format(std::cout,event);
     }
+}
+
+LoggerManager::LoggerManager() {
+    root_.reset(new Logger);
+
+    root_->addAppender(LogAppender::ptr (new LogAppenderStdout));
+
+    loggers_[root_->basename_] = root_;
+}
+
+Logger::ptr LoggerManager::getLogger(const std::string &basename) {
+    std::lock_guard<std::mutex> lockGuard(mutex_);
+    auto it = loggers_.find(basename);
+
+    if(it != loggers_.end() ) {
+        return it->second;
+    }
+
+    Logger::ptr logger=std::make_shared<Logger>(basename);
+    logger->root_ = root_;
+    loggers_[basename] = logger;
+    return logger;
 }
 
 }

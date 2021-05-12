@@ -13,6 +13,7 @@
 #include <string>
 #include <memory>
 #include <thread>
+#include <chrono>
 #include <cstdarg>
 #include <sstream>
 #include <fstream>
@@ -23,7 +24,8 @@
 #include "../base/noncopyable.h"
 #include "../base/SpinLock.h"
 #include "../base/Singleton.h"
-#include "../base/Thread.h"
+#include "../thread/thread.h"
+#include "../thread/util.h"
 
 
 
@@ -32,8 +34,8 @@
 #define BOKKET_LOG_LEVEL(logger,level) \
     if(logger->getLevel() <= level )   \
         bokket::LogEventWrap(bokket::LogEvent::ptr (new bokket::LogEvent(logger,level,\
-                __FILE__,__FUNCTION__,__LINE__,this_thread::get_id(),bokket::CurrentThread::tidString(),\
-                0,time(nullptr) ) )).stream()
+                __FILE__,__FUNCTION__,__LINE__,bokket::threadId(),bokket::Thread::getNowThreadName(),\
+                0,std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) ) )).stream()
 //bokket::getFiberId()
 
 
@@ -47,10 +49,10 @@
 #define BOKKET_LOG_FMT_LEVEL(logger,level,fmt,...) \
     if(logger->getLevel() <= level )   \
         bokket::LogEventWrap(bokket::LogEvent::ptr std::make_shared<bokket::LogEvent>(logger,level,\
-                __FILE__,__FUNC__,__LINE__,bokket::getThreadId(),bokket::getFiberId(),bokket::Thread::GetName()\
+                __FILE__,__FUNCTION__,__LINE__,bokket::threadId(),bokket::Thread::getNowThreadName(),\
                 0,time(nullptr)) ).getEvent->formt(fmt,__VA_ARGS__)
 
-
+//bokket::getFiberId()
 #define BOKKET_LOG_FMT_DEBUG(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::DEBUG,fmt,_VA_ARGS_)
 #define BOKKET_LOG_FMT_INFO(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::INFO,fmt,_VA_ARGS_)
 #define BOKKET_LOG_FMT_WARN(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::WARNNING,fmt,_VA_ARGS_)
@@ -58,7 +60,9 @@
 #define BOKKET_LOG_FMT_FATAL(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::FATAL,fmt,_VA_ARGS_)
 
 
-//#define BOKKET_LOG_ROOT() bokket::LoggerMgr::GetInstance()->get
+#define BOKKET_LOG_ROOT() bokket::LoggerMgr::GetInstance()->getRoot()
+
+#define BOKKET_LOG_NAME(name) bokket::LoggerMgr::GetInstance()->getLogger()
 
 
 namespace bokket
@@ -75,8 +79,9 @@ public:
 public:
     LogEvent(std::shared_ptr<Logger> logger,LogLevel level
              ,const std::string& filename,const std::string& func,int32_t line
-             ,thread::id threadId,const std::string& threadName
-             ,uint32_t elapse,uint64_t time);
+             ,int threadId,const std::string& threadName
+             ,uint32_t elapse,std::time_t time);
+             //thread::id threadId
     //uint32_t fiberId
     ~LogEvent();
 
@@ -86,7 +91,8 @@ public:
 
     uint32_t getElapse() const { return elapse_; }
 
-    thread::id getThreadId() const { return threadId_; }
+    //thread::id getThreadId() const { return threadId_; }
+    int getThreadId() const { return threadId_; }
 
     uint32_t getFiberId() const { return fiberId_; }
 
@@ -94,7 +100,7 @@ public:
 
     int32_t getLine() const { return line_; }
 
-    uint64_t getTime() const { return time_; }
+    std::time_t getTime() const { return time_; }
 
     std::string getContent() const { return stringStream_.str(); }
 
@@ -121,11 +127,12 @@ private:
     int32_t line_;
 
     std::string threadName_;
-    thread::id threadId_;
+    //thread::id threadId_;
+    int threadId_;
     uint32_t fiberId_;
 
     uint32_t elapse_;
-    uint64_t time_;
+    std::time_t time_;
 
     std::stringstream stringStream_;
     bokket::detail::LogStream stream_;
@@ -233,11 +240,14 @@ public:
     void error(LogEvent::ptr event);
     void fatal(LogEvent::ptr event);
 
-    void addAppender(const std::string& appendername
+    /*void addAppender(const std::string& appendername
                      ,LogAppender::ptr appender);
 
     void delAppender(const std::string& appendername
-                     ,LogAppender::ptr appender);
+                     ,LogAppender::ptr appender);*/
+    void addAppender(LogAppender::ptr appender);
+
+    void delAppender(LogAppender::ptr appender);
 
     void clearAppender();
 
@@ -267,11 +277,12 @@ private:
     std::string basename_;
     std::stringstream  ss_;
     std::mutex mutex_;
-    std::map<std::string,LogAppender::ptr> appenders_;
+    //std::map<std::string,LogAppender::ptr> appenders_;
+    std::list<LogAppender::ptr> appenders_;
 
     LogFormatter::ptr formatter_;
 
-    //Logger::ptr root_;
+    Logger::ptr root_;
 };
 
 class LogAppenderFile: public LogAppender
@@ -365,8 +376,23 @@ public:
 
 }*/
 
+class LoggerManager
+{
+public:
+    LoggerManager();
 
-using LoggerMgr=bokket::Singleton<Logger>;
+    Logger::ptr getLogger(const std::string& basename);
+
+    Logger::ptr getRoot() const { return root_; }
+
+private:
+    std::mutex mutex_;
+    std::map<std::string,Logger::ptr> loggers_;
+    Logger::ptr root_;
+};
+
+
+using LoggerMgr=bokket::Singleton<LoggerManager>;
 
 }
 
