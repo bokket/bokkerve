@@ -31,7 +31,7 @@ std::string getHostName()
 }
 
 
-std::string getLogFileName(const std::string& basename,time_t* now)
+std::string getLogFileName(const std::string& basename,std::time_t* now)
 {
     std::string filename;
     //字符串的容量设置为至少size. 如果size指定的数值要小于当前字符串中的字符数
@@ -44,13 +44,13 @@ std::string getLogFileName(const std::string& basename,time_t* now)
     std::stringstream ss;
     std::tm tm;
     //gmtime_r转出来的是0时区的标准时间
-    ::gmtime_r(now,&tm);
+    //::gmtime_r(now,&tm);
 
 
     ss<<filename;
     ss<<getHostName();
-    //os<<std::put_time(::localtime_r(&time,&tm),"%04d-%02d-%02d-%02d-%02d-%02d-%06d");
-    ss<<std::put_time(::gmtime_r(now,&tm),".%Y%m%d-%H%M%S.");
+    //ss<<std::put_time(::localtime_r(now,&tm),".%04d-%02d-%02d-%02d-%02d-%02d-%06d");
+    ss<<std::put_time(::gmtime_r(now,&tm),".%Y-%m-%d %H:%M:%S");
     ss<<".log";
 
     return ss.str();
@@ -432,7 +432,7 @@ public:
         std::tm tm;
         std::time_t time=static_cast<time_t>(event->getTime());
 
-        if(format_.compare("%04d-%02d-%02d-%02d-%02d-%02d-%06d"))
+        if(format_.compare("%04d-%02d-%02d-%02d-%02d-%02d-%06d")==0)
         {
             std::time_t now=event->getTime();
 
@@ -696,6 +696,10 @@ std::vector<std::tuple<std::string,std::string,int>>& LogFormatter::parse()
                 break;
         }
     }*/
+
+    /*for(auto it:vec_) {
+        std::cout << "(" << std::get<0>(it) << ") - (" << std::get<1>(it) << ") - (" << std::get<2>(it) << ")" << std::endl;
+    }*/
     return vec_;
 }
 
@@ -727,6 +731,8 @@ void LogFormatter::init()
     for(auto &i:vec) {
         //std::vector<std::tuple<std::string, std::string, int>>
 
+        std::cout << "(" << std::get<0>(i) << ") - (" << std::get<1>(i) << ") - (" << std::get<2>(i) << ")" << std::endl;
+
         //"[" ""  0
         //"]" ""  0
         //":" ""  0
@@ -740,7 +746,7 @@ void LogFormatter::init()
             //"T" "" 1
             //"t" "" 1
             //"F" "" 1
-            if(it!=format_items.end()) {
+            if(it != format_items.end()) {
                 //get map<string,function>
                 //return Impl::ptr(new it->second(get<1>(1)))
                 // get<1>(1)
@@ -748,7 +754,8 @@ void LogFormatter::init()
                 items_.emplace_back(it->second(std::get<1>(i)));
             } else {
                 //items_.emplace_back(Impl::ptr (new StringFormatImpl("<<error format %"+std::get<0>(i)+">>")));
-                items_.emplace_back(Impl::ptr(std::make_shared<StringFormatImpl>("<<error format %"+std::get<0>(i)+">>")));
+                //items_.emplace_back(Impl::ptr(std::make_shared<StringFormatImpl>("<<error format %"+std::get<0>(i)+">>")));
+                std::cout<<"?"<<std::endl;
             }
         }
     }
@@ -813,7 +820,7 @@ LogAppenderFile::LogAppenderFile(const std::string basename, size_t rollSize, in
     time_t time=std::chrono::system_clock::to_time_t(now);
     std::string filename=getLogFileName(basename_,&time);*/
     //time_t time=static_cast<time_t>(event->getTime());
-    time_t time=0;
+    std::time_t time=std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
     std::string filename=getLogFileName(basename_,&time);
 
     if(writerType==FileWriterType::MMAPFILE)
@@ -853,7 +860,8 @@ void LogAppenderFile::append_unlocked(const std::string &msg, int32_t len)
         //隔多久需要检查一下
         if(count_ >= check_freq_count_) {
             count_=0;
-            time_t now = ::time(nullptr);
+            //time_t now = ::time(nullptr);
+            std::time_t now=std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
             time_t thisPeriod=now/kRollPerSeconds*kRollPerSeconds;
             if(thisPeriod!=startOfPeriod_) {
                 rollFile();
@@ -900,6 +908,9 @@ bool LogAppenderFile::rollFile()
     }
     return false;
 }
+
+
+
 
 void LogAppenderStdout::append(Logger::ptr logger, LogLevel level, LogEvent::ptr event)
 {

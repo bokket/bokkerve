@@ -47,9 +47,9 @@
 
 #define BOKKET_LOG_FMT_LEVEL(logger,level,fmt,...) \
     if(logger->getLevel() <= level )   \
-        bokket::LogEventWrap(bokket::LogEvent::ptr std::make_shared<bokket::LogEvent>(logger,level,\
-                __FILE__,__FUNCTION__,__LINE__,bokket::threadId(),bokket::Thread::getNowThreadName(),\
-                0,time(nullptr)) ).getEvent->formt(fmt,__VA_ARGS__)
+        bokket::LogEventWrap(bokket::LogEvent::ptr (new bokket::LogEvent(logger,level,\
+                __FILE__,__FUNCTION__,__LINE__,bokket::getThreadId(),bokket::getFiberId(),\
+                0,time(nullptr)) ).getEvent()->formt(fmt,__VA_ARGS__)
 
 //bokket::getFiberId()
 #define BOKKET_LOG_FMT_DEBUG(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::DEBUG,fmt,_VA_ARGS_)
@@ -67,6 +67,10 @@
 namespace bokket
 {
 
+
+
+
+
 class Logger;
 
 
@@ -83,7 +87,7 @@ public:
              //thread::id threadId
     //uint32_t fiberId
     //const std::string& threadName
-    ~LogEvent();
+    //~LogEvent();
 
     const std::string& getFilename() const { return filename_; }
 
@@ -197,7 +201,7 @@ class LogAppender
 public:
     using ptr=std::shared_ptr<LogAppender>;
 public:
-    virtual ~LogAppender();
+    virtual ~LogAppender()=default;
     //virtual void append(const std::string& msg,int32_t len,LogLevel level,LogEvent::ptr event)=0;
     virtual void append(std::shared_ptr<Logger> logger,LogLevel level,LogEvent::ptr event)=0;
 
@@ -229,7 +233,7 @@ public:
     using ptr=std::shared_ptr<Logger>;
 public:
     Logger(const std::string& basename="root");
-    ~Logger();
+    //~Logger();
 
     void append(LogLevel level,LogEvent::ptr event);
 
@@ -285,6 +289,7 @@ private:
     Logger::ptr root_;
 };
 
+
 class LogAppenderFile: public LogAppender
 {
 public:
@@ -293,7 +298,7 @@ public:
     LogAppenderFile(const std::string basename,size_t rollSize,int flushInterval,int check_freq_count,FileWriterType writerType);
 
 
-    ~LogAppenderFile();
+    ~LogAppenderFile()=default;
 
     //void append(const std::string& msg,int32_t len,LogLevel level) override;
     void append(Logger::ptr logger,LogLevel level,LogEvent::ptr event) override;

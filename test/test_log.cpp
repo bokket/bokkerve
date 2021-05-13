@@ -15,8 +15,10 @@ int main() {
     logger->addAppender(bokket::LogAppender::ptr(new bokket::LogAppenderStdout));
 
 
-    bokket::LogAppenderFile::ptr file_appender(new bokket::LogAppenderFile("./log.txt",0,0,0,bokket::FileWriterType::APPENDFILE));
-    bokket::LogFormatter::ptr fmt(new bokket::LogFormatter("%d%T%p%T%m%n"));
+    bokket::LogAppenderFile::ptr file_appender(new bokket::LogAppenderFile("./log-",0,0,0,bokket::FileWriterType::APPENDFILE));
+    //bokket::LogFormatter::ptr fmt(new bokket::LogFormatter("%d%T%p%T%m%n"));
+    bokket::LogFormatter::ptr fmt(new bokket::LogFormatter(" %Y-%m-%d %H:%M:%S"));
+    //bokket::LogFormatter::ptr fmt(new bokket::LogFormatter("%04d-%02d-%02d-%02d-%02d-%02d-%06d"));
     file_appender->setFormatter(fmt);
     file_appender->setLevel(bokket::LogLevel::ERROR);
 

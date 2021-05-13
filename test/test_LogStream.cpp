@@ -2,8 +2,8 @@
 // Created by bokket on 2021/2/19.
 //
 
-#include "LogStream.h"
-#include "FixedBuffer.h"
+#include "../bokket/Log/LogStream.h"
+#include "../bokket/Log/FixedBuffer.h"
 #include <cmath>
 #include <iostream>
 

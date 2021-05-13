@@ -10,6 +10,7 @@
 #include <stdint.h>
 #include <assert.h>
 #include <syscall.h>
+#include <unistd.h>
 namespace bokket
 {
 /*

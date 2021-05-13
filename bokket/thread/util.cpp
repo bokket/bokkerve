@@ -2,13 +2,13 @@
 // Created by bokket on 2021/5/11.
 //
 
-#include "../Log/Log.h"
-#include "../Fiber/fiber.h"
+#include "util.h"
+//#include "../Fiber/fiber.h"
 
 namespace bokket
 {
 
-static bokket::Logger::ptr g_logger ;
+//static bokket::Logger::ptr g_logger ;
 
 pid_t getThreadId() {
     return ::syscall(SYS_gettid);

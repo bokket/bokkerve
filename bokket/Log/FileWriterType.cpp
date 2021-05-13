@@ -104,7 +104,7 @@ MmapFileWrite::~MmapFileWrite()
 
 void MmapFileWrite::append(const std::string &msg, int32_t len)
 {
-    if(len>memSize_-writen_)
+    if(len>static_cast<int32_t>(memSize_-writen_))
     {
         fprintf(stderr,"mmap memory overflow, errno=%d",errno);
         return;

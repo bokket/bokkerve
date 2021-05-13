@@ -7,15 +7,17 @@
 
 
 namespace bokket {
-    class noncopyable
-    {
-    protected:
-        noncopyable() = default;
-        ~noncopyable() = default;
 
-    private:
-        noncopyable(const noncopyable&) = delete;
-        noncopyable& operator=(const noncopyable&) = delete;
-    };
+class noncopyable
+{
+protected:
+    noncopyable() = default;
+    ~noncopyable() = default;
+
+private:
+    noncopyable(const noncopyable&) = delete;
+    noncopyable& operator=(const noncopyable&) = delete;
+};
+
 }
 #endif //BOKKERVE_NONCOPYABLE_H

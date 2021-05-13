@@ -1,7 +1,9 @@
 file(REMOVE_RECURSE
   "../lib/libbokket.pdb"
   "../lib/libbokket.so"
+  "CMakeFiles/bokket.dir/bokket/Log/FileWriterType.cpp.o"
   "CMakeFiles/bokket.dir/bokket/Log/Log.cpp.o"
+  "CMakeFiles/bokket.dir/bokket/Log/LogStream.cpp.o"
   "CMakeFiles/bokket.dir/bokket/thread/util.cpp.o"
 )
 

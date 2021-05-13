@@ -21,6 +21,7 @@ enum class LogLevel:uint8_t
     FATAL
 };
 
+
 static const std::string getLogLevelToString(LogLevel level)
 {
     switch(level) {

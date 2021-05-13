@@ -25,7 +25,7 @@ enum class FileWriterType:uint8_t
 class FileWriter
 {
 public:
-    virtual ~FileWriter();
+    virtual ~FileWriter()=default;
 
     virtual void append(const std::string& msg,int32_t len)=0;
 

@@ -6,14 +6,14 @@
 #define BOKKET_LOGSTREAM_H
 
 
-#include "FixedBuffer.h"
+#include "./FixedBuffer.h"
 #include <iostream>
 
 namespace bokket
 {
 namespace detail
 {
-class LogStream: public ostream ,public noncopyable
+class LogStream: public std::ostream ,public noncopyable
 {
 public:
     using self=LogStream;
@@ -46,7 +46,7 @@ public:
         return *this;
     }
 
-    self& operator<<(double );
+    self& operator<<(double v);
 
     self& operator<<(char v)
     {
