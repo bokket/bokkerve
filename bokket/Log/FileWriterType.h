@@ -78,59 +78,6 @@ private:
 
 };
 
-std::string getHostName()
-{
-    char buf[256];
-    //返回本地主机的标准主机名
-    if(::gethostname(buf,sizeof(buf))==0)
-    {
-        buf[sizeof(buf)-1]='\0';
-        return buf;
-    }
-    else
-    {
-        return "unknowhost";
-    }
-}
-
-
-std::string getLogFileName(const std::string& basename,time_t* now)
-{
-    std::string filename;
-    //字符串的容量设置为至少size. 如果size指定的数值要小于当前字符串中的字符数
-    // (亦即size<this→size()), 容量将被设置为可以恰好容纳字符的数值.
-    filename.reserve(basename.size()+64);
-
-    filename=basename;
-
-    //char timebuf[32];
-    std::stringstream ss;
-    std::tm tm;
-    //gmtime_r转出来的是0时区的标准时间
-    ::gmtime_r(now,&tm);
-
-
-    ss<<filename;
-    ss<<getHostName();
-    //os<<std::put_time(::localtime_r(&time,&tm),"%04d-%02d-%02d-%02d-%02d-%02d-%06d");
-    ss<<std::put_time(::gmtime_r(now,&tm),".%Y%m%d-%H%M%S.");
-    ss<<".log";
-
-    return ss.str();
-    //strftime(timebuf,sizeof(timebuf),".%Y%m%d-%H%M%S.", &tm);
-    //filename+=timebuf;
-
-
-    //filename+=getHostName();
-
-    /*char pidbuf[32];
-    snprintf(pidbuf, sizeof pidbuf, ".%d", ::getpid());
-    filename += pidbuf;*/
-
-    //filename+=".log";
-    //return filename;
-}
-
 }
 
 #endif //BOKKET_FILEWRITERTYPE_H

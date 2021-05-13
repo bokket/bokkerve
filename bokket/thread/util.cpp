@@ -15,7 +15,8 @@ pid_t getThreadId() {
 }
 
 uint32_t getFiberId() {
-    return bokket::Fiber::getFiberId();
+    //return bokket::Fiber::getFiberId();
+    return 0;
 }
 
 

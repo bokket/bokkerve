@@ -81,7 +81,7 @@ void * Thread::run(void *arg) {
 
     t_thread = thread;
     t_threadName = thread->threadName_.empty() ? "bokketThread" : thread->threadName_;
-    ::prctl(PR_SET_NAME,bokket::t_threadName);
+    ::prctl(PR_SET_NAME,bokket::t_threadName.c_str());
 
     thread->tid_ = bokket::threadId();
 

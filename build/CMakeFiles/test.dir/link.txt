@@ -1,0 +1,1 @@
+/usr/bin/c++   -rdynamic -O0 -ggdb -std=c++17 -Wall -Wno-deprecated -Werror -Wno-reorder -Wno-unused-function -Wno-unused-variable  -rdynamic CMakeFiles/test.dir/test/test_log.cpp.o  -o ../bin/test   -L/home/bokket/bokkerve/./bokket/lib 

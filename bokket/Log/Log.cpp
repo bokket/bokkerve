@@ -3,6 +3,7 @@
 //
 
 #include "Log.h"
+#include "./FileWriterType.h"
 #include <iostream>
 #include <string>
 #include <map>
@@ -11,7 +12,62 @@
 #include <tuple>
 
 
-namespace bokket {
+namespace bokket 
+{
+
+std::string getHostName()
+{
+    char buf[256];
+    //返回本地主机的标准主机名
+    if(::gethostname(buf,sizeof(buf))==0)
+    {
+        buf[sizeof(buf)-1]='\0';
+        return buf;
+    }
+    else
+    {
+        return "unknowhost";
+    }
+}
+
+
+std::string getLogFileName(const std::string& basename,time_t* now)
+{
+    std::string filename;
+    //字符串的容量设置为至少size. 如果size指定的数值要小于当前字符串中的字符数
+    // (亦即size<this→size()), 容量将被设置为可以恰好容纳字符的数值.
+    filename.reserve(basename.size()+64);
+
+    filename=basename;
+
+    //char timebuf[32];
+    std::stringstream ss;
+    std::tm tm;
+    //gmtime_r转出来的是0时区的标准时间
+    ::gmtime_r(now,&tm);
+
+
+    ss<<filename;
+    ss<<getHostName();
+    //os<<std::put_time(::localtime_r(&time,&tm),"%04d-%02d-%02d-%02d-%02d-%02d-%06d");
+    ss<<std::put_time(::gmtime_r(now,&tm),".%Y%m%d-%H%M%S.");
+    ss<<".log";
+
+    return ss.str();
+    //strftime(timebuf,sizeof(timebuf),".%Y%m%d-%H%M%S.", &tm);
+    //filename+=timebuf;
+
+
+    //filename+=getHostName();
+
+    /*char pidbuf[32];
+    snprintf(pidbuf, sizeof pidbuf, ".%d", ::getpid());
+    filename += pidbuf;*/
+
+    //filename+=".log";
+    //return filename;
+}
+
 
 LogEventWrap::LogEventWrap(LogEvent::ptr event)
                           :event_(event)
@@ -22,15 +78,16 @@ LogEventWrap::~LogEventWrap()
     event_->getLogger()->append(event_->getLevel(),event_);
 }
 
-std::stringstream & LogEventWrap::getSS()
+std::stringstream & LogEventWrap::stream()
 {
     return event_->getStringStream();
 }
 
+/*
 std::ostream & LogEventWrap::stream()
 {
     return event_->steam();
-}
+}*/
 
 /*bokket::detail::LogStream & LogEventWrap::stream()
 {
@@ -214,7 +271,7 @@ void Logger::clearAppender()
                    const std::string &func, int32_t line, thread::id threadId,
                    const std::string &threadName, uint32_t elapse, uint64_t time)*/
 LogEvent::LogEvent(std::shared_ptr <Logger> logger, LogLevel level, const std::string &filename,
-                   const std::string &func, int32_t line, int threadId, const std::string &threadName, uint32_t elapse,
+                   const std::string &func, int32_t line, int threadId, uint32_t fiberId, uint32_t elapse,
                    std::time_t time)
                    :logger_(logger)
                    ,level_(level)
@@ -222,8 +279,8 @@ LogEvent::LogEvent(std::shared_ptr <Logger> logger, LogLevel level, const std::s
                    ,func_(func)
                    ,line_(line)
                    ,threadId_(threadId)
-                   //,fiberId_(fiberId)
-                   ,threadName_(threadName)
+                   ,fiberId_(fiberId)
+                   //,threadName_(threadName)
                    ,elapse_(elapse)
                    ,time_(time)
 {}
@@ -361,7 +418,7 @@ public:
     //%H:%M:%S
     //24小时制的小时:十时制表示的分钟:十进制的秒数
     //format:yyyy-mm-dd hh:mm::ss
-    DateTimeFormatImpl(const string& str="%Y-%m-%d %H:%M:%S")
+    DateTimeFormatImpl(const std::string& str="%Y-%m-%d %H:%M:%S")
                       :format_(str)
     {
         if(format_.empty())
@@ -373,11 +430,11 @@ public:
     void format(std::ostream& os,LogEvent::ptr event) override
     {
         std::tm tm;
-        time_t time=static_cast<time_t>(event->getTime());
+        std::time_t time=static_cast<time_t>(event->getTime());
 
         if(format_.compare("%04d-%02d-%02d-%02d-%02d-%02d-%06d"))
         {
-            auto now=event->getTime();
+            std::time_t now=event->getTime();
 
 
             /*uint64_t microseconds=std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count()
@@ -393,7 +450,7 @@ public:
 
         char buf[64]={0};
         ::strftime(buf,sizeof(buf),format_.c_str(),&tm);
-        os<<string(buf);
+        os<<std::string(buf);
     }
     /*
     void format(std::ostream& os,LogEvent::ptr event) override
@@ -497,7 +554,7 @@ std::vector<std::tuple<std::string,std::string,int>>& LogFormatter::parse()
         TORM, //:
     };
     //%d{%Y-%m-%d %H:%M:%S}%T%t%T%F%T[%p]%T[%c]%T%f:%l%T%m%n
-    parse cur=parse::INIT;
+    auto cur=parse::INIT;
 
 
     std::string item;
@@ -505,7 +562,7 @@ std::vector<std::tuple<std::string,std::string,int>>& LogFormatter::parse()
     std::string::size_type begin;
     std::string::size_type end;
     
-    for(auto i=0;i<pattern_.size();i++)
+    for(std::string::size_type i=0;i<pattern_.size();++i)
     {
         item=pattern_[i];
         format="";
@@ -770,7 +827,7 @@ LogAppenderFile::LogAppenderFile(const std::string basename, size_t rollSize, in
 }
 
 
-void LogAppenderFile::append(shared_ptr <Logger> logger, LogLevel level, LogEvent::ptr event)
+void LogAppenderFile::append(Logger::ptr logger, LogLevel level, LogEvent::ptr event)
 {
     /*if(mutex_)
     {
@@ -844,7 +901,7 @@ bool LogAppenderFile::rollFile()
     return false;
 }
 
-void LogAppenderStdout::append(shared_ptr <Logger> logger, LogLevel level, LogEvent::ptr event)
+void LogAppenderStdout::append(Logger::ptr logger, LogLevel level, LogEvent::ptr event)
 {
     if(level_>=level) {
         std::lock_guard<std::mutex> lockGuard(mutex_);

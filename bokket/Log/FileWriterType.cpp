@@ -10,7 +10,8 @@
 #include <cstring>
 #include <string>
 
-using namespace bokket;
+namespace bokket 
+{
 
 // 'e' :O_CLOEXEC
 AppendFileWriter::AppendFileWriter(const std::string &filename)
@@ -116,4 +117,6 @@ void MmapFileWrite::flush()
 {
     if(buffer_!=MAP_FAILED)
         msync(buffer_,memSize_,MS_ASYNC);
+}
+
 }

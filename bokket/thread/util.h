@@ -12,7 +12,7 @@
 #include <syscall.h>
 namespace bokket
 {
-
+/*
 extern thread_local int t_cachedThreadId;
 extern thread_local std::string t_threadName;
 void cacheThreadId();
@@ -22,10 +22,10 @@ int threadId() {
         cacheThreadId();
     }
     return t_cachedThreadId;
-}
+}*/
+
 
 pid_t getThreadId();
-
 
 
 uint32_t getFiberId();
