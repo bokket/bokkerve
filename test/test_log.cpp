@@ -11,6 +11,7 @@
 
 int main() {
    bokket::Logger::ptr logger(new bokket::Logger);
+   //bokket::Logger::ptr logger=std::make_shared<bokket::Logger>();
 
     logger->addAppender(bokket::LogAppender::ptr(new bokket::LogAppenderStdout));
 
@@ -22,9 +23,9 @@ int main() {
     file_appender->setFormatter(fmt);
     file_appender->setLevel(bokket::LogLevel::ERROR);
 
-    logger->addAppender(file_appender);
+   logger->addAppender(file_appender);
 
-    BOKKET_LOG_INFO(logger)<<"test";
+   BOKKET_LOG_INFO(logger)<<"test";
 
    auto l=bokket::LoggerMgr::GetInstance()->getLogger("xx");
    BOKKET_LOG_INFO(l)<<"xxx";
