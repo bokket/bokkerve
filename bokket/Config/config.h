@@ -1,18 +1,19 @@
 //
-// Created by bokket on 2021/1/3.
+// Created by bokket on 2021/5/14.
 //
 
-#ifndef C_2_CONFIG_H
-#define C_2_CONFIG_H
+#ifndef BOKKERVE_CONFIG_H
+#define BOKKERVE_CONFIG_H
+
 
 #include <memory>
 #include <string>
 #include <sstream>
+#include <map>
 #include <boost/lexical_cast.hpp>
 #include <yaml-cpp/yaml.h>
-#include "../log/log.h"
+#include "../Log/Log.h"
 
-using namespace std;
 namespace bokket
 {
 
@@ -20,58 +21,58 @@ namespace bokket
 class ConfigVarBase
 {
 public:
-    typedef shared_ptr<ConfigVarBase> ptr;
+    using ptr=std::shared_ptr<ConfigVarBase>;
 public:
-    ConfigVarBase(const string& name,const string & description="")
-                :m_name(name)
-                ,m_description(description)
+    ConfigVarBase(const std::string& name,const std::string & description="")
+                :name_(name)
+                ,description_(description)
     {
-        transform(m_name.begin(),m_name.end(),m_name.begin(),::tolower);
+        std::transform(name_.begin(),name_.end(),name_.begin(),::tolower);
     }
 
-    virtual ~ConfigVarBase() {}
+    virtual ~ConfigVarBase()=default;
 
-    const string & getName() const { return m_name; }
-    const string & getDescription() const { return m_description; }
+    const std::string & getName() const { return name_; }
+    const std::string & getDescription() const { return description_; }
 
-    virtual string toString() =0;
-    virtual bool fromString(const string& val)=0;
+    virtual std::string toString() =0;
+    virtual bool fromString(const std::string& val)=0;
 protected:
-    string m_name;
-    string m_description;
+    std::string name_;
+    std::string description_;
 };
 
 template<class T>
 class ConfigVar: public ConfigVarBase
 {
 public:
-    typedef shared_ptr<ConfigVar> ptr;
+    using ptr=shared_ptr<ConfigVar>;
 public:
-    ConfigVar(const string & name,const T & default_value, const string description="")
+    ConfigVar(const std::string & name,const T & default_value, const std::string description="")
             :ConfigVarBase(name,description)
-            ,m_val(default_value)
+            ,val_(default_value)
     {}
 
-    string toString() override;
+    std::string toString() override;
 
-    bool bool fromString(const string &val) override;
+    bool fromString(const std::string &val) override;
 
-    const T getValue() const { return m_val; }
-    void setValue(const T& v) { m_val=v; }
+    const T getValue() const { return val_; }
+    void setValue(const T& v) { val_=v; }
 
 private:
-    T m_val;
+    T val_;
 };
 
 class Config
 {
 public:
-    typedef map<string,ConfigVarBase::ptr> ConfigVarMap;
+    using ConfigVarMap=std::map<std::string,ConfigVarBase::ptr>;
 private:
     static ConfigVarMap s_datas;
 public:
     template<class T>
-    static typename ConfigVar<T>::ptr Lookup(const string& name,const T & default_value,const string & description="")
+    static typename ConfigVar<T>::ptr Lookup(const std::string& name,const T & default_value,const std::string & description="")
     {
         auto tmp = Lookup<T>(name);
         if (tmp) {
@@ -90,7 +91,7 @@ public:
     }
 
     template<class T>
-    static typename ConfigVar<T>::ptr Lookup(const string & name)
+    static typename ConfigVar<T>::ptr Lookup(const std::string & name)
     {
         auto it=s_datas.find(name);
         if(it==s_datas.end())
@@ -99,9 +100,9 @@ public:
     }
 
     static void LoadFromYaml(const YAML::Node & root);
-    static ConfigVarBase::ptr LookupBase(const string& name);
+    static ConfigVarBase::ptr LookupBase(const std::string& name);
 };
 }
 
 
-#endif //C_2_CONFIG_H
+#endif //BOKKERVE_CONFIG_H

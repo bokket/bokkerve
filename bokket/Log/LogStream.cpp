@@ -162,6 +162,7 @@ const char* zero=digits+9;
     }
 
 
+    //LogStream& LogStream::operator<<(double v)
     LogStream& LogStream::operator<<(double v)
     {
         if(buffer_.avail()>=kMaxNumericSize)

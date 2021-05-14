@@ -22,7 +22,7 @@ public:
     template<typename T>
     void formatInteger(T);
 
-    self &operator << (bool v)
+    self& operator << (bool v)
     {
         //v为真放1
         buffer_.append(v ? "1" : "0",1);

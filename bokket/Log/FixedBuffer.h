@@ -4,6 +4,8 @@
 
 #ifndef BOKKERVE_FIXEDBUF_H
 #define BOKKERVE_FIXEDBUF_H
+
+
 #include <string>
 #include <cstdio>
 #include <cstring>
@@ -29,7 +31,7 @@ public:
     FixedBuffer()
                :cur_(data_)
     {}
-    ~FixedBuffer() {}
+    ~FixedBuffer()= default;
 
     void append(const char* buf,size_t len)
     {

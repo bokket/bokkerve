@@ -31,17 +31,18 @@ set(LIB_SRC ./bokket/Log/Log.cpp
             ./bokket/thread/util.cpp
 	    ./bokket/Log/FileWriterType.cpp
 		./bokket/Log/LogStream.cpp
-		./bokket/Log/FixedBuffer.h)
+		#./bokket/Log/LogStream.h
+		)
 
 add_library(bokket SHARED ${LIB_SRC})
 
 add_executable(test_Log ./test/test_log.cpp)
 add_dependencies(test_Log bokket)
-#target_link_libraries(test bokket)
+target_link_libraries(test_Log bokket)
 
 add_executable(test_LogStream ./test/test_LogStream.cpp)
 add_dependencies(test_LogStream bokket)
-#target_link_libraries(test_LogStream bokket)
+target_link_libraries(test_LogStream bokket)
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)

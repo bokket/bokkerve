@@ -96,6 +96,7 @@ test_Log_EXTERNAL_OBJECTS =
 
 ../bin/test_Log: CMakeFiles/test_Log.dir/test/test_log.cpp.o
 ../bin/test_Log: CMakeFiles/test_Log.dir/build.make
+../bin/test_Log: ../lib/libbokket.so
 ../bin/test_Log: CMakeFiles/test_Log.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable ../bin/test_Log"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/test_Log.dir/link.txt --verbose=$(VERBOSE)

@@ -96,6 +96,7 @@ test_LogStream_EXTERNAL_OBJECTS =
 
 ../bin/test_LogStream: CMakeFiles/test_LogStream.dir/test/test_LogStream.cpp.o
 ../bin/test_LogStream: CMakeFiles/test_LogStream.dir/build.make
+../bin/test_LogStream: ../lib/libbokket.so
 ../bin/test_LogStream: CMakeFiles/test_LogStream.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable ../bin/test_LogStream"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/test_LogStream.dir/link.txt --verbose=$(VERBOSE)

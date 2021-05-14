@@ -1,15 +1,16 @@
 //
-// Created by bokket on 2021/1/3.
+// Created by bokket on 2021/5/14.
 //
 
-#include "Config.h"
-
+#include "config.h"
+#include <tuple>
+#include <list>
 namespace bokket
 {
 Config::ConfigVarMap Config::s_datas;
 
 
-ConfigVarBase::ptr Config::LookupBase(const string &name)
+ConfigVarBase::ptr Config::LookupBase(const std::string &name)
 {
     auto it=s_datas.find(name);
 
@@ -17,10 +18,10 @@ ConfigVarBase::ptr Config::LookupBase(const string &name)
 }
 
 
-static void ListAllMember(const string& prefix,const YAML::Node & node
-                          ,list<pair<string,const YAML::Node> >& output)
+static void ListAllMember(const std::string& prefix,const YAML::Node & node
+                          ,std::list<std::pair<std::string,const YAML::Node> >& output)
 {
-    if(prefix.find_first_not_of("abcdefghikjlmnopqrstuvwxyz")!=string::npos)
+    if(prefix.find_first_not_of("abcdefghikjlmnopqrstuvwxyz")!=std::string::npos)
     {
         BOKKET_LOG_ERROR(BOKKET_LOG_ROOT()) << "Config invalid name:" << prefix<<":"<<node;
         return ;
@@ -40,7 +41,7 @@ static void ListAllMember(const string& prefix,const YAML::Node & node
 
 void Config::LoadFromYaml(const YAML::Node &root)
 {
-    list<pair<string,const YAML::Node> > all_nodes;
+    std::list<std::pair<std::string,const YAML::Node> > all_nodes;
     ListAllMember("",root,all_nodes);
 
 

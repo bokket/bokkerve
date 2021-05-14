@@ -7,6 +7,8 @@
 #include <cmath>
 #include <iostream>
 
+using namespace bokket;
+using namespace bokket::detail;
 
 int main()
 {
