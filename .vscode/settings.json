@@ -77,5 +77,6 @@
         "variant": "cpp",
         "charconv": "cpp",
         "bit": "cpp"
-    }
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }

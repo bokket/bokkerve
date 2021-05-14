@@ -1,0 +1,13 @@
+logs:
+    - name: root
+      level: info
+      appenders:
+          - type: LogAppenderFile
+            file: "./log-"
+          - type: LogAppenderStdout
+    - name: system
+      level: warn
+      appenders:
+          - type: LogAppenderFile
+            file: "./log-"
+          - type: LogAppenderStdout

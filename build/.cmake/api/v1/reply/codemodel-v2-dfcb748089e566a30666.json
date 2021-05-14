@@ -1,0 +1,77 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "bokket",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "bokket::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-bokket-Debug-7a4d3c2c4b3c39534295.json",
+					"name" : "bokket",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_Log::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_Log-Debug-d59ff87eb219b92db1f3.json",
+					"name" : "test_Log",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_LogStream::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_LogStream-Debug-9f1499d23f7df71f9e1e.json",
+					"name" : "test_LogStream",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/bokket/bokkerve/build",
+		"source" : "/home/bokket/bokkerve"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}

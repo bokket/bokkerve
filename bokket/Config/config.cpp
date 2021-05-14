@@ -5,6 +5,8 @@
 #include "config.h"
 #include <tuple>
 #include <list>
+#include <algorithm>
+#include <ctype.h>
 namespace bokket
 {
 Config::ConfigVarMap Config::s_datas;
@@ -18,15 +20,15 @@ ConfigVarBase::ptr Config::LookupBase(const std::string &name)
 }
 
 
-static void ListAllMember(const std::string& prefix,const YAML::Node & node
-                          ,std::list<std::pair<std::string,const YAML::Node> >& output)
+static void ListAllMember(const std::string& prefix,const YAML::Node & node,
+                          std::list<std::pair<std::string,const YAML::Node> >& output)
 {
-    if(prefix.find_first_not_of("abcdefghikjlmnopqrstuvwxyz")!=std::string::npos)
+    if(prefix.find_first_not_of("abcdefghikjlmnopqrstuvwxyz._012345678910")!=std::string::npos)
     {
         BOKKET_LOG_ERROR(BOKKET_LOG_ROOT()) << "Config invalid name:" << prefix<<":"<<node;
         return ;
     }
-    output.push_back(make_pair(prefix,node));
+    output.push_back(std::make_pair(prefix,node));
 
     if(node.IsMap())
     {
@@ -44,7 +46,30 @@ void Config::LoadFromYaml(const YAML::Node &root)
     std::list<std::pair<std::string,const YAML::Node> > all_nodes;
     ListAllMember("",root,all_nodes);
 
+    for(auto & [key,value] : all_nodes) {
+        std::string key_t = key;
+        if(key_t.empty()) {
+            continue;
+        }
+    
 
+        std::transform(key_t.begin(),key_t.end(),key_t.begin(),::tolower);
+
+        ConfigVarBase::ptr var = LookupBase(key_t);
+
+        if(var) {
+            if(value.IsScalar()) {
+                var->fromString(value.Scalar());
+            } else {
+                std::stringstream ss;
+                ss<< value;
+                var->fromString(ss.str());
+            }
+        }
+
+    }
 
 }
+
+
 }

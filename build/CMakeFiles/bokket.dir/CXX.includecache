@@ -6,20 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/bokket/bokkerve/bokket/Log/FileWriterType.cpp
-FileWriterType.h
-/home/bokket/bokkerve/bokket/Log/FileWriterType.h
-StdoutLogAppender.h
-/home/bokket/bokkerve/bokket/Log/StdoutLogAppender.h
-fcntl.h
--
-sys/mman.h
--
-cstring
--
-string
--
-
 /home/bokket/bokkerve/bokket/Log/FileWriterType.h
 stdint.h
 -
@@ -35,18 +21,6 @@ sstream
 -
 iomanip
 -
-
-/home/bokket/bokkerve/bokket/Log/FixedBuffer.h
-string
--
-cstdio
--
-cstring
--
-streambuf
--
-../base/noncopyable.h
-/home/bokket/bokkerve/bokket/base/noncopyable.h
 
 /home/bokket/bokkerve/bokket/Log/Log.cpp
 Log.h
@@ -104,48 +78,8 @@ condition_variable
 ../thread/util.h
 /home/bokket/bokkerve/bokket/thread/util.h
 
-/home/bokket/bokkerve/bokket/Log/LogAppender.h
-string
--
-memory
--
-mutex
--
-thread
--
-
 /home/bokket/bokkerve/bokket/Log/LogLevel.h
 stdint.h
--
-string
--
-
-/home/bokket/bokkerve/bokket/Log/LogStream.cpp
-LogStream.h
-/home/bokket/bokkerve/bokket/Log/LogStream.h
-limits
--
-assert.h
--
-stdio.h
--
-algorithm
--
-stdint.h
--
-cmath
--
-
-/home/bokket/bokkerve/bokket/Log/LogStream.h
-./FixedBuffer.h
-/home/bokket/bokkerve/bokket/Log/FixedBuffer.h
-iostream
--
-
-/home/bokket/bokkerve/bokket/Log/StdoutLogAppender.h
-LogAppender.h
-/home/bokket/bokkerve/bokket/Log/LogAppender.h
-memory
 -
 string
 -
@@ -163,10 +97,6 @@ noncopyable.h
 /home/bokket/bokkerve/bokket/base/noncopyable.h
 
 /home/bokket/bokkerve/bokket/base/noncopyable.h
-
-/home/bokket/bokkerve/bokket/thread/util.cpp
-util.h
-/home/bokket/bokkerve/bokket/thread/util.h
 
 /home/bokket/bokkerve/bokket/thread/util.h
 string

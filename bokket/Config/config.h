@@ -53,9 +53,25 @@ public:
             ,val_(default_value)
     {}
 
-    std::string toString() override;
+    std::string toString() override {
+        try {
+            return boost::lexical_cast<std::string>(val_);
+        } catch (std::exception & e) {
+            BOKKET_LOG_ERROR(BOKKET_LOG_ROOT()) << "ConfigVar::toString error"
+            <<e.what()<<"convert:"<< typeid(val_).name()<<"to string";
+        }
+        return "";
+    }
 
-    bool fromString(const std::string &val) override;
+    bool fromString(const std::string &val) override {
+        try {
+            val_ = boost::lexical_cast<std::string>(val);
+        } catch (std::exception & e) {
+            BOKKET_LOG_ERROR(BOKKET_LOG_ROOT()) << "ConfigVar::fromString error"
+            <<e.what()<<"convert:"<< typeid(val_).name()<<"from string";
+        }
+        return false;
+    }
 
     const T getValue() const { return val_; }
     void setValue(const T& v) { val_=v; }
@@ -72,20 +88,23 @@ private:
     static ConfigVarMap s_datas;
 public:
     template<class T>
-    static typename ConfigVar<T>::ptr Lookup(const std::string& name,const T & default_value,const std::string & description="")
+    static typename ConfigVar<T>::ptr Lookup(const std::string& name,
+                                             const T & default_value,
+                                             const std::string & description="")
     {
         auto tmp = Lookup<T>(name);
-        if (tmp) {
+        if (tmp==nullptr) {
             BOKKET_LOG_INFO(BOKKET_LOG_ROOT()) << "Lookup name=" << name << "exists";
             return tmp;
         }
-        if (name.find_first_not_of("abcdefghikjlmnopqrstuvwxyz") != string::npos)
+        if (name.find_first_not_of("abcdefghikjlmnopqrstuvwxyz._012345678910") != std::string::npos)
         {
-            BOKKET_LOG_INFO(BOKKET_LOG_ROOT()) << "Lookup name invalid" << name;
-            throw invalid_argument(name);
+            BOKKET_LOG_ERROR(BOKKET_LOG_ROOT()) << "Lookup name invalid" << name;
+            throw std::invalid_argument(name);
         }
 
-        typename ConfigVar<T>::ptr v(new ConfigVar<T>(name, default_value, description));
+        //typename ConfigVar<T>::ptr v(new ConfigVar<T>(name, default_value, description));
+        typename ConfigVar<T>::ptr v=std::make_shared<ConfigVar<T>>(name,default_value,description);
         s_dadas[name] = v;
         return v;
     }
@@ -96,7 +115,7 @@ public:
         auto it=s_datas.find(name);
         if(it==s_datas.end())
             return nullptr;
-        return dynamic_pointer_cast<ConfigVar<T> >(it->second);
+        return std::dynamic_pointer_cast< ConfigVar<T> >(it->second);
     }
 
     static void LoadFromYaml(const YAML::Node & root);

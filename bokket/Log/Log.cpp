@@ -756,6 +756,7 @@ void LogFormatter::init()
                 //items_.emplace_back(Impl::ptr (new StringFormatImpl("<<error format %"+std::get<0>(i)+">>")));
                 //items_.emplace_back(Impl::ptr(std::make_shared<StringFormatImpl>("<<error format %"+std::get<0>(i)+">>")));
                 std::cout<<"?"<<std::endl;
+                //items_.clear();
             }
         }
     }

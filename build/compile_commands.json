@@ -1,0 +1,37 @@
+[
+{
+  "directory": "/home/bokket/bokkerve/build",
+  "command": "/usr/bin/g++-8  -Dbokket_EXPORTS  -g -fPIC   -std=gnu++17 -o CMakeFiles/bokket.dir/bokket/Log/Log.cpp.o -c /home/bokket/bokkerve/bokket/Log/Log.cpp",
+  "file": "/home/bokket/bokkerve/bokket/Log/Log.cpp"
+},
+
+{
+  "directory": "/home/bokket/bokkerve/build",
+  "command": "/usr/bin/g++-8  -Dbokket_EXPORTS  -g -fPIC   -std=gnu++17 -o CMakeFiles/bokket.dir/bokket/thread/util.cpp.o -c /home/bokket/bokkerve/bokket/thread/util.cpp",
+  "file": "/home/bokket/bokkerve/bokket/thread/util.cpp"
+},
+
+{
+  "directory": "/home/bokket/bokkerve/build",
+  "command": "/usr/bin/g++-8  -Dbokket_EXPORTS  -g -fPIC   -std=gnu++17 -o CMakeFiles/bokket.dir/bokket/Log/FileWriterType.cpp.o -c /home/bokket/bokkerve/bokket/Log/FileWriterType.cpp",
+  "file": "/home/bokket/bokkerve/bokket/Log/FileWriterType.cpp"
+},
+
+{
+  "directory": "/home/bokket/bokkerve/build",
+  "command": "/usr/bin/g++-8  -Dbokket_EXPORTS  -g -fPIC   -std=gnu++17 -o CMakeFiles/bokket.dir/bokket/Log/LogStream.cpp.o -c /home/bokket/bokkerve/bokket/Log/LogStream.cpp",
+  "file": "/home/bokket/bokkerve/bokket/Log/LogStream.cpp"
+},
+
+{
+  "directory": "/home/bokket/bokkerve/build",
+  "command": "/usr/bin/g++-8    -g   -std=gnu++17 -o CMakeFiles/test_LogStream.dir/test/test_LogStream.cpp.o -c /home/bokket/bokkerve/test/test_LogStream.cpp",
+  "file": "/home/bokket/bokkerve/test/test_LogStream.cpp"
+},
+
+{
+  "directory": "/home/bokket/bokkerve/build",
+  "command": "/usr/bin/g++-8    -g   -std=gnu++17 -o CMakeFiles/test_Log.dir/test/test_log.cpp.o -c /home/bokket/bokkerve/test/test_log.cpp",
+  "file": "/home/bokket/bokkerve/test/test_log.cpp"
+}
+]
