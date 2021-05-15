@@ -1,1 +1,1 @@
-/usr/bin/c++    -rdynamic CMakeFiles/test_LogStream.dir/test/test_LogStream.cpp.o  -o ../bin/test_LogStream  -Wl,-rpath,/home/bokket/bokkerve/lib ../lib/libbokket.so 
+/usr/bin/c++    -rdynamic CMakeFiles/test_LogStream.dir/test/test_LogStream.cpp.o  -o ../bin/test_LogStream  -Wl,-rpath,/home/bokket/bokkerve/lib ../lib/libbokket.so -lpthread -lyaml-cpp 

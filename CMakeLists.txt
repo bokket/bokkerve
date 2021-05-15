@@ -24,25 +24,43 @@ set(CXX_FLAGS
 #	-Wno-unused-function
 #	-Wno-unused-variable -pthread)
 
-#include_directories(./bokket/include)
-#link_directories(./bokket/lib)
+include_directories(.)
 
-set(LIB_SRC ./bokket/Log/Log.cpp
-            ./bokket/thread/util.cpp
-	    ./bokket/Log/FileWriterType.cpp
+find_library(YAMLCPP yaml-cpp)
+message("****", ${YAMLCPP})
+#link_libraries(-lyaml-cpp)
+
+set(LIB_SRC
+		./bokket/Log/Log.cpp
+		./bokket/thread/util.cpp
+		./bokket/Log/FileWriterType.cpp
 		./bokket/Log/LogStream.cpp
-		#./bokket/Log/LogStream.h
+		./bokket/Config/config.cpp
 		)
+
+set(LIBS
+		bokket
+		pthread
+		yaml-cpp)
+
 
 add_library(bokket SHARED ${LIB_SRC})
 
 add_executable(test_Log ./test/test_log.cpp)
 add_dependencies(test_Log bokket)
-target_link_libraries(test_Log bokket)
+target_link_libraries(test_Log ${LIBS})
 
 add_executable(test_LogStream ./test/test_LogStream.cpp)
 add_dependencies(test_LogStream bokket)
-target_link_libraries(test_LogStream bokket)
+target_link_libraries(test_LogStream ${LIBS})
+
+add_executable(test_Yaml ./test/test_yaml.cpp)
+add_dependencies(test_Yaml bokket)
+target_link_libraries(test_Yaml bokket ${LIBS})
+
+add_executable(test_Config ./test/test_config.cpp)
+add_dependencies(test_Config bokket)
+target_link_libraries(test_Config bokket ${LIBS})
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)

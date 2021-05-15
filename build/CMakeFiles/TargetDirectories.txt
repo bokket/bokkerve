@@ -1,5 +1,7 @@
 /home/bokket/bokkerve/build/CMakeFiles/rebuild_cache.dir
+/home/bokket/bokkerve/build/CMakeFiles/edit_cache.dir
+/home/bokket/bokkerve/build/CMakeFiles/test_Config.dir
 /home/bokket/bokkerve/build/CMakeFiles/bokket.dir
 /home/bokket/bokkerve/build/CMakeFiles/test_LogStream.dir
 /home/bokket/bokkerve/build/CMakeFiles/test_Log.dir
-/home/bokket/bokkerve/build/CMakeFiles/edit_cache.dir
+/home/bokket/bokkerve/build/CMakeFiles/test_Yaml.dir

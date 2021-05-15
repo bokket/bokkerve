@@ -10,6 +10,7 @@
 #include <string>
 #include <sstream>
 #include <map>
+#include <unordered_map>
 #include <boost/lexical_cast.hpp>
 #include <yaml-cpp/yaml.h>
 #include "../Log/Log.h"
@@ -46,7 +47,8 @@ template<class T>
 class ConfigVar: public ConfigVarBase
 {
 public:
-    using ptr=shared_ptr<ConfigVar>;
+    //using ptr=std::shared_ptr<ConfigVar>;
+    typedef std::shared_ptr<ConfigVar> ptr;
 public:
     ConfigVar(const std::string & name,const T & default_value, const std::string description="")
             :ConfigVarBase(name,description)
@@ -65,7 +67,7 @@ public:
 
     bool fromString(const std::string &val) override {
         try {
-            val_ = boost::lexical_cast<std::string>(val);
+            val_ = boost::lexical_cast<T>(val);
         } catch (std::exception & e) {
             BOKKET_LOG_ERROR(BOKKET_LOG_ROOT()) << "ConfigVar::fromString error"
             <<e.what()<<"convert:"<< typeid(val_).name()<<"from string";
@@ -73,7 +75,7 @@ public:
         return false;
     }
 
-    const T getValue() const { return val_; }
+    const T getValue() { return val_; }
     void setValue(const T& v) { val_=v; }
 
 private:
@@ -83,7 +85,7 @@ private:
 class Config
 {
 public:
-    using ConfigVarMap=std::map<std::string,ConfigVarBase::ptr>;
+    using ConfigVarMap=std::unordered_map<std::string,ConfigVarBase::ptr>;
 private:
     static ConfigVarMap s_datas;
 public:
@@ -104,8 +106,8 @@ public:
         }
 
         //typename ConfigVar<T>::ptr v(new ConfigVar<T>(name, default_value, description));
-        typename ConfigVar<T>::ptr v=std::make_shared<ConfigVar<T>>(name,default_value,description);
-        s_dadas[name] = v;
+        typename ConfigVar<T>::ptr v(new ConfigVar<T>(name, default_value, description));
+        s_datas[name] = v;
         return v;
     }
 

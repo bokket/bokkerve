@@ -6,5 +6,5 @@ CXX_FLAGS = -fPIC   -std=gnu++17
 
 CXX_DEFINES = -Dbokket_EXPORTS
 
-CXX_INCLUDES = 
+CXX_INCLUDES = -I/home/bokket/bokkerve/. 
 

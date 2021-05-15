@@ -1,13 +1,19 @@
 logs:
     - name: root
       level: info
+      formatter: '%d%T%m%n'
       appenders:
           - type: LogAppenderFile
-            file: "./log-"
+            file: log-
           - type: LogAppenderStdout
     - name: system
       level: warn
+      formatter: '%d%T%m%n'
       appenders:
           - type: LogAppenderFile
-            file: "./log-"
+            file: log-
           - type: LogAppenderStdout
+
+system:
+  port: 9900
+  value: 15
