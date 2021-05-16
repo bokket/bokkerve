@@ -21,10 +21,15 @@
 #include "./LogLevel.h"
 //#include "./LogStream.h"
 #include "./FileWriterType.h"
+
+
 #include "../base/noncopyable.h"
 #include "../base/SpinLock.h"
 #include "../base/Singleton.h"
+
 #include "../thread/util.h"
+
+//#include "../thread/CurrentThread.h"
 
 
 
@@ -33,8 +38,8 @@
 #define BOKKET_LOG_LEVEL(logger,level) \
     if(logger->getLevel() <= level )   \
         bokket::LogEventWrap(bokket::LogEvent::ptr (new bokket::LogEvent(logger,level,\
-                __FILE__,__FUNCTION__,__LINE__,bokket::getThreadId(),bokket::getFiberId(),\
-                0,std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) ) )).stream()
+                __FILE__,__FUNCTION__,__LINE__,bokket::threadId(),bokket::getFiberId(),\
+                0,std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())) )).stream()
 //bokket::getFiberId()
 
 
@@ -48,8 +53,8 @@
 #define BOKKET_LOG_FMT_LEVEL(logger,level,fmt,...) \
     if(logger->getLevel() <= level )   \
         bokket::LogEventWrap(bokket::LogEvent::ptr (new bokket::LogEvent(logger,level,\
-                __FILE__,__FUNCTION__,__LINE__,bokket::getThreadId(),bokket::getFiberId(),\
-                0,time(nullptr)) ).getEvent()->formt(fmt,__VA_ARGS__)
+                __FILE__,__FUNCTION__,__LINE__,bokket::threadId(),bokket::getFiberId(),\
+                0,std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())) )).getEvent()->formt(fmt,__VA_ARGS__)
 
 //bokket::getFiberId()
 #define BOKKET_LOG_FMT_DEBUG(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::DEBUG,fmt,_VA_ARGS_)
@@ -61,7 +66,7 @@
 
 #define BOKKET_LOG_ROOT() bokket::LoggerMgr::GetInstance()->getRoot()
 
-#define BOKKET_LOG_NAME(name) bokket::LoggerMgr::GetInstance()->getLogger()
+#define BOKKET_LOG_NAME(name) bokket::LoggerMgr::GetInstance()->getLogger(name)
 
 
 namespace bokket
@@ -87,7 +92,7 @@ public:
              //thread::id threadId
     //uint32_t fiberId
     //const std::string& threadName
-    //~LogEvent();
+    ~LogEvent()=default;
 
     const std::string& getFilename() const { return filename_; }
 

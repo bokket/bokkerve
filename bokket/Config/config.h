@@ -13,6 +13,7 @@
 #include <unordered_map>
 #include <boost/lexical_cast.hpp>
 #include <yaml-cpp/yaml.h>
+
 #include "../Log/Log.h"
 
 namespace bokket

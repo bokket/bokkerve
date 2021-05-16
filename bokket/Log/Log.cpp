@@ -2,14 +2,16 @@
 // Created by bokket on 2021/4/7.
 //
 
+
+#include <map>
+#include <tuple>
+#include <string>
+#include <iomanip>
+#include <iostream>
+#include <functional>
+
 #include "Log.h"
 #include "./FileWriterType.h"
-#include <iostream>
-#include <string>
-#include <map>
-#include <functional>
-#include <iomanip>
-#include <tuple>
 
 
 namespace bokket 

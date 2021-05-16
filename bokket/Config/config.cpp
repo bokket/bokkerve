@@ -2,15 +2,20 @@
 // Created by bokket on 2021/5/14.
 //
 
-#include "config.h"
-#include <tuple>
 #include <list>
+#include <tuple>
 #include <algorithm>
+
 #include <ctype.h>
+
+#include "config.h"
+
 namespace bokket
 {
 Config::ConfigVarMap Config::s_datas;
 
+
+//static bokket::Logger::ptr g_logger = BOKKET_LOG_NAME("system");
 
 ConfigVarBase::ptr Config::LookupBase(const std::string &name)
 {

@@ -32,10 +32,12 @@ message("****", ${YAMLCPP})
 
 set(LIB_SRC
 		./bokket/Log/Log.cpp
-		./bokket/thread/util.cpp
 		./bokket/Log/FileWriterType.cpp
 		./bokket/Log/LogStream.cpp
 		./bokket/Config/config.cpp
+		./bokket/thread/util.cpp
+		#./bokket/thread/thread.cpp
+		#./bokket/thread/CurrentThread.cpp
 		)
 
 set(LIBS

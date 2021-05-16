@@ -27,12 +27,12 @@ iostream
 /home/bokket/bokkerve/bokket/base/noncopyable.h
 
 /home/bokket/bokkerve/test/test_LogStream.cpp
-../bokket/Log/LogStream.h
-/home/bokket/bokkerve/bokket/Log/LogStream.h
-../bokket/Log/FixedBuffer.h
-/home/bokket/bokkerve/bokket/Log/FixedBuffer.h
 cmath
 -
 iostream
 -
+../bokket/Log/LogStream.h
+/home/bokket/bokkerve/bokket/Log/LogStream.h
+../bokket/Log/FixedBuffer.h
+/home/bokket/bokkerve/bokket/Log/FixedBuffer.h
 

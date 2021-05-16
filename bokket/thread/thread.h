@@ -5,11 +5,16 @@
 #ifndef BOKKERVE_THREAD_H
 #define BOKKERVE_THREAD_H
 
-#include <functional>
+
 #include <memory>
 #include <string>
+#include <functional>
 
-#include "../Semaphore/Semaphore.h"
+#include <pthread.h>
+
+
+#include "./util.h"
+#include "./Semaphore.h"
 #include "../Log/Log.h"
 #include "../base/noncopyable.h"
 namespace bokket
@@ -41,6 +46,7 @@ private:
     std::string threadName_;
     Semaphore semaphore_;
 };
+
 
 }
 

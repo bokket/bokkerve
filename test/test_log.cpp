@@ -2,12 +2,15 @@
 // Created by bokket on 2021/4/11.
 //
 
-#include "../bokket/Log/Log.h"
-#include "../bokket/thread/util.h"
-#include "gtest/gtest.h"
+
 
 #include <chrono>
 #include <iostream>
+
+#include "gtest/gtest.h"
+#include "../bokket/Log/Log.h"
+#include "../bokket/thread/util.h"
+
 
 int main() {
    bokket::Logger::ptr logger(new bokket::Logger);

@@ -3,12 +3,17 @@
 //
 
 #include "util.h"
+
+
+#include "./thread.cpp"
 //#include "../Fiber/fiber.h"
 
 namespace bokket
 {
 
 //static bokket::Logger::ptr g_logger ;
+
+
 
 pid_t getThreadId() {
     return ::syscall(SYS_gettid);

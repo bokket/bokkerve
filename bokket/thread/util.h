@@ -9,18 +9,31 @@
 #include <string>
 #include <stdint.h>
 #include <assert.h>
-#include <syscall.h>
 #include <unistd.h>
+#include <syscall.h>
+
+
 namespace bokket
 {
-/*
-extern thread_local int t_cachedThreadId;
+
+
+
+/*extern thread_local int t_cachedThreadId;
 extern thread_local std::string t_threadName;
+*/
+
+
 void cacheThreadId();
+
+int threadId();
+/*
+extern void cacheThreadId();
+
+//void cacheThreadId();
 
 int threadId() {
     if(t_cachedThreadId == 0) {
-        cacheThreadId();
+        bokket::CurrentThread::cacheThreadId();
     }
     return t_cachedThreadId;
 }*/

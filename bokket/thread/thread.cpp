@@ -5,14 +5,25 @@
 #include <sys/prctl.h>
 
 #include "thread.h"
-#include "util.h"
 
 namespace bokket
 {
 
+
+
 thread_local Thread* t_thread= nullptr;
 thread_local int t_cachedThreadId = 0;
 thread_local std::string t_threadName= "UNKNOW";
+
+
+int threadId() {
+    if(t_cachedThreadId == 0) {
+        cacheThreadId();
+    }
+        return t_cachedThreadId;
+}
+
+
 
 void cacheThreadId() {
     if(t_cachedThreadId == 0) {
@@ -21,7 +32,9 @@ void cacheThreadId() {
     }
 }
 
-static bokket::Logger::ptr g_logger ;
+
+static bokket::Logger::ptr g_logger = BOKKET_LOG_NAME("system");
+
 
 Thread * Thread::getThis() {
     return t_thread;
