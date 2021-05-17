@@ -5,6 +5,7 @@
 #include <sys/prctl.h>
 
 #include "thread.h"
+#include "./util.h"
 
 namespace bokket
 {
@@ -15,7 +16,7 @@ thread_local Thread* t_thread= nullptr;
 thread_local int t_cachedThreadId = 0;
 thread_local std::string t_threadName= "UNKNOW";
 
-
+/*
 int threadId() {
     if(t_cachedThreadId == 0) {
         cacheThreadId();
@@ -30,7 +31,7 @@ void cacheThreadId() {
         t_cachedThreadId = getThreadId();
         t_threadName = std::to_string(t_cachedThreadId);
     }
-}
+}*/
 
 
 static bokket::Logger::ptr g_logger = BOKKET_LOG_NAME("system");
@@ -96,7 +97,7 @@ void * Thread::run(void *arg) {
     t_threadName = thread->threadName_.empty() ? "bokketThread" : thread->threadName_;
     ::prctl(PR_SET_NAME,bokket::t_threadName.c_str());
 
-    thread->tid_ = bokket::threadId();
+    thread->tid_ = bokket::getThreadId();
 
     //设置该进程线程的名字
     ::pthread_setname_np(::pthread_self(),thread->threadName_.substr(0,15).c_str());

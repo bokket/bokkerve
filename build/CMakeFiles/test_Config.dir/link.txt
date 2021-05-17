@@ -1,1 +1,0 @@
-/usr/bin/c++    -rdynamic CMakeFiles/test_Config.dir/test/test_config.cpp.o  -o ../bin/test_Config  -Wl,-rpath,/home/bokket/bokkerve/lib ../lib/libbokket.so -lpthread -lyaml-cpp 

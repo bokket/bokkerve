@@ -13,7 +13,7 @@
 #include <pthread.h>
 
 
-#include "./util.h"
+
 #include "./Semaphore.h"
 #include "../Log/Log.h"
 #include "../base/noncopyable.h"
@@ -33,6 +33,7 @@ public:
     const std::string & getName() const { return threadName_; }
 
     void join();
+
 
     static Thread* getThis();
     static const std::string& getNowThreadName();

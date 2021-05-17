@@ -546,6 +546,7 @@ public:
     }
 };
 
+/*
 std::vector<std::tuple<std::string,std::string,int>>& LogFormatter::parse()
 {
     enum class parse:uint8_t {
@@ -698,16 +699,83 @@ std::vector<std::tuple<std::string,std::string,int>>& LogFormatter::parse()
                 break;
         }
     }*/
-
-    /*for(auto it:vec_) {
+/*
+    for(auto it:vec_) {
         std::cout << "(" << std::get<0>(it) << ") - (" << std::get<1>(it) << ") - (" << std::get<2>(it) << ")" << std::endl;
-    }*/
+    }
     return vec_;
-}
+}*/
 
 
 void LogFormatter::init()
 {
+    enum class parse:uint8_t {
+        INIT,
+        ITEM, //%
+        FORM, //{
+        NORM, //[
+        TORM, //:
+    };
+    //%d{%Y-%m-%d %H:%M:%S}%T%t%T%F%T[%p]%T[%c]%T%f:%l%T%m%n
+    auto cur=parse::INIT;
+
+
+    std::string item;
+    std::string format;
+    std::string::size_type begin;
+    std::string::size_type end;
+
+    for(std::string::size_type i=0;i<pattern_.size();++i)
+    {
+        item=pattern_[i];
+        format="";
+        if(error_) {
+            vec_.emplace_back(std::make_tuple("<<pattern_error>>",format,0));
+            break;
+        }
+        switch(pattern_[i])
+        {
+            case '{':
+                begin=i;
+                //{}
+                if(pattern_[i+1]=='}')
+                {
+                    continue;
+                }
+                //{%s%s%s}
+                //|      |
+                //|      |
+                //begsin end
+                while(pattern_[i]!='}') {
+                    if(pattern_[i]=='['||pattern_[i]==']'){
+                        error_=true;
+                        break;
+                    }
+                    i++;
+                }
+                if(error_) {
+                    break;
+                }
+                item="";
+                end=i;
+                format=pattern_.substr(begin+1,end-begin-1);
+                vec_.emplace_back(std::make_tuple(item,format,1));
+                break;
+            case '%':
+                item=pattern_[++i];
+                vec_.emplace_back(std::make_tuple(item,format,1));
+                break;
+            case '[':
+                //[%p]
+                vec_.emplace_back(std::make_tuple(item,format,0));
+                break;
+            case ']':
+                vec_.emplace_back(std::make_tuple(item,format,0));
+                break;
+            default:
+                break;
+        }
+    }
 
     static std::map<std::string,std::function<Impl::ptr(const std::string& str)>> format_items= {
 #define XX(str,C) \
@@ -729,8 +797,8 @@ void LogFormatter::init()
     };
     //%d{%Y-%m-%d %H:%M:%S}%T%t%T%F%T[%p]%T[%c]%T%f:%l%T%m%n
 
-    auto vec=LogFormatter::parse();
-    for(auto &i:vec) {
+    //auto & vec=LogFormatter::parse();
+    for(auto &i:vec_) {
         //std::vector<std::tuple<std::string, std::string, int>>
 
         std::cout << "(" << std::get<0>(i) << ") - (" << std::get<1>(i) << ") - (" << std::get<2>(i) << ")" << std::endl;
@@ -756,8 +824,8 @@ void LogFormatter::init()
                 items_.emplace_back(it->second(std::get<1>(i)));
             } else {
                 //items_.emplace_back(Impl::ptr (new StringFormatImpl("<<error format %"+std::get<0>(i)+">>")));
-                //items_.emplace_back(Impl::ptr(std::make_shared<StringFormatImpl>("<<error format %"+std::get<0>(i)+">>")));
-                std::cout<<"?"<<std::endl;
+                items_.emplace_back(Impl::ptr(std::make_shared<StringFormatImpl>("<<error format %"+std::get<0>(i)+">>")));
+                //std::cout<<"?"<<std::endl;
                 //items_.clear();
             }
         }

@@ -22,10 +22,10 @@ namespace bokket
 extern thread_local std::string t_threadName;
 */
 
-
+/*
 void cacheThreadId();
 
-int threadId();
+int threadId();*/
 /*
 extern void cacheThreadId();
 

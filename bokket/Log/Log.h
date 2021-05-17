@@ -26,10 +26,7 @@
 #include "../base/noncopyable.h"
 #include "../base/SpinLock.h"
 #include "../base/Singleton.h"
-
 #include "../thread/util.h"
-
-//#include "../thread/CurrentThread.h"
 
 
 
@@ -38,7 +35,7 @@
 #define BOKKET_LOG_LEVEL(logger,level) \
     if(logger->getLevel() <= level )   \
         bokket::LogEventWrap(bokket::LogEvent::ptr (new bokket::LogEvent(logger,level,\
-                __FILE__,__FUNCTION__,__LINE__,bokket::threadId(),bokket::getFiberId(),\
+                __FILE__,__FUNCTION__,__LINE__,bokket::getThreadId(),bokket::getFiberId(),\
                 0,std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())) )).stream()
 //bokket::getFiberId()
 
@@ -53,7 +50,7 @@
 #define BOKKET_LOG_FMT_LEVEL(logger,level,fmt,...) \
     if(logger->getLevel() <= level )   \
         bokket::LogEventWrap(bokket::LogEvent::ptr (new bokket::LogEvent(logger,level,\
-                __FILE__,__FUNCTION__,__LINE__,bokket::threadId(),bokket::getFiberId(),\
+                __FILE__,__FUNCTION__,__LINE__,bokket::getThreadId(),bokket::getFiberId(),\
                 0,std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())) )).getEvent()->formt(fmt,__VA_ARGS__)
 
 //bokket::getFiberId()
@@ -183,7 +180,7 @@ public:
 public:
     void init();
 
-    std::vector<std::tuple<std::string,std::string,int>>& parse();
+    //std::vector<std::tuple<std::string,std::string,int>>& parse();
 
     std::string format(LogEvent::ptr event);
 

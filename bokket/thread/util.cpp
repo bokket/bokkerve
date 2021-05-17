@@ -5,7 +5,7 @@
 #include "util.h"
 
 
-#include "./thread.cpp"
+
 //#include "../Fiber/fiber.h"
 
 namespace bokket

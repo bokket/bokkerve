@@ -128,19 +128,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named test_Config
-
-# Build rule for target.
-test_Config: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 test_Config
-.PHONY : test_Config
-
-# fast build rule for target.
-test_Config/fast:
-	$(MAKE) -f CMakeFiles/test_Config.dir/build.make CMakeFiles/test_Config.dir/build
-.PHONY : test_Config/fast
-
-#=============================================================================
 # Target rules for targets named bokket
 
 # Build rule for target.
@@ -178,46 +165,6 @@ test_Log: cmake_check_build_system
 test_Log/fast:
 	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/build
 .PHONY : test_Log/fast
-
-#=============================================================================
-# Target rules for targets named test_Yaml
-
-# Build rule for target.
-test_Yaml: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 test_Yaml
-.PHONY : test_Yaml
-
-# fast build rule for target.
-test_Yaml/fast:
-	$(MAKE) -f CMakeFiles/test_Yaml.dir/build.make CMakeFiles/test_Yaml.dir/build
-.PHONY : test_Yaml/fast
-
-bokket/Config/config.o: bokket/Config/config.cpp.o
-
-.PHONY : bokket/Config/config.o
-
-# target to build an object file
-bokket/Config/config.cpp.o:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Config/config.cpp.o
-.PHONY : bokket/Config/config.cpp.o
-
-bokket/Config/config.i: bokket/Config/config.cpp.i
-
-.PHONY : bokket/Config/config.i
-
-# target to preprocess a source file
-bokket/Config/config.cpp.i:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Config/config.cpp.i
-.PHONY : bokket/Config/config.cpp.i
-
-bokket/Config/config.s: bokket/Config/config.cpp.s
-
-.PHONY : bokket/Config/config.s
-
-# target to generate assembly for a file
-bokket/Config/config.cpp.s:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Config/config.cpp.s
-.PHONY : bokket/Config/config.cpp.s
 
 bokket/Log/FileWriterType.o: bokket/Log/FileWriterType.cpp.o
 
@@ -300,6 +247,33 @@ bokket/Log/LogStream.cpp.s:
 	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/LogStream.cpp.s
 .PHONY : bokket/Log/LogStream.cpp.s
 
+bokket/thread/thread.o: bokket/thread/thread.cpp.o
+
+.PHONY : bokket/thread/thread.o
+
+# target to build an object file
+bokket/thread/thread.cpp.o:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/thread/thread.cpp.o
+.PHONY : bokket/thread/thread.cpp.o
+
+bokket/thread/thread.i: bokket/thread/thread.cpp.i
+
+.PHONY : bokket/thread/thread.i
+
+# target to preprocess a source file
+bokket/thread/thread.cpp.i:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/thread/thread.cpp.i
+.PHONY : bokket/thread/thread.cpp.i
+
+bokket/thread/thread.s: bokket/thread/thread.cpp.s
+
+.PHONY : bokket/thread/thread.s
+
+# target to generate assembly for a file
+bokket/thread/thread.cpp.s:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/thread/thread.cpp.s
+.PHONY : bokket/thread/thread.cpp.s
+
 bokket/thread/util.o: bokket/thread/util.cpp.o
 
 .PHONY : bokket/thread/util.o
@@ -354,33 +328,6 @@ test/test_LogStream.cpp.s:
 	$(MAKE) -f CMakeFiles/test_LogStream.dir/build.make CMakeFiles/test_LogStream.dir/test/test_LogStream.cpp.s
 .PHONY : test/test_LogStream.cpp.s
 
-test/test_config.o: test/test_config.cpp.o
-
-.PHONY : test/test_config.o
-
-# target to build an object file
-test/test_config.cpp.o:
-	$(MAKE) -f CMakeFiles/test_Config.dir/build.make CMakeFiles/test_Config.dir/test/test_config.cpp.o
-.PHONY : test/test_config.cpp.o
-
-test/test_config.i: test/test_config.cpp.i
-
-.PHONY : test/test_config.i
-
-# target to preprocess a source file
-test/test_config.cpp.i:
-	$(MAKE) -f CMakeFiles/test_Config.dir/build.make CMakeFiles/test_Config.dir/test/test_config.cpp.i
-.PHONY : test/test_config.cpp.i
-
-test/test_config.s: test/test_config.cpp.s
-
-.PHONY : test/test_config.s
-
-# target to generate assembly for a file
-test/test_config.cpp.s:
-	$(MAKE) -f CMakeFiles/test_Config.dir/build.make CMakeFiles/test_Config.dir/test/test_config.cpp.s
-.PHONY : test/test_config.cpp.s
-
 test/test_log.o: test/test_log.cpp.o
 
 .PHONY : test/test_log.o
@@ -408,33 +355,6 @@ test/test_log.cpp.s:
 	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/test/test_log.cpp.s
 .PHONY : test/test_log.cpp.s
 
-test/test_yaml.o: test/test_yaml.cpp.o
-
-.PHONY : test/test_yaml.o
-
-# target to build an object file
-test/test_yaml.cpp.o:
-	$(MAKE) -f CMakeFiles/test_Yaml.dir/build.make CMakeFiles/test_Yaml.dir/test/test_yaml.cpp.o
-.PHONY : test/test_yaml.cpp.o
-
-test/test_yaml.i: test/test_yaml.cpp.i
-
-.PHONY : test/test_yaml.i
-
-# target to preprocess a source file
-test/test_yaml.cpp.i:
-	$(MAKE) -f CMakeFiles/test_Yaml.dir/build.make CMakeFiles/test_Yaml.dir/test/test_yaml.cpp.i
-.PHONY : test/test_yaml.cpp.i
-
-test/test_yaml.s: test/test_yaml.cpp.s
-
-.PHONY : test/test_yaml.s
-
-# target to generate assembly for a file
-test/test_yaml.cpp.s:
-	$(MAKE) -f CMakeFiles/test_Yaml.dir/build.make CMakeFiles/test_Yaml.dir/test/test_yaml.cpp.s
-.PHONY : test/test_yaml.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -444,13 +364,8 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... bokket"
-	@echo "... test_Config"
 	@echo "... test_Log"
 	@echo "... test_LogStream"
-	@echo "... test_Yaml"
-	@echo "... bokket/Config/config.o"
-	@echo "... bokket/Config/config.i"
-	@echo "... bokket/Config/config.s"
 	@echo "... bokket/Log/FileWriterType.o"
 	@echo "... bokket/Log/FileWriterType.i"
 	@echo "... bokket/Log/FileWriterType.s"
@@ -460,21 +375,18 @@ help:
 	@echo "... bokket/Log/LogStream.o"
 	@echo "... bokket/Log/LogStream.i"
 	@echo "... bokket/Log/LogStream.s"
+	@echo "... bokket/thread/thread.o"
+	@echo "... bokket/thread/thread.i"
+	@echo "... bokket/thread/thread.s"
 	@echo "... bokket/thread/util.o"
 	@echo "... bokket/thread/util.i"
 	@echo "... bokket/thread/util.s"
 	@echo "... test/test_LogStream.o"
 	@echo "... test/test_LogStream.i"
 	@echo "... test/test_LogStream.s"
-	@echo "... test/test_config.o"
-	@echo "... test/test_config.i"
-	@echo "... test/test_config.s"
 	@echo "... test/test_log.o"
 	@echo "... test/test_log.i"
 	@echo "... test/test_log.s"
-	@echo "... test/test_yaml.o"
-	@echo "... test/test_yaml.i"
-	@echo "... test/test_yaml.s"
 .PHONY : help
 
 

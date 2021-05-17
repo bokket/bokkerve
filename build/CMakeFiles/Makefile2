@@ -70,11 +70,9 @@ CMAKE_BINARY_DIR = /home/bokket/bokkerve/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/test_Config.dir/all
 all: CMakeFiles/bokket.dir/all
 all: CMakeFiles/test_LogStream.dir/all
 all: CMakeFiles/test_Log.dir/all
-all: CMakeFiles/test_Yaml.dir/all
 
 .PHONY : all
 
@@ -84,40 +82,11 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/test_Config.dir/clean
 clean: CMakeFiles/bokket.dir/clean
 clean: CMakeFiles/test_LogStream.dir/clean
 clean: CMakeFiles/test_Log.dir/clean
-clean: CMakeFiles/test_Yaml.dir/clean
 
 .PHONY : clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/test_Config.dir
-
-# All Build rule for target.
-CMakeFiles/test_Config.dir/all: CMakeFiles/bokket.dir/all
-	$(MAKE) -f CMakeFiles/test_Config.dir/build.make CMakeFiles/test_Config.dir/depend
-	$(MAKE) -f CMakeFiles/test_Config.dir/build.make CMakeFiles/test_Config.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=7,8 "Built target test_Config"
-.PHONY : CMakeFiles/test_Config.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/test_Config.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve/build/CMakeFiles 8
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/test_Config.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve/build/CMakeFiles 0
-.PHONY : CMakeFiles/test_Config.dir/rule
-
-# Convenience name for target.
-test_Config: CMakeFiles/test_Config.dir/rule
-
-.PHONY : test_Config
-
-# clean rule for target.
-CMakeFiles/test_Config.dir/clean:
-	$(MAKE) -f CMakeFiles/test_Config.dir/build.make CMakeFiles/test_Config.dir/clean
-.PHONY : CMakeFiles/test_Config.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/bokket.dir
@@ -153,7 +122,7 @@ CMakeFiles/bokket.dir/clean:
 CMakeFiles/test_LogStream.dir/all: CMakeFiles/bokket.dir/all
 	$(MAKE) -f CMakeFiles/test_LogStream.dir/build.make CMakeFiles/test_LogStream.dir/depend
 	$(MAKE) -f CMakeFiles/test_LogStream.dir/build.make CMakeFiles/test_LogStream.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=11,12 "Built target test_LogStream"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=9,10 "Built target test_LogStream"
 .PHONY : CMakeFiles/test_LogStream.dir/all
 
 # Build rule for subdir invocation for target.
@@ -180,7 +149,7 @@ CMakeFiles/test_LogStream.dir/clean:
 CMakeFiles/test_Log.dir/all: CMakeFiles/bokket.dir/all
 	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/depend
 	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=9,10 "Built target test_Log"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=7,8 "Built target test_Log"
 .PHONY : CMakeFiles/test_Log.dir/all
 
 # Build rule for subdir invocation for target.
@@ -199,33 +168,6 @@ test_Log: CMakeFiles/test_Log.dir/rule
 CMakeFiles/test_Log.dir/clean:
 	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/clean
 .PHONY : CMakeFiles/test_Log.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/test_Yaml.dir
-
-# All Build rule for target.
-CMakeFiles/test_Yaml.dir/all: CMakeFiles/bokket.dir/all
-	$(MAKE) -f CMakeFiles/test_Yaml.dir/build.make CMakeFiles/test_Yaml.dir/depend
-	$(MAKE) -f CMakeFiles/test_Yaml.dir/build.make CMakeFiles/test_Yaml.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=13,14 "Built target test_Yaml"
-.PHONY : CMakeFiles/test_Yaml.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/test_Yaml.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve/build/CMakeFiles 8
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/test_Yaml.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve/build/CMakeFiles 0
-.PHONY : CMakeFiles/test_Yaml.dir/rule
-
-# Convenience name for target.
-test_Yaml: CMakeFiles/test_Yaml.dir/rule
-
-.PHONY : test_Yaml
-
-# clean rule for target.
-CMakeFiles/test_Yaml.dir/clean:
-	$(MAKE) -f CMakeFiles/test_Yaml.dir/build.make CMakeFiles/test_Yaml.dir/clean
-.PHONY : CMakeFiles/test_Yaml.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

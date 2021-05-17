@@ -22,6 +22,24 @@ sstream
 iomanip
 -
 
+/home/bokket/bokkerve/bokket/Log/Log.cpp
+map
+-
+tuple
+-
+string
+-
+iomanip
+-
+iostream
+-
+functional
+-
+Log.h
+/home/bokket/bokkerve/bokket/Log/Log.h
+./FileWriterType.h
+/home/bokket/bokkerve/bokket/Log/FileWriterType.h
+
 /home/bokket/bokkerve/bokket/Log/Log.h
 map
 -
@@ -91,6 +109,8 @@ sys/prctl.h
 -
 thread.h
 /home/bokket/bokkerve/bokket/thread/thread.h
+./util.h
+/home/bokket/bokkerve/bokket/thread/util.h
 
 /home/bokket/bokkerve/bokket/thread/thread.h
 memory
@@ -101,20 +121,12 @@ functional
 -
 pthread.h
 -
-./util.h
-/home/bokket/bokkerve/bokket/thread/util.h
 ./Semaphore.h
 /home/bokket/bokkerve/bokket/thread/Semaphore.h
 ../Log/Log.h
 /home/bokket/bokkerve/bokket/Log/Log.h
 ../base/noncopyable.h
 /home/bokket/bokkerve/bokket/base/noncopyable.h
-
-/home/bokket/bokkerve/bokket/thread/util.cpp
-util.h
-/home/bokket/bokkerve/bokket/thread/util.h
-./thread.cpp
-/home/bokket/bokkerve/bokket/thread/thread.cpp
 
 /home/bokket/bokkerve/bokket/thread/util.h
 string

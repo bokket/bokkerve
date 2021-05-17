@@ -1,1 +1,0 @@
-/usr/bin/c++    -rdynamic CMakeFiles/test_Yaml.dir/test/test_yaml.cpp.o  -o ../bin/test_Yaml  -Wl,-rpath,/home/bokket/bokkerve/lib ../lib/libbokket.so -lpthread -lyaml-cpp 
