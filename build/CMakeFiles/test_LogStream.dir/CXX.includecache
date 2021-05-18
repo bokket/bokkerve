@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/bokket/bokkerve/bokket/Log/FixedBuffer.h
+/home/bokket/bokkerve-plus-plus/bokket/Log/FixedBuffer.h
 string
 -
 cstdio
@@ -16,23 +16,23 @@ cstring
 streambuf
 -
 ../base/noncopyable.h
-/home/bokket/bokkerve/bokket/base/noncopyable.h
+/home/bokket/bokkerve-plus-plus/bokket/base/noncopyable.h
 
-/home/bokket/bokkerve/bokket/Log/LogStream.h
+/home/bokket/bokkerve-plus-plus/bokket/Log/LogStream.h
 ./FixedBuffer.h
-/home/bokket/bokkerve/bokket/Log/FixedBuffer.h
+/home/bokket/bokkerve-plus-plus/bokket/Log/FixedBuffer.h
 iostream
 -
 
-/home/bokket/bokkerve/bokket/base/noncopyable.h
+/home/bokket/bokkerve-plus-plus/bokket/base/noncopyable.h
 
-/home/bokket/bokkerve/test/test_LogStream.cpp
+/home/bokket/bokkerve-plus-plus/test/test_LogStream.cpp
 cmath
 -
 iostream
 -
 ../bokket/Log/LogStream.h
-/home/bokket/bokkerve/bokket/Log/LogStream.h
+/home/bokket/bokkerve-plus-plus/bokket/Log/LogStream.h
 ../bokket/Log/FixedBuffer.h
-/home/bokket/bokkerve/bokket/Log/FixedBuffer.h
+/home/bokket/bokkerve-plus-plus/bokket/Log/FixedBuffer.h
 

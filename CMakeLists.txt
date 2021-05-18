@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 project(bokket)
 
-include(cmake/utils.cmake)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CXX_FLAGS
@@ -28,7 +27,23 @@ set(CXX_FLAGS
 #	-Wno-unused-function
 #	-Wno-unused-variable -pthread)
 
-include_directories(.)
+include_directories(/usr/local/include)
+link_directories(/usr/local/lib)
+
+find_library(YAMLCPP yaml-cpp)
+#message("****", ${YAMLCPP})
+
+find_library(PTHREAD pthread)
+#message("****", ${PTHREAD})
+#link_libraries(-lyaml-cpp)
+
+
+set(LIBS
+		bokket
+		pthread
+		yaml-cpp)
+
+message("***", ${LIBS})
 
 
 set(LIB_SRC
@@ -42,22 +57,6 @@ set(LIB_SRC
 		)
 
 add_library(bokket SHARED ${LIB_SRC})
-force_redefine_file_macro_for_sources(bokket) #__FILE__
-
-
-find_library(YAMLCPP yaml-cpp)
-#message("****", ${YAMLCPP})
-
-find_library(PTHREAD pthread)
-#message("****", ${PTHREAD})
-#link_libraries(-lyaml-cpp)
-
-set(LIBS
-		bokket
-		pthread
-		yaml-cpp)
-
-message("***", ${LIBS})
 
 
 add_executable(test_Log test/test_log.cpp)

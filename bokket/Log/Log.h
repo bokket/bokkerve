@@ -17,6 +17,7 @@
 #include <cstdarg>
 #include <sstream>
 #include <fstream>
+#include <functional>
 #include <condition_variable>
 #include "./LogLevel.h"
 //#include "./LogStream.h"
@@ -124,6 +125,21 @@ public:
 
     //static std::chrono::system_clock::time_point getTimeNow();
 
+    template<class F,class... Args> void registerHandle(F&& f,Args&&... args) {
+        using type = decltype(f(args...));
+        auto  task = std::make_shared<type()>(
+                std::bind(std::forward<F>(f), std::forward<Args>(args)...)
+        );
+        functors_.emplace([task](){
+            (*task)();
+        });
+    }
+
+    std::string format(LogEvent::ptr event);
+
+    std::ostream & format(std::ostream& ostream,LogEvent::ptr event);
+
+
 private:
 
     const std::string loggername_;
@@ -145,6 +161,9 @@ private:
 
     std::shared_ptr<Logger> logger_;
     LogLevel level_;
+
+    std::list<std::function<void()>> functors_;
+    std::mutex mutex_;
 };
 
 class LogEventWrap
@@ -162,42 +181,6 @@ private:
 };
 
 
-class LogFormatter
-{
-public:
-    using ptr=std::shared_ptr<LogFormatter>;
-public:
-    LogFormatter(const std::string& pattern);
-public:
-    class Impl
-    {
-    public:
-        using ptr=std::shared_ptr<Impl>;
-    public:
-        virtual ~Impl() {}
-        virtual void format(std::ostream& os,LogEvent::ptr event)=0;
-    };
-public:
-    void init();
-
-    //std::vector<std::tuple<std::string,std::string,int>>& parse();
-
-    std::string format(LogEvent::ptr event);
-
-    std::ostream& format(std::ostream& ostream,LogEvent::ptr event);
-
-    //void format(const std::string& msg,int32_t len);
-
-    bool getError() const { return error_; }
-
-private:
-    std::vector<std::tuple<std::string,std::string,int>> vec_;
-    std::vector<Impl::ptr> items_;
-    std::string pattern_;
-    bool error_=false;
-};
-
-
 class LogAppender
 {
 public:
@@ -209,22 +192,15 @@ public:
 
     //virtual void flush() =0;
 
-    void setFormatter(LogFormatter::ptr val) ;
     void setLevel(LogLevel level) { level_=level; }
 
-    LogFormatter::ptr getFormatter() ;
     LogLevel getLevel() const { return level_; }
 
-    std::mutex& getMutex() { return mutex_; }
+    //std::mutex& getMutex() { return mutex_; }
 
-    bool getError() { return hasFormatter_; }
-
-    void setError(bool hasFormatter) { hasFormatter_=hasFormatter; } 
 protected:
     LogLevel level_;
-    LogFormatter::ptr formatter_;
     std::mutex mutex_;
-    bool hasFormatter_= false;
 };
 
 
@@ -235,7 +211,7 @@ public:
     using ptr=std::shared_ptr<Logger>;
 public:
     Logger(const std::string& basename="root");
-    //~Logger();
+    ~Logger() =default;
 
     void append(LogLevel level,LogEvent::ptr event);
 
@@ -257,11 +233,8 @@ public:
 
     void clearAppender();
 
-    void setFormatter(LogFormatter::ptr val);
 
-    void setFormatter(const std::string& str);
 
-    LogFormatter::ptr getLogFormatter();
 
     LogLevel getLevel() const { return level_; }
 
@@ -269,6 +242,8 @@ public:
     //bokket::detail::LogStream &steam() { return stream_; }
 
     std::string& getBaseName() { return basename_; }
+
+    LogEvent::ptr getLogEvent() { return event_; }
 
 
 
@@ -286,9 +261,8 @@ private:
     //std::map<std::string,LogAppender::ptr> appenders_;
     std::list<LogAppender::ptr> appenders_;
 
-    LogFormatter::ptr formatter_;
-
     Logger::ptr root_;
+    LogEvent::ptr event_;
 };
 
 

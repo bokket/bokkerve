@@ -6,15 +6,5 @@ CXX_FLAGS = -fPIC   -std=gnu++17
 
 CXX_DEFINES = -Dbokket_EXPORTS
 
-CXX_INCLUDES = -I/home/bokket/bokkerve/. 
-
-# Custom defines: CMakeFiles/bokket.dir/bokket/Log/Log.cpp.o_DEFINES = __FILE__="bokket/Log/Log.cpp"
-
-# Custom defines: CMakeFiles/bokket.dir/bokket/Log/FileWriterType.cpp.o_DEFINES = __FILE__="bokket/Log/FileWriterType.cpp"
-
-# Custom defines: CMakeFiles/bokket.dir/bokket/Log/LogStream.cpp.o_DEFINES = __FILE__="bokket/Log/LogStream.cpp"
-
-# Custom defines: CMakeFiles/bokket.dir/bokket/thread/util.cpp.o_DEFINES = __FILE__="bokket/thread/util.cpp"
-
-# Custom defines: CMakeFiles/bokket.dir/bokket/thread/thread.cpp.o_DEFINES = __FILE__="bokket/thread/thread.cpp"
+CXX_INCLUDES = 
 
