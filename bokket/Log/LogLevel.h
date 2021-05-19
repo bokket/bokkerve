@@ -21,8 +21,7 @@ enum class LogLevel:uint8_t
     FATAL
 };
 
-
-static const std::string getLogLevelToString(LogLevel level)
+const std::string getLogLevelToString(LogLevel level)
 {
     switch(level) {
 #define XX(name) \
@@ -42,7 +41,7 @@ static const std::string getLogLevelToString(LogLevel level)
     return "UNKNOW";
 }
 
-static LogLevel logLevelFromString(const std::string &str)
+LogLevel logLevelFromString(const std::string &str)
 {
 #define XX(level, v) \
     if(str == #v) { \

@@ -18,6 +18,7 @@ int main() {
 
     logger->addAppender(bokket::LogAppender::ptr(new bokket::LogAppenderStdout));
     std::cout<<">>>"<<std::endl;
+    //logger->append();
 
     bokket::LogAppenderFile::ptr file_appender(new bokket::LogAppenderFile("./log-",0,0,0,bokket::FileWriterType::APPENDFILE));
     std::cout<<">>>1"<<std::endl;
@@ -30,11 +31,11 @@ int main() {
     std::cout<<">>>1"<<std::endl;
    logger->addAppender(file_appender);
     std::cout<<">>>1"<<std::endl;
-   //BOKKET_LOG_INFO(logger)<<"test";
+   BOKKET_LOG_INFO(logger)<<"test";
    std::cout<<">>>1"<<std::endl;
     std::cout<<">>>2"<<std::endl;
 
-   auto l=bokket::LoggerMgr::GetInstance()->getLogger("xx");
-   BOKKET_LOG_INFO(l)<<"xxx";
+   //auto l=bokket::LoggerMgr::GetInstance()->getLogger("xx");
+   //BOKKET_LOG_INFO(l)<<"xxx";
     std::cout<<">>>3"<<std::endl;
 }

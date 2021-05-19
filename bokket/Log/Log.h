@@ -20,14 +20,17 @@
 #include <functional>
 #include <condition_variable>
 #include "./LogLevel.h"
+#include "./LogFile.h"
+#include "./FixedBuffer.h"
 //#include "./LogStream.h"
-#include "./FileWriterType.h"
 
 
 #include "../base/noncopyable.h"
 #include "../base/SpinLock.h"
 #include "../base/Singleton.h"
 #include "../thread/util.h"
+#include "../thread/thread.h"
+#include "../net/CountDownLatch.h"
 
 
 
@@ -69,9 +72,6 @@
 
 namespace bokket
 {
-
-
-
 
 
 class Logger;
@@ -189,7 +189,7 @@ public:
     virtual ~LogAppender()=default;
     //virtual void append(const std::string& msg,int32_t len,LogLevel level,LogEvent::ptr event)=0;
     virtual void append(std::shared_ptr<Logger> logger,LogLevel level,LogEvent::ptr event)=0;
-
+    //virtual void append(const std::string& msg,int32_t len)=0;
     //virtual void flush() =0;
 
     void setLevel(LogLevel level) { level_=level; }
@@ -266,49 +266,6 @@ private:
 };
 
 
-class LogAppenderFile: public LogAppender
-{
-public:
-    using ptr=std::shared_ptr<LogAppenderFile>;
-public:
-    LogAppenderFile(const std::string basename,size_t rollSize,int flushInterval,int check_freq_count,FileWriterType writerType);
-
-
-    ~LogAppenderFile()=default;
-
-    //void append(const std::string& msg,int32_t len,LogLevel level) override;
-    void append(Logger::ptr logger,LogLevel level,LogEvent::ptr event) override;
-
-    void flush();
-
-    bool rollFile();
-
-    //bool reopen();
-private:
-
-    void append_unlocked(const std::string& msg,int32_t len);
-
-    const std::string basename_;
-
-    std::ofstream filestream_;
-    //bokket::detail::LogStream stream_;
-
-
-    const size_t rollSize_; // 日志文件达到rolSize_换一个新文件
-    const int flushInterval_;
-    const int check_freq_count_;
-
-    int count_;
-    //std::unique_ptr<std::mutex> mutex_;
-    time_t startOfPeriod_;	// 开始记录日志时间（调整至零点的时间）
-    time_t lastRoll_;			// 上一次滚动日志文件时间
-    time_t lastFlush_;		// 上一次日志写入文件时间
-
-    std::unique_ptr<FileWriter> file_;
-
-    FileWriterType writerType_;
-    constexpr static int kRollPerSeconds=60*60*24;
-};
 
 class LogAppenderStdout: public LogAppender
 {
@@ -319,7 +276,7 @@ public:
      void append(Logger::ptr logger,LogLevel level,LogEvent::ptr event) override;
 };
 
-/*
+
 class LogAppenderAsyncFile: public LogAppender
 {
 public:
@@ -327,7 +284,7 @@ public:
     ~LogAppenderAsyncFile();
 
     //void append(const std::string& msg,int32_t line,LogLevel level,LogEvent::ptr event) override;
-    void append(shared_ptr<Logger> logger,LogLevel level,LogEvent::ptr event) override;
+    void append(Logger::ptr logger,LogLevel level,LogEvent::ptr event) override;
 
 
     void start();
@@ -337,25 +294,24 @@ private:
     void threadFunc();
     
 
-    std::atomic_bool started_;
+    bool started_;
+    bool running_;
 
-    //time_t ;
+    std::time_t persistPeriod_;
     std::string filename_;
 
-    mutable std::mutex mutex_;
-    std::thread thread_;
-    std::condition_variable conditionVariable_;
-    //bokket::net::CountDownLatch latch_;
+    std::mutex mutex_;
+    bokket::Thread persitThread_;
+    std::condition_variable cv_;
+    bokket::net::CountDownLatch latch_;
 
-};*/
 
-/*
-class LogAppenderAsyncFile: public LogAppender
-{
-public:
-    LogAppenderAsyncFile();
+    using LogBuffer=bokket::detail::FixedBuffer<bokket::detail::kLargeBuffer>;
+    std::unique_ptr<LogBuffer> curBuffer_;
+    std::vector<std::unique_ptr<LogBuffer>> buffers_;
 
-}*/
+};
+
 
 class LoggerManager
 {

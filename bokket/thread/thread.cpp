@@ -3,35 +3,27 @@
 //
 
 #include <sys/prctl.h>
-
+#include <atomic>
 #include "thread.h"
-#include "./util.h"
+//#include "./util.h"
 
 namespace bokket
 {
 
+std::atomic<int> threadCount(0);
 
+static thread_local Thread* t_thread= nullptr;
+static thread_local pid_t t_cachedThreadId = 0;
+static thread_local std::string t_threadName= "UNKNOW";
 
-thread_local Thread* t_thread= nullptr;
-thread_local int t_cachedThreadId = 0;
-thread_local std::string t_threadName= "UNKNOW";
-
-/*
-int threadId() {
-    if(t_cachedThreadId == 0) {
-        cacheThreadId();
+pid_t Thread::currentThreadTid() {
+    if(t_cachedThreadId==0) {
+        t_cachedThreadId = getThreadId();
+        t_threadName=std::to_string(t_cachedThreadId);
     }
-        return t_cachedThreadId;
+    return t_cachedThreadId;
 }
 
-
-
-void cacheThreadId() {
-    if(t_cachedThreadId == 0) {
-        t_cachedThreadId = getThreadId();
-        t_threadName = std::to_string(t_cachedThreadId);
-    }
-}*/
 
 
 static bokket::Logger::ptr g_logger = BOKKET_LOG_NAME("system");
@@ -55,33 +47,48 @@ void Thread::setName(const std::string &name) {
 }
 
 Thread::Thread(std::function<void()> cb, const std::string &name)
-              :cb_(cb),threadName_(name) {
+              :started_(false),joined_(false)
+              ,cb_(std::move(cb))
+              ,threadName_(name) {
     if(name.empty()) {
         threadName_ = "UNKNOW" ;
+        int num = threadCount.fetch_add(1);
+        threadName_=std::to_string(num);
     }
+}
 
-
-
+void Thread::start() {
+    started_= true;
     int ret = pthread_create(&thread_, nullptr,&Thread::run,this);
 
     if(ret) {
+        started_= false;
         BOKKET_LOG_ERROR(g_logger) << " pthread_create failed,return ret="<< ret
-        <<"name=" <<name;
+                                   <<"name=" <<name;
         throw std::logic_error("pthread_create error");
     }
     semaphore_.wait();
 }
 
 Thread::~Thread() {
-    if(thread_) {
-        pthread_detach(thread_);
+    /*if(thread_) {
+        ::pthread_detach(thread_);
+    }*/
+    if(started_ && !joined_) {
+        ::pthread_detach(thread_);
     }
+}
+
+bool Thread::isStarted() {
+    return started_;
 }
 
 void Thread::join() {
     if(thread_) {
+        joined_= true;
         int ret = pthread_join(thread_, nullptr);
         if(ret) {
+            joined_= false;
             BOKKET_LOG_ERROR(g_logger) << " pthread_join failed,return ret="<< ret
                                        <<"name=" << threadName_;
             throw std::logic_error("pthread_create error");

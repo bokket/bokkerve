@@ -19,38 +19,38 @@ public:
     explicit Condition(MutexLock& mutex)
                       :mutex_(mutex)
     {
-        pthread_cond_init(&pcond_, nullptr);
+        pthread_cond_init(&cond_, nullptr);
     }
     ~Condition()
     {
-        pthread_cond_destroy(&pcond_);
+        pthread_cond_destroy(&cond_);
     }
     void wait()
     {
-        pthread_cond_wait(&pcond_,mutex_.get());
+        pthread_cond_wait(&cond_,mutex_.get());
     }
 
     void notify()
     {
-        pthread_cond_signal(&pcond_);
+        pthread_cond_signal(&cond_);
     }
 
     void notifyAll()
     {
-        pthread_cond_broadcast(&pcond_);
+        pthread_cond_broadcast(&cond_);
     }
     bool waitForSeconds(int seconds)
     {
         struct timespec timespec;
         clock_gettime(CLOCK_REALTIME,&timespec);
         timespec.tv_sec+=seconds;
-        return ETIMEDOUT==pthread_cond_timedwait(&pcond_,mutex_.get(),&timespec);
+        return ETIMEDOUT==pthread_cond_timedwait(&cond_,mutex_.get(),&timespec);
     }
 
 
 private:
     MutexLock& mutex_;
-    pthread_cond_t pcond_;
+    pthread_cond_t cond_;
 };
 
 
