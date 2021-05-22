@@ -28,47 +28,62 @@ namespace detail
 class FixedBuffer: public streambuf ,public noncopyable
 {
 public:
-    FixedBuffer()
-               :cur_(data_)
-    {}
-    ~FixedBuffer()= default;
+    FixedBuffer(size_t total=1024*1024*10)
+               :total_(total)
+               ,available_(total)
+               ,cur_(0)
+    {
+        data_=new char[total];
+    }
+    ~FixedBuffer() {
+        delete[] data_;
+    }
 
     void append(const char* buf,size_t len)
     {
-        if(avail() > len)
+        /*if(avail() > len)
         {
             memcpy(cur_,buf,len);
             cur_+=len;
-        }
+        }*/
+        memcpy(data_+cur_,data_,len);
+        cur_+=len;
+        available_-=len;
     }
 
-    void append(string& s,size_t len)
+    /*void append(string& s,size_t len)
     {
         if(avail() > len )
         {
             memcpy(cur_,s.c_str(),len);
             cur_+=len;
         }
-    }
-
+    }*/
+    const char* data() const { return data_; }
     int avail() const
     {
         //向上转换
-        return static_cast<int>(end()-cur_);
+        //return static_cast<int>(end()-cur_);
+        return available_;
     }
-    int length() const
+    size_t length() const
     {
-        return static_cast<int>(cur_-data_);
+        //return static_cast<int>(cur_-data_);
+        return cur_;
     }
-    char* currunt() { return cur_; }
+    //char* currunt() { return cur_; }
 
-    void add(size_t len) { cur_+=len; }
+    //void add(size_t len) { cur_+=len; }
 
-    void reset() { cur_=data_; }
+    //void reset() { cur_=data_; }
 
-    void memset() { ::memset(data_,0,sizeof(data_) ); }
+    //void memset() { ::memset(data_,0,sizeof(data_) ); }
 
-    void bzero() { ::bzero(data_,sizeof(data_) ); }
+    void clear() {
+        //::bzero(data_,sizeof(data_) );
+        cur_=0;
+        available_=total_;
+    }
 
     std::string toString() const { return std::string(data_,length() ); }
 
@@ -76,13 +91,17 @@ public:
     const char* debugString() const
     {
         fprintf(stderr, "data:%s\nsize:%d\n", data_, length());
-        *cur_ = '\0';
+        //*cur_ = '\0';
         return data_;
     }
 private:
-    const char* end() const { return data_+sizeof(data_); }
-    char data_[SIZE];
-    char* cur_;
+    //const char* end() const { return data_+sizeof(data_); }
+    char* data_;
+    const size_t total_;
+    size_t available_;
+    size_t cur_;
+    //char data_[SIZE];
+    //char* cur_;
 };
 
 }

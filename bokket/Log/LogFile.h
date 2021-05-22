@@ -98,13 +98,13 @@ public:
     bool rollFile();
 
     //bool reopen();
-private:
 
     void append_unlocked(const std::string& msg,int32_t len);
 
+private:
     const std::string basename_;
 
-    std::ofstream filestream_;
+    //std::ofstream filestream_;
     //bokket::detail::LogStream stream_;
 
 

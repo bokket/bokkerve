@@ -12,7 +12,7 @@
 #include <vector>
 #include <string>
 #include <memory>
-#include <thread>
+//#include <thread>
 #include <chrono>
 #include <cstdarg>
 #include <sstream>
@@ -125,7 +125,7 @@ public:
 
     //static std::chrono::system_clock::time_point getTimeNow();
 
-    template<class F,class... Args> void registerHandle(F&& f,Args&&... args) {
+   /* template<class F,class... Args> void registerHandle(F&& f,Args&&... args) {
         using type = decltype(f(args...));
         auto  task = std::make_shared<type()>(
                 std::bind(std::forward<F>(f), std::forward<Args>(args)...)
@@ -133,11 +133,11 @@ public:
         functors_.emplace([task](){
             (*task)();
         });
-    }
+    }*/
 
-    std::string format(LogEvent::ptr event);
+    //std::string format(LogEvent::ptr event);
 
-    std::ostream & format(std::ostream& ostream,LogEvent::ptr event);
+    //std::ostream & format(std::ostream& ostream,LogEvent::ptr event);
 
 
 private:
@@ -162,7 +162,7 @@ private:
     std::shared_ptr<Logger> logger_;
     LogLevel level_;
 
-    std::list<std::function<void()>> functors_;
+    //std::list<std::function<void()>> functors_;
     std::mutex mutex_;
 };
 
@@ -180,6 +180,33 @@ private:
     LogEvent::ptr event_;
 };
 
+
+class LogFormatter
+{
+public:
+    using ptr=std::shared_ptr<LogFormatter>;
+public:
+    LogFormatter()=default;
+    ~LogFormatter()=default;
+
+    std::string format(LogEvent::ptr event);
+
+    std::ostream& format(std::ostream& ostream,LogEvent::ptr event);
+
+    //void format(const std::string& msg,int32_t len);
+
+   /* template<class F,class... Args> void registerHandle(F&& f,Args&&... args) {
+        using type = decltype(f(args...));
+        auto  task = std::make_shared<type()>(
+                std::bind(std::forward<F>(f), std::forward<Args>(args)...)
+        );
+        functors_.emplace([task](){
+            (*task)();
+        });
+    }*/
+private:
+    std::list<std::function<void()>> functors_;
+};
 
 class LogAppender
 {
@@ -201,6 +228,7 @@ public:
 protected:
     LogLevel level_;
     std::mutex mutex_;
+    LogFormatter::ptr formatter_;
 };
 
 
@@ -243,9 +271,9 @@ public:
 
     std::string& getBaseName() { return basename_; }
 
-    LogEvent::ptr getLogEvent() { return event_; }
+    //LogEvent::ptr getLogEvent() { return event_; }
 
-
+    LogFormatter::ptr getLogFormatter();
 
 private:
     LogLevel level_;
@@ -262,7 +290,8 @@ private:
     std::list<LogAppender::ptr> appenders_;
 
     Logger::ptr root_;
-    LogEvent::ptr event_;
+    //LogEvent::ptr event_;
+    LogFormatter::ptr formatter_;
 };
 
 
@@ -277,40 +306,6 @@ public:
 };
 
 
-class LogAppenderAsyncFile: public LogAppender
-{
-public:
-    LogAppenderAsyncFile(const std::string& filename);
-    ~LogAppenderAsyncFile();
-
-    //void append(const std::string& msg,int32_t line,LogLevel level,LogEvent::ptr event) override;
-    void append(Logger::ptr logger,LogLevel level,LogEvent::ptr event) override;
-
-
-    void start();
-    void stop();
-
-private:
-    void threadFunc();
-    
-
-    bool started_;
-    bool running_;
-
-    std::time_t persistPeriod_;
-    std::string filename_;
-
-    std::mutex mutex_;
-    bokket::Thread persitThread_;
-    std::condition_variable cv_;
-    bokket::net::CountDownLatch latch_;
-
-
-    using LogBuffer=bokket::detail::FixedBuffer<bokket::detail::kLargeBuffer>;
-    std::unique_ptr<LogBuffer> curBuffer_;
-    std::vector<std::unique_ptr<LogBuffer>> buffers_;
-
-};
 
 
 class LoggerManager

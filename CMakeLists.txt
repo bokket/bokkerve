@@ -34,6 +34,8 @@ find_library(YAMLCPP yaml-cpp)
 #message("****", ${YAMLCPP})
 
 find_library(PTHREAD pthread)
+
+find_library(GTEST gtest)
 #message("****", ${PTHREAD})
 #link_libraries(-lyaml-cpp)
 
@@ -41,16 +43,21 @@ find_library(PTHREAD pthread)
 set(LIBS
 		bokket
 		pthread
-		yaml-cpp)
+		yaml-cpp
+		gtest)
 
 message("***", ${LIBS})
 
 
 set(LIB_SRC
 		bokket/Log/Log.cpp
-		bokket/Log/FileWriterType.cpp
-		bokket/Log/LogStream.cpp
+		bokket/Log/Log.h
+		bokket/Log/LogFile.cpp
+		#bokket/Log/AsyncFileLogAppender.h
+		#bokket/Log/AsyncFileLogAppender.cpp
+		#bokket/Log/LogStream.cpp
 		bokket/thread/util.cpp
+		bokket/thread/thread.h
 		bokket/thread/thread.cpp
 		bokket/Log/FixedBuffer.h
 		#./bokket/Config/config.cpp
@@ -64,10 +71,10 @@ add_dependencies(test_Log bokket)
 #force_redefine_file_macro_for_sources(test_log)
 target_link_libraries(test_Log ${LIBS})
 
-add_executable(test_LogStream ./test/test_LogStream.cpp)
-add_dependencies(test_LogStream bokket)
+#add_executable(test_LogStream ./test/test_LogStream.cpp)
+#add_dependencies(test_LogStream bokket)
 #force_redefine_file_macro_for_sources(test_LogStream)
-target_link_libraries(test_LogStream ${LIBS})
+#target_link_libraries(test_LogStream ${LIBS})
 
 #add_executable(test_Yaml ./test/test_yaml.cpp)
 #add_dependencies(test_Yaml bokket)

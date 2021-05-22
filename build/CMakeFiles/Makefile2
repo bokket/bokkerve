@@ -70,9 +70,8 @@ CMAKE_BINARY_DIR = /home/bokket/bokkerve-plus-plus/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/bokket.dir/all
-all: CMakeFiles/test_LogStream.dir/all
 all: CMakeFiles/test_Log.dir/all
+all: CMakeFiles/bokket.dir/all
 
 .PHONY : all
 
@@ -82,65 +81,10 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/bokket.dir/clean
-clean: CMakeFiles/test_LogStream.dir/clean
 clean: CMakeFiles/test_Log.dir/clean
+clean: CMakeFiles/bokket.dir/clean
 
 .PHONY : clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/bokket.dir
-
-# All Build rule for target.
-CMakeFiles/bokket.dir/all:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/depend
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve-plus-plus/build/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target bokket"
-.PHONY : CMakeFiles/bokket.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/bokket.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve-plus-plus/build/CMakeFiles 6
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/bokket.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve-plus-plus/build/CMakeFiles 0
-.PHONY : CMakeFiles/bokket.dir/rule
-
-# Convenience name for target.
-bokket: CMakeFiles/bokket.dir/rule
-
-.PHONY : bokket
-
-# clean rule for target.
-CMakeFiles/bokket.dir/clean:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/clean
-.PHONY : CMakeFiles/bokket.dir/clean
-
-#=============================================================================
-# Target rules for target CMakeFiles/test_LogStream.dir
-
-# All Build rule for target.
-CMakeFiles/test_LogStream.dir/all: CMakeFiles/bokket.dir/all
-	$(MAKE) -f CMakeFiles/test_LogStream.dir/build.make CMakeFiles/test_LogStream.dir/depend
-	$(MAKE) -f CMakeFiles/test_LogStream.dir/build.make CMakeFiles/test_LogStream.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve-plus-plus/build/CMakeFiles --progress-num=9,10 "Built target test_LogStream"
-.PHONY : CMakeFiles/test_LogStream.dir/all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/test_LogStream.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve-plus-plus/build/CMakeFiles 8
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/test_LogStream.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve-plus-plus/build/CMakeFiles 0
-.PHONY : CMakeFiles/test_LogStream.dir/rule
-
-# Convenience name for target.
-test_LogStream: CMakeFiles/test_LogStream.dir/rule
-
-.PHONY : test_LogStream
-
-# clean rule for target.
-CMakeFiles/test_LogStream.dir/clean:
-	$(MAKE) -f CMakeFiles/test_LogStream.dir/build.make CMakeFiles/test_LogStream.dir/clean
-.PHONY : CMakeFiles/test_LogStream.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/test_Log.dir
@@ -149,12 +93,12 @@ CMakeFiles/test_LogStream.dir/clean:
 CMakeFiles/test_Log.dir/all: CMakeFiles/bokket.dir/all
 	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/depend
 	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve-plus-plus/build/CMakeFiles --progress-num=7,8 "Built target test_Log"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve-plus-plus/build/CMakeFiles --progress-num=6,7 "Built target test_Log"
 .PHONY : CMakeFiles/test_Log.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/test_Log.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve-plus-plus/build/CMakeFiles 8
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve-plus-plus/build/CMakeFiles 7
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/test_Log.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve-plus-plus/build/CMakeFiles 0
 .PHONY : CMakeFiles/test_Log.dir/rule
@@ -168,6 +112,33 @@ test_Log: CMakeFiles/test_Log.dir/rule
 CMakeFiles/test_Log.dir/clean:
 	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/clean
 .PHONY : CMakeFiles/test_Log.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/bokket.dir
+
+# All Build rule for target.
+CMakeFiles/bokket.dir/all:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/depend
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve-plus-plus/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target bokket"
+.PHONY : CMakeFiles/bokket.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/bokket.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve-plus-plus/build/CMakeFiles 5
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/bokket.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve-plus-plus/build/CMakeFiles 0
+.PHONY : CMakeFiles/bokket.dir/rule
+
+# Convenience name for target.
+bokket: CMakeFiles/bokket.dir/rule
+
+.PHONY : bokket
+
+# clean rule for target.
+CMakeFiles/bokket.dir/clean:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/clean
+.PHONY : CMakeFiles/bokket.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

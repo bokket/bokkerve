@@ -19,6 +19,47 @@
 namespace bokket 
 {
 
+    const std::string getLogLevelToString(LogLevel level)
+    {
+        switch(level) {
+#define XX(name) \
+    case LogLevel::name: \
+        return #name; \
+        break;
+
+            XX(DEBUG);
+            XX(INFO);
+            XX(WARNNING);
+            XX(ERROR);
+            XX(FATAL);
+#undef XX
+            default:
+                return "UNKNOW";
+        }
+        return "UNKNOW";
+    }
+
+    LogLevel logLevelFromString(const std::string &str)
+    {
+#define XX(level, v) \
+    if(str == #v) { \
+        return LogLevel::level; \
+    }
+        XX(DEBUG, debug);
+        XX(INFO, info);
+        XX(WARNNING, warn);
+        XX(ERROR, error);
+        XX(FATAL, fatal);
+
+        XX(DEBUG, DEBUG);
+        XX(INFO, INFO);
+        XX(WARNNING, WARN);
+        XX(ERROR, ERROR);
+        XX(FATAL, FATAL);
+        return LogLevel::UNKNOW;
+#undef XX
+    }
+
 
 LogEventWrap::LogEventWrap(LogEvent::ptr event)
                           :event_(event)
@@ -52,11 +93,12 @@ Logger::Logger(const std::string &basename)
               ,level_(LogLevel::DEBUG)
 {
     //formatter_.reset(new LogFormatter("%Y-%m-));
+    formatter_.reset(new LogFormatter);
 }
 
 void Logger::append(LogLevel level, LogEvent::ptr event) 
 {
-    if(level<=level_) {
+    if(level>=level_) {
         //return shared_ptr<Logger>(this->_M_weak_this);
         auto self = shared_from_this();
         std::lock_guard <std::mutex> lockGuard(mutex_);
@@ -69,7 +111,10 @@ void Logger::append(LogLevel level, LogEvent::ptr event)
             }
         } else if(root_) {
             //root_->append(level,event);
-            root_->
+           // root_->append(level,event);
+            //auto s=event->format(event);
+            //std::cout<<s.data();
+            root_->append(level,event);
         }
         /*for(const auto & [appendname,append] : appenders_) {
             append->append(self,level,event);
@@ -180,6 +225,12 @@ void Logger::clearAppender()
 }
 
 
+LogFormatter::ptr Logger::getLogFormatter()
+{
+    //std::lock_guard<std::mutex> lockGuard(mutex_);
+    return formatter_;
+}
+
 /*LogEvent::LogEvent(std::shared_ptr <Logger> logger, LogLevel level, const std::string &filename,
                    const std::string &func, int32_t line, thread::id threadId,
                    const std::string &threadName, uint32_t elapse, uint64_t time)*/
@@ -200,9 +251,9 @@ LogEvent::LogEvent(std::shared_ptr <Logger> logger, LogLevel level, const std::s
 
 void LogEvent::format(const char *fmt, ...)
 {
-    if(!fmt) {
-        return;
-    }
+    /*if(!fmt) {
+        //return ;
+    }*/
     ::va_list al;
     va_start(al,fmt);
     format(fmt,al);
@@ -211,9 +262,9 @@ void LogEvent::format(const char *fmt, ...)
 
 void LogEvent::format(const char *fmt, va_list al)
 {
-    if(!fmt) {
-        return;
-    }
+    /*if(!fmt) {
+        //return ;
+    }*/
     char*buf=nullptr;
     int len=::vasprintf(&buf,fmt,al);
     if(len!=-1)
@@ -228,8 +279,8 @@ void LogEvent::format(const char *fmt, va_list al)
     return std::chrono::system_clock::now();
 }*/
 
-std::string LogEvent::format(LogEvent::ptr event) {
-    //std::stringstream ss;
+std::string LogFormatter::format(LogEvent::ptr event) {
+    std::stringstream ss;
 
     std::tm tm;
     std::time_t time=static_cast<time_t>(event->getTime());
@@ -239,7 +290,7 @@ std::string LogEvent::format(LogEvent::ptr event) {
     //%H:%M:%S
     //24小时制的小时:十时制表示的分钟:十进制的秒数
     //format:yyyy-mm-dd hh:mm::ss
-    stringStream_<<std::put_time(::localtime_r(&time,&tm),"%Y-%m-%d %H:%M:%S");
+    ss<<std::put_time(::localtime_r(&time,&tm),"%Y-%m-%d %H:%M:%S");
 
 
     std::string prefix;
@@ -274,13 +325,13 @@ std::string LogEvent::format(LogEvent::ptr event) {
         functors_.pop_front();
         task();
     }*/
-    std::lock_guard<std::mutex> lockGuard(mutex_);
-    stringStream_<<prefix.c_str();
-    stringStream_<<std::endl;
-    return stringStream_.str();
+    //std::lock_guard<std::mutex> lockGuard(mutex_);
+    ss<<prefix.c_str();
+    ss<<std::endl;
+    return ss.str();
 }
 
-std::ostream & LogEvent::format(std::ostream &ostream, LogEvent::ptr event) {
+std::ostream & LogFormatter::format(std::ostream &ostream, LogEvent::ptr event) {
     std::tm tm;
     std::time_t time=static_cast<time_t>(event->getTime());
     //%Y-%m-%d
@@ -324,7 +375,7 @@ std::ostream & LogEvent::format(std::ostream &ostream, LogEvent::ptr event) {
         functors_.pop_front();
         task();
     }*/
-    std::lock_guard<std::mutex> lockGuard(mutex_);
+    //std::lock_guard<std::mutex> lockGuard(mutex_);
     ostream<<prefix.c_str();
     ostream<<std::endl;
     return ostream;
@@ -334,67 +385,14 @@ std::ostream & LogEvent::format(std::ostream &ostream, LogEvent::ptr event) {
 
 void LogAppenderStdout::append(Logger::ptr logger, LogLevel level, LogEvent::ptr event)
 {
-    if(level_<=level) {
+    if(level_>=level) {
         std::lock_guard<std::mutex> lockGuard(mutex_);
-        //formatter_->format(std::cout,event);
+        formatter_->format(std::cout,event);
         //event->format(std::cout,event);
-        std::cout<<event->format(event);
+        //std::cout<<event->format(event).data();
     }
 }
 
-LogAppenderAsyncFile::LogAppenderAsyncFile(const std::string &filename)
-                                          :started_(false),running_(false)
-                                          ,persistPeriod_()
-                                          ,filename_(filename)
-                                          ,latch_(1)
-                                          ,persitThread_(std::bind(&LogAppenderAsyncFile::threadFunc,this),"AsyncLogging")
-                                          ,curBuffer_(new LogBuffer)
-{
-    ::mkdir(filename_.c_str(),0755);
-    start();
-}
-
-LogAppenderAsyncFile::~LogAppenderAsyncFile() noexcept {
-    if(started_) {
-        stop();
-    }
-}
-
-void LogAppenderAsyncFile::append(Logger::ptr logger, LogLevel level, LogEvent::ptr event) {
-    std::lock_guard<std::mutex> lockGuard(mutex_);
-
-
-    auto log=logger->getLogEvent()->format(event);
-    if(curBuffer_->avail() >= len) {
-        curBuffer_->append(log.data(),log.size());
-    } else {
-        buffers_.emplace_back(std::move(curBuffer_));
-
-        curBuffer_.reset(new LogBuffer);
-        curBuffer_->append(log.data(),log.size());
-
-        cv_.notify_one();
-    }
-}
-
-
-void LogAppenderAsyncFile::start() {
-    started_= true;
-    running_= true;
-    persitThread_.start();
-    latch_.wait();
-}
-
-
-void LogAppenderAsyncFile::stop() {
-    started_= false;
-    cv_.notify_one();
-    persitThread_.join();
-}
-
-void LogAppenderAsyncFile::threadFunc() {
-    
-}
 
 LoggerManager::LoggerManager() {
     root_.reset(new Logger);

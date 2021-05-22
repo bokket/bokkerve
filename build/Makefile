@@ -128,32 +128,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named bokket
-
-# Build rule for target.
-bokket: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 bokket
-.PHONY : bokket
-
-# fast build rule for target.
-bokket/fast:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/build
-.PHONY : bokket/fast
-
-#=============================================================================
-# Target rules for targets named test_LogStream
-
-# Build rule for target.
-test_LogStream: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 test_LogStream
-.PHONY : test_LogStream
-
-# fast build rule for target.
-test_LogStream/fast:
-	$(MAKE) -f CMakeFiles/test_LogStream.dir/build.make CMakeFiles/test_LogStream.dir/build
-.PHONY : test_LogStream/fast
-
-#=============================================================================
 # Target rules for targets named test_Log
 
 # Build rule for target.
@@ -166,32 +140,18 @@ test_Log/fast:
 	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/build
 .PHONY : test_Log/fast
 
-bokket/Log/FileWriterType.o: bokket/Log/FileWriterType.cpp.o
+#=============================================================================
+# Target rules for targets named bokket
 
-.PHONY : bokket/Log/FileWriterType.o
+# Build rule for target.
+bokket: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 bokket
+.PHONY : bokket
 
-# target to build an object file
-bokket/Log/FileWriterType.cpp.o:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/FileWriterType.cpp.o
-.PHONY : bokket/Log/FileWriterType.cpp.o
-
-bokket/Log/FileWriterType.i: bokket/Log/FileWriterType.cpp.i
-
-.PHONY : bokket/Log/FileWriterType.i
-
-# target to preprocess a source file
-bokket/Log/FileWriterType.cpp.i:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/FileWriterType.cpp.i
-.PHONY : bokket/Log/FileWriterType.cpp.i
-
-bokket/Log/FileWriterType.s: bokket/Log/FileWriterType.cpp.s
-
-.PHONY : bokket/Log/FileWriterType.s
-
-# target to generate assembly for a file
-bokket/Log/FileWriterType.cpp.s:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/FileWriterType.cpp.s
-.PHONY : bokket/Log/FileWriterType.cpp.s
+# fast build rule for target.
+bokket/fast:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/build
+.PHONY : bokket/fast
 
 bokket/Log/Log.o: bokket/Log/Log.cpp.o
 
@@ -220,32 +180,32 @@ bokket/Log/Log.cpp.s:
 	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/Log.cpp.s
 .PHONY : bokket/Log/Log.cpp.s
 
-bokket/Log/LogStream.o: bokket/Log/LogStream.cpp.o
+bokket/Log/LogFile.o: bokket/Log/LogFile.cpp.o
 
-.PHONY : bokket/Log/LogStream.o
+.PHONY : bokket/Log/LogFile.o
 
 # target to build an object file
-bokket/Log/LogStream.cpp.o:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/LogStream.cpp.o
-.PHONY : bokket/Log/LogStream.cpp.o
+bokket/Log/LogFile.cpp.o:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/LogFile.cpp.o
+.PHONY : bokket/Log/LogFile.cpp.o
 
-bokket/Log/LogStream.i: bokket/Log/LogStream.cpp.i
+bokket/Log/LogFile.i: bokket/Log/LogFile.cpp.i
 
-.PHONY : bokket/Log/LogStream.i
+.PHONY : bokket/Log/LogFile.i
 
 # target to preprocess a source file
-bokket/Log/LogStream.cpp.i:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/LogStream.cpp.i
-.PHONY : bokket/Log/LogStream.cpp.i
+bokket/Log/LogFile.cpp.i:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/LogFile.cpp.i
+.PHONY : bokket/Log/LogFile.cpp.i
 
-bokket/Log/LogStream.s: bokket/Log/LogStream.cpp.s
+bokket/Log/LogFile.s: bokket/Log/LogFile.cpp.s
 
-.PHONY : bokket/Log/LogStream.s
+.PHONY : bokket/Log/LogFile.s
 
 # target to generate assembly for a file
-bokket/Log/LogStream.cpp.s:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/LogStream.cpp.s
-.PHONY : bokket/Log/LogStream.cpp.s
+bokket/Log/LogFile.cpp.s:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/LogFile.cpp.s
+.PHONY : bokket/Log/LogFile.cpp.s
 
 bokket/thread/thread.o: bokket/thread/thread.cpp.o
 
@@ -301,33 +261,6 @@ bokket/thread/util.cpp.s:
 	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/thread/util.cpp.s
 .PHONY : bokket/thread/util.cpp.s
 
-test/test_LogStream.o: test/test_LogStream.cpp.o
-
-.PHONY : test/test_LogStream.o
-
-# target to build an object file
-test/test_LogStream.cpp.o:
-	$(MAKE) -f CMakeFiles/test_LogStream.dir/build.make CMakeFiles/test_LogStream.dir/test/test_LogStream.cpp.o
-.PHONY : test/test_LogStream.cpp.o
-
-test/test_LogStream.i: test/test_LogStream.cpp.i
-
-.PHONY : test/test_LogStream.i
-
-# target to preprocess a source file
-test/test_LogStream.cpp.i:
-	$(MAKE) -f CMakeFiles/test_LogStream.dir/build.make CMakeFiles/test_LogStream.dir/test/test_LogStream.cpp.i
-.PHONY : test/test_LogStream.cpp.i
-
-test/test_LogStream.s: test/test_LogStream.cpp.s
-
-.PHONY : test/test_LogStream.s
-
-# target to generate assembly for a file
-test/test_LogStream.cpp.s:
-	$(MAKE) -f CMakeFiles/test_LogStream.dir/build.make CMakeFiles/test_LogStream.dir/test/test_LogStream.cpp.s
-.PHONY : test/test_LogStream.cpp.s
-
 test/test_log.o: test/test_log.cpp.o
 
 .PHONY : test/test_log.o
@@ -365,25 +298,18 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... bokket"
 	@echo "... test_Log"
-	@echo "... test_LogStream"
-	@echo "... bokket/Log/FileWriterType.o"
-	@echo "... bokket/Log/FileWriterType.i"
-	@echo "... bokket/Log/FileWriterType.s"
 	@echo "... bokket/Log/Log.o"
 	@echo "... bokket/Log/Log.i"
 	@echo "... bokket/Log/Log.s"
-	@echo "... bokket/Log/LogStream.o"
-	@echo "... bokket/Log/LogStream.i"
-	@echo "... bokket/Log/LogStream.s"
+	@echo "... bokket/Log/LogFile.o"
+	@echo "... bokket/Log/LogFile.i"
+	@echo "... bokket/Log/LogFile.s"
 	@echo "... bokket/thread/thread.o"
 	@echo "... bokket/thread/thread.i"
 	@echo "... bokket/thread/thread.s"
 	@echo "... bokket/thread/util.o"
 	@echo "... bokket/thread/util.i"
 	@echo "... bokket/thread/util.s"
-	@echo "... test/test_LogStream.o"
-	@echo "... test/test_LogStream.i"
-	@echo "... test/test_LogStream.s"
 	@echo "... test/test_log.o"
 	@echo "... test/test_log.i"
 	@echo "... test/test_log.s"

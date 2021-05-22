@@ -5,25 +5,30 @@
 #ifndef BOKKET_ASYNCFILELOGAPPENDER_H
 #define BOKKET_ASYNCFILELOGAPPENDER_H
 
-#include "LogAppender.h"
+#include "Log.h"
 #include "../net/CountDownLatch.h"
 #include <string>
 #include <mutex>
 #include <thread>
 #include <condition_variable>
 #include <atomic>
+#include <iostream>
+#include <sys/stat.h>
+#include "../thread/thread.h"
 
 
 namespace bokket
 {
 
-class AsyncFileLogAppender: public LogAppender
+class LogAppenderAsyncFile: public LogAppender
 {
 public:
-    AsyncFileLogAppender(const std::string& filename);
-    ~AsyncFileLogAppender();
+    LogAppenderAsyncFile(const std::string& filename,std::time_t persistPeriod);
+    ~LogAppenderAsyncFile();
 
-    void append(const std::string& msg,int32_t line) override;
+    //void append(const std::string& msg,int32_t line,LogLevel level,LogEvent::ptr event) override;
+    void append(Logger::ptr logger,LogLevel level,LogEvent::ptr event) override;
+
 
     void start();
     void stop();
@@ -32,15 +37,22 @@ private:
     void threadFunc();
     
 
-    std::atomic_bool started_;
+    bool started_;
+    bool running_;
 
-    time_t ;
+    std::time_t persistPeriod_;
     std::string filename_;
 
-    mutable std::mutex mutex_;
-    std::thread thread_;
-    std::condition_variable conditionVariable_;
+    std::mutex mutex_;
+    //bokket::Thread persitThread_;
+    Thread persitThread_;
+    std::condition_variable cv_;
     bokket::net::CountDownLatch latch_;
+
+
+    using LogBuffer=bokket::detail::FixedBuffer<bokket::detail::kLargeBuffer>;
+    std::unique_ptr<LogBuffer> curBuffer_;
+    std::vector<std::unique_ptr<LogBuffer>> buffers_;
 
 };
 

@@ -4,9 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/bokket/bokkerve-plus-plus/bokket/Log/FileWriterType.cpp" "/home/bokket/bokkerve-plus-plus/build/CMakeFiles/bokket.dir/bokket/Log/FileWriterType.cpp.o"
   "/home/bokket/bokkerve-plus-plus/bokket/Log/Log.cpp" "/home/bokket/bokkerve-plus-plus/build/CMakeFiles/bokket.dir/bokket/Log/Log.cpp.o"
-  "/home/bokket/bokkerve-plus-plus/bokket/Log/LogStream.cpp" "/home/bokket/bokkerve-plus-plus/build/CMakeFiles/bokket.dir/bokket/Log/LogStream.cpp.o"
+  "/home/bokket/bokkerve-plus-plus/bokket/Log/LogFile.cpp" "/home/bokket/bokkerve-plus-plus/build/CMakeFiles/bokket.dir/bokket/Log/LogFile.cpp.o"
   "/home/bokket/bokkerve-plus-plus/bokket/thread/thread.cpp" "/home/bokket/bokkerve-plus-plus/build/CMakeFiles/bokket.dir/bokket/thread/thread.cpp.o"
   "/home/bokket/bokkerve-plus-plus/bokket/thread/util.cpp" "/home/bokket/bokkerve-plus-plus/build/CMakeFiles/bokket.dir/bokket/thread/util.cpp.o"
   )

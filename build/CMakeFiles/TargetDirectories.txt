@@ -1,5 +1,4 @@
 /home/bokket/bokkerve-plus-plus/build/CMakeFiles/rebuild_cache.dir
-/home/bokket/bokkerve-plus-plus/build/CMakeFiles/bokket.dir
-/home/bokket/bokkerve-plus-plus/build/CMakeFiles/test_LogStream.dir
-/home/bokket/bokkerve-plus-plus/build/CMakeFiles/test_Log.dir
 /home/bokket/bokkerve-plus-plus/build/CMakeFiles/edit_cache.dir
+/home/bokket/bokkerve-plus-plus/build/CMakeFiles/test_Log.dir
+/home/bokket/bokkerve-plus-plus/build/CMakeFiles/bokket.dir

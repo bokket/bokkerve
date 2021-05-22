@@ -64,7 +64,7 @@ void Thread::start() {
     if(ret) {
         started_= false;
         BOKKET_LOG_ERROR(g_logger) << " pthread_create failed,return ret="<< ret
-                                   <<"name=" <<name;
+                                   <<"name=" <<threadName_;
         throw std::logic_error("pthread_create error");
     }
     semaphore_.wait();

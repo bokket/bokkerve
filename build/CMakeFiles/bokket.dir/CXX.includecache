@@ -6,21 +6,17 @@
 
 #IncludeRegexTransform: 
 
-/home/bokket/bokkerve-plus-plus/bokket/Log/FileWriterType.h
-stdint.h
--
-unistd.h
--
+/home/bokket/bokkerve-plus-plus/bokket/Log/FixedBuffer.h
 string
 -
-stdio.h
+cstdio
 -
-memory
+cstring
 -
-sstream
+streambuf
 -
-iomanip
--
+../base/noncopyable.h
+/home/bokket/bokkerve-plus-plus/bokket/base/noncopyable.h
 
 /home/bokket/bokkerve-plus-plus/bokket/Log/Log.cpp
 map
@@ -35,10 +31,10 @@ iostream
 -
 functional
 -
+sys/stat.h
+-
 Log.h
 /home/bokket/bokkerve-plus-plus/bokket/Log/Log.h
-./FileWriterType.h
-/home/bokket/bokkerve-plus-plus/bokket/Log/FileWriterType.h
 
 /home/bokket/bokkerve-plus-plus/bokket/Log/Log.h
 map
@@ -52,8 +48,6 @@ vector
 string
 -
 memory
--
-thread
 -
 chrono
 -
@@ -69,8 +63,10 @@ condition_variable
 -
 ./LogLevel.h
 /home/bokket/bokkerve-plus-plus/bokket/Log/LogLevel.h
-./FileWriterType.h
-/home/bokket/bokkerve-plus-plus/bokket/Log/FileWriterType.h
+./LogFile.h
+/home/bokket/bokkerve-plus-plus/bokket/Log/LogFile.h
+./FixedBuffer.h
+/home/bokket/bokkerve-plus-plus/bokket/Log/FixedBuffer.h
 ../base/noncopyable.h
 /home/bokket/bokkerve-plus-plus/bokket/base/noncopyable.h
 ../base/SpinLock.h
@@ -79,6 +75,28 @@ condition_variable
 /home/bokket/bokkerve-plus-plus/bokket/base/Singleton.h
 ../thread/util.h
 /home/bokket/bokkerve-plus-plus/bokket/thread/util.h
+../thread/thread.h
+/home/bokket/bokkerve-plus-plus/bokket/thread/thread.h
+../net/CountDownLatch.h
+/home/bokket/bokkerve-plus-plus/bokket/net/CountDownLatch.h
+
+/home/bokket/bokkerve-plus-plus/bokket/Log/LogFile.h
+stdint.h
+-
+unistd.h
+-
+string
+-
+stdio.h
+-
+memory
+-
+sstream
+-
+iomanip
+-
+chrono
+-
 
 /home/bokket/bokkerve-plus-plus/bokket/Log/LogLevel.h
 stdint.h
@@ -98,6 +116,38 @@ atomic
 noncopyable.h
 /home/bokket/bokkerve-plus-plus/bokket/base/noncopyable.h
 
+/home/bokket/bokkerve-plus-plus/bokket/base/noncopyable.h
+
+/home/bokket/bokkerve-plus-plus/bokket/net/CountDownLatch.h
+mutex
+-
+condition_variable
+-
+../base/noncopyable.h
+/home/bokket/bokkerve-plus-plus/bokket/base/noncopyable.h
+
+/home/bokket/bokkerve-plus-plus/bokket/thread/Semaphore.h
+mutex
+-
+condition_variable
+-
+
+/home/bokket/bokkerve-plus-plus/bokket/thread/thread.h
+memory
+-
+string
+-
+functional
+-
+pthread.h
+-
+./Semaphore.h
+/home/bokket/bokkerve-plus-plus/bokket/thread/Semaphore.h
+./util.h
+/home/bokket/bokkerve-plus-plus/bokket/thread/util.h
+../Log/Log.h
+/home/bokket/bokkerve-plus-plus/bokket/Log/Log.h
+../base/noncopyable.h
 /home/bokket/bokkerve-plus-plus/bokket/base/noncopyable.h
 
 /home/bokket/bokkerve-plus-plus/bokket/thread/util.h
