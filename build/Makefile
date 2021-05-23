@@ -128,6 +128,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named bokket
+
+# Build rule for target.
+bokket: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 bokket
+.PHONY : bokket
+
+# fast build rule for target.
+bokket/fast:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/build
+.PHONY : bokket/fast
+
+#=============================================================================
 # Target rules for targets named test_Log
 
 # Build rule for target.
@@ -141,17 +154,17 @@ test_Log/fast:
 .PHONY : test_Log/fast
 
 #=============================================================================
-# Target rules for targets named bokket
+# Target rules for targets named test_thread
 
 # Build rule for target.
-bokket: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 bokket
-.PHONY : bokket
+test_thread: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_thread
+.PHONY : test_thread
 
 # fast build rule for target.
-bokket/fast:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/build
-.PHONY : bokket/fast
+test_thread/fast:
+	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/build
+.PHONY : test_thread/fast
 
 bokket/Log/Log.o: bokket/Log/Log.cpp.o
 
@@ -288,6 +301,33 @@ test/test_log.cpp.s:
 	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/test/test_log.cpp.s
 .PHONY : test/test_log.cpp.s
 
+test/test_thread.o: test/test_thread.cpp.o
+
+.PHONY : test/test_thread.o
+
+# target to build an object file
+test/test_thread.cpp.o:
+	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/test/test_thread.cpp.o
+.PHONY : test/test_thread.cpp.o
+
+test/test_thread.i: test/test_thread.cpp.i
+
+.PHONY : test/test_thread.i
+
+# target to preprocess a source file
+test/test_thread.cpp.i:
+	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/test/test_thread.cpp.i
+.PHONY : test/test_thread.cpp.i
+
+test/test_thread.s: test/test_thread.cpp.s
+
+.PHONY : test/test_thread.s
+
+# target to generate assembly for a file
+test/test_thread.cpp.s:
+	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/test/test_thread.cpp.s
+.PHONY : test/test_thread.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -298,6 +338,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... bokket"
 	@echo "... test_Log"
+	@echo "... test_thread"
 	@echo "... bokket/Log/Log.o"
 	@echo "... bokket/Log/Log.i"
 	@echo "... bokket/Log/Log.s"
@@ -313,6 +354,9 @@ help:
 	@echo "... test/test_log.o"
 	@echo "... test/test_log.i"
 	@echo "... test/test_log.s"
+	@echo "... test/test_thread.o"
+	@echo "... test/test_thread.i"
+	@echo "... test/test_thread.s"
 .PHONY : help
 
 

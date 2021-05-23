@@ -3,11 +3,11 @@
 //
 
 #include <mutex>
-/*#include "../bokket/Log/Log.h"
+#include "../bokket/Log/Log.h"
 #include "../bokket/thread/thread.h"
 #include "../bokket/thread/util.h"
-*/
-#include "../bokket/bokket.h"
+
+//#include "../bokket/bokket.h"
 bokket::Logger::ptr g_logger = BOKKET_LOG_ROOT();
 
 int cnt=0;
@@ -27,7 +27,7 @@ void fun1() {
 }
 
 void fun2() {
-    while(true) {
+    while (true) {
         BOKKET_LOG_INFO(g_logger)<<"xxxxxxxxxxxxxxxxxxxxxxxxxxx";
     }
 }
@@ -42,11 +42,11 @@ int main() {
     BOKKET_LOG_INFO(g_logger)<<"thread test begin";
 
     std::vector<bokket::Thread::ptr> thread;
-    for(int i=0;i<2;++i) {
-        bokket::Thread::ptr thread1(new bokket::Thread(&fun2,"name_"+std::to_string(i*2)));
-        bokket::Thread::ptr thread2(new bokket::Thread(&fun3,"name_"+std::to_string(i*2+1)));
+    for(int i=0;i<1;++i) {
+        bokket::Thread::ptr thread1(new bokket::Thread(&fun1,"name_"+std::to_string(i*2)));
+        //bokket::Thread::ptr thread2(new bokket::Thread(&fun2,"name_"+std::to_string(i*2+1)));
         thread.emplace_back(thread1);
-        thread.emplace_back(thread2);
+        //thread.emplace_back(thread2);
     }
     for(auto i=0;i<thread.size();++i) {
         thread[i]->join();

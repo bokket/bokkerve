@@ -70,8 +70,9 @@ CMAKE_BINARY_DIR = /home/bokket/bokkerve-plus-plus/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/test_Log.dir/all
 all: CMakeFiles/bokket.dir/all
+all: CMakeFiles/test_Log.dir/all
+all: CMakeFiles/test_thread.dir/all
 
 .PHONY : all
 
@@ -81,10 +82,38 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/test_Log.dir/clean
 clean: CMakeFiles/bokket.dir/clean
+clean: CMakeFiles/test_Log.dir/clean
+clean: CMakeFiles/test_thread.dir/clean
 
 .PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/bokket.dir
+
+# All Build rule for target.
+CMakeFiles/bokket.dir/all:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/depend
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve-plus-plus/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target bokket"
+.PHONY : CMakeFiles/bokket.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/bokket.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve-plus-plus/build/CMakeFiles 5
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/bokket.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve-plus-plus/build/CMakeFiles 0
+.PHONY : CMakeFiles/bokket.dir/rule
+
+# Convenience name for target.
+bokket: CMakeFiles/bokket.dir/rule
+
+.PHONY : bokket
+
+# clean rule for target.
+CMakeFiles/bokket.dir/clean:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/clean
+.PHONY : CMakeFiles/bokket.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/test_Log.dir
@@ -114,31 +143,31 @@ CMakeFiles/test_Log.dir/clean:
 .PHONY : CMakeFiles/test_Log.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/bokket.dir
+# Target rules for target CMakeFiles/test_thread.dir
 
 # All Build rule for target.
-CMakeFiles/bokket.dir/all:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/depend
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve-plus-plus/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target bokket"
-.PHONY : CMakeFiles/bokket.dir/all
+CMakeFiles/test_thread.dir/all: CMakeFiles/bokket.dir/all
+	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/depend
+	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve-plus-plus/build/CMakeFiles --progress-num=8,9 "Built target test_thread"
+.PHONY : CMakeFiles/test_thread.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/bokket.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve-plus-plus/build/CMakeFiles 5
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/bokket.dir/all
+CMakeFiles/test_thread.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve-plus-plus/build/CMakeFiles 7
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/test_thread.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve-plus-plus/build/CMakeFiles 0
-.PHONY : CMakeFiles/bokket.dir/rule
+.PHONY : CMakeFiles/test_thread.dir/rule
 
 # Convenience name for target.
-bokket: CMakeFiles/bokket.dir/rule
+test_thread: CMakeFiles/test_thread.dir/rule
 
-.PHONY : bokket
+.PHONY : test_thread
 
 # clean rule for target.
-CMakeFiles/bokket.dir/clean:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/clean
-.PHONY : CMakeFiles/bokket.dir/clean
+CMakeFiles/test_thread.dir/clean:
+	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/clean
+.PHONY : CMakeFiles/test_thread.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

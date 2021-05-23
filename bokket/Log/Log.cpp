@@ -203,8 +203,29 @@ void Logger::delAppender(const std::string &appendername, LogAppender::ptr appen
     }
 }*/
 
+LogFormatter::ptr LogAppender::getFormatter() {
+    std::lock_guard<std::mutex> lockGuard(mutex_);
+    return formatter_;
+}
+
+void LogAppender::setFormatter(LogFormatter::ptr val) {
+    std::lock_guard<std::mutex> lockGuard(mutex_);
+    formatter_=val;
+    if(formatter_) {
+        hasFormatter_= true;
+    } else {
+        hasFormatter_= false;
+    }
+}
+
+
 void Logger::addAppender(LogAppender::ptr appender) {
     std::lock_guard<std::mutex> lockGuard(mutex_);
+       /* if(!appender->getFormatter()) {
+            std::lock_guard <std::mutex> lockGuardll(appender->mutex_);
+            //appender->setFormatter(formatter_);
+            appender->formatter_=formatter_;
+        }*/
     appenders_.emplace_back(appender);
 }
 
@@ -234,9 +255,12 @@ LogFormatter::ptr Logger::getLogFormatter()
 /*LogEvent::LogEvent(std::shared_ptr <Logger> logger, LogLevel level, const std::string &filename,
                    const std::string &func, int32_t line, thread::id threadId,
                    const std::string &threadName, uint32_t elapse, uint64_t time)*/
+/*LogEvent::LogEvent(std::shared_ptr <Logger> logger, LogLevel level, const std::string &filename,
+                   const std::string &func, int32_t line, int threadId, uint32_t fiberId, uint32_t elapse,
+                   std::time_t time)*/
 LogEvent::LogEvent(std::shared_ptr <Logger> logger, LogLevel level, const std::string &filename,
                    const std::string &func, int32_t line, int threadId, uint32_t fiberId, uint32_t elapse,
-                   std::time_t time)
+                   std::time_t time, const std::string &threadName)
                    :logger_(logger)
                    ,level_(level)
                    ,filename_(filename)
@@ -244,9 +268,9 @@ LogEvent::LogEvent(std::shared_ptr <Logger> logger, LogLevel level, const std::s
                    ,line_(line)
                    ,threadId_(threadId)
                    ,fiberId_(fiberId)
-                   //,threadName_(threadName)
                    ,elapse_(elapse)
                    ,time_(time)
+                   ,threadName_(threadName)
 {}
 
 void LogEvent::format(const char *fmt, ...)
@@ -294,6 +318,9 @@ std::string LogFormatter::format(LogEvent::ptr event) {
 
 
     std::string prefix;
+
+    prefix.append("  ");
+    prefix.append(std::to_string(event->getThreadId()));
 
     prefix.append("  ");
     prefix.append(event->getThreadName());
@@ -345,6 +372,9 @@ std::ostream & LogFormatter::format(std::ostream &ostream, LogEvent::ptr event) 
     std::string prefix;
 
     prefix.append("  ");
+    prefix.append(std::to_string(event->getThreadId()));
+
+    prefix.append("  ");
     prefix.append(event->getThreadName());
 
     prefix.append("  ");
@@ -385,7 +415,7 @@ std::ostream & LogFormatter::format(std::ostream &ostream, LogEvent::ptr event) 
 
 void LogAppenderStdout::append(Logger::ptr logger, LogLevel level, LogEvent::ptr event)
 {
-    if(level_>=level) {
+    if(level_<=level) {
         std::lock_guard<std::mutex> lockGuard(mutex_);
         formatter_->format(std::cout,event);
         //event->format(std::cout,event);

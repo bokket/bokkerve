@@ -85,10 +85,10 @@ target_link_libraries(test_Log ${LIBS})
 #add_dependencies(test_Config bokket)
 #target_link_libraries(test_Config ${LIBS})
 
-#add_executable(test_thread ./test/test_thread.cpp)
-#add_dependencies(test_thread bokket)
+add_executable(test_thread ./test/test_thread.cpp)
+add_dependencies(test_thread bokket)
 #force_redefine_file_macro_for_sources(test_thread)
-#target_link_libraries(test_thread ${LIBS})
+target_link_libraries(test_thread ${LIBS})
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)

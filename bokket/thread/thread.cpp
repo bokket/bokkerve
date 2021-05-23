@@ -2,19 +2,19 @@
 // Created by bokket on 2021/5/10.
 //
 
-#include <sys/prctl.h>
 #include <atomic>
+#include <sys/prctl.h>
+
 #include "thread.h"
-//#include "./util.h"
 
 namespace bokket
 {
 
 std::atomic<int> threadCount(0);
 
-static thread_local Thread* t_thread= nullptr;
-static thread_local pid_t t_cachedThreadId = 0;
-static thread_local std::string t_threadName= "UNKNOW";
+thread_local Thread* t_thread= nullptr;
+thread_local pid_t t_cachedThreadId = 0;
+thread_local std::string t_threadName= "UNKNOW";
 
 pid_t Thread::currentThreadTid() {
     if(t_cachedThreadId==0) {
@@ -104,7 +104,7 @@ void * Thread::run(void *arg) {
     t_threadName = thread->threadName_.empty() ? "bokketThread" : thread->threadName_;
     ::prctl(PR_SET_NAME,bokket::t_threadName.c_str());
 
-    thread->tid_ = bokket::getThreadId();
+    thread->tid_ = Thread::currentThreadTid();
 
     //设置该进程线程的名字
     ::pthread_setname_np(::pthread_self(),thread->threadName_.substr(0,15).c_str());

@@ -5,6 +5,7 @@
 
 
 #include <chrono>
+#include <string>
 #include <iostream>
 
 #include "gtest/gtest.h"
@@ -29,7 +30,7 @@
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
     std::cout << count << "次运行耗时" << duration.count() << "us" << std::endl;
 }*/
-/*
+
 TEST(StdoutBenchmarks,LogStdoutAppender) {
     bokket::Logger::ptr logger(new bokket::Logger);
 
@@ -48,14 +49,25 @@ TEST(StdoutBenchmarks,LogStdoutAppender) {
 
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
     std::cout << count << "次运行耗时" << duration.count() << "us" << std::endl;
+
+    BOKKET_LOG_INFO(logger)<<"test";
+
+    BOKKET_LOG_ERROR(logger)<<"test macro error";
+
+    BOKKET_LOG_FMT_ERROR(logger, "test macro fmt error %s", "wxz");
+
     auto l=bokket::LoggerMgr::GetInstance()->getLogger("xx");
-    BOKKET_LOG_INFO(l)<<"xxx";
+
+    BOKKET_LOG_DEBUG(l)<<"xxxxxxx";
+    BOKKET_LOG_INFO(l)<<"xxxxxx";
 }
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
-}*/
+}
+
+/*
 int main()
 {
     bokket::Logger::ptr logger(new bokket::Logger);
@@ -72,7 +84,7 @@ int main()
 
     auto l=bokket::LoggerMgr::GetInstance()->getLogger("xx");
     BOKKET_LOG_INFO(l)<<"xxx";
-}
+}*/
 /*
 int main() {
    bokket::Logger::ptr logger(new bokket::Logger);

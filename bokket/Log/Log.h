@@ -40,7 +40,7 @@
     if(logger->getLevel() <= level )   \
         bokket::LogEventWrap(bokket::LogEvent::ptr (new bokket::LogEvent(logger,level,\
                 __FILE__,__FUNCTION__,__LINE__,bokket::getThreadId(),bokket::getFiberId(),\
-                0,std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())) )).stream()
+                0,std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) ,bokket::Thread::getNowThreadName() ) )).stream()
 //bokket::getFiberId()
 
 
@@ -55,7 +55,7 @@
     if(logger->getLevel() <= level )   \
         bokket::LogEventWrap(bokket::LogEvent::ptr (new bokket::LogEvent(logger,level,\
                 __FILE__,__FUNCTION__,__LINE__,bokket::getThreadId(),bokket::getFiberId(),\
-                0,std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())) )).getEvent()->format(fmt, __VA_ARGS__)
+                0,std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) ,bokket::Thread::getNowThreadName() ) )).getEvent()->format(fmt, __VA_ARGS__)
 
 //bokket::getFiberId()
 #define BOKKET_LOG_FMT_DEBUG(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::DEBUG,fmt,__VA_ARGS__)
@@ -87,7 +87,8 @@ public:
     LogEvent(std::shared_ptr<Logger> logger,LogLevel level
              ,const std::string& filename,const std::string& func,int32_t line
              ,int threadId,uint32_t fiberId
-             ,uint32_t elapse,std::time_t time);
+             ,uint32_t elapse,std::time_t time
+             ,const std::string& threadName);
              //thread::id threadId
     //uint32_t fiberId
     //const std::string& threadName
@@ -224,12 +225,17 @@ public:
 
     LogLevel getLevel() const { return level_; }
 
-    //std::mutex& getMutex() { return mutex_; }
+    LogFormatter::ptr getFormatter();
 
-protected:
-    LogLevel level_;
+    void setFormatter(LogFormatter::ptr val);
+
+    //std::mutex getMutex() { return mutex_; }
+
+public:
+    LogLevel level_=LogLevel::DEBUG;
     std::mutex mutex_;
     LogFormatter::ptr formatter_;
+    bool hasFormatter_=false;
 };
 
 

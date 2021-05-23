@@ -144,15 +144,9 @@ unistd.h
 syscall.h
 -
 
-/home/bokket/bokkerve-plus-plus/test/test_log.cpp
-chrono
+/home/bokket/bokkerve-plus-plus/test/test_thread.cpp
+mutex
 -
-string
--
-iostream
--
-gtest/gtest.h
-/home/bokket/bokkerve-plus-plus/test/gtest/gtest.h
 ../bokket/Log/Log.h
 /home/bokket/bokkerve-plus-plus/bokket/Log/Log.h
 ../bokket/thread/thread.h

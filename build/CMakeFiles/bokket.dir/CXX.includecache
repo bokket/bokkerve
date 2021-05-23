@@ -132,14 +132,6 @@ mutex
 condition_variable
 -
 
-/home/bokket/bokkerve-plus-plus/bokket/thread/thread.cpp
-sys/prctl.h
--
-atomic
--
-thread.h
-/home/bokket/bokkerve-plus-plus/bokket/thread/thread.h
-
 /home/bokket/bokkerve-plus-plus/bokket/thread/thread.h
 memory
 -
