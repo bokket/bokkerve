@@ -55,14 +55,15 @@
     if(logger->getLevel() <= level )   \
         bokket::LogEventWrap(bokket::LogEvent::ptr (new bokket::LogEvent(logger,level,\
                 __FILE__,__FUNCTION__,__LINE__,bokket::getThreadId(),bokket::getFiberId(),\
-                0,std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())) )).getEvent()->formt(fmt,__VA_ARGS__)
+                0,std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())) )).getEvent()->format(fmt, __VA_ARGS__)
 
 //bokket::getFiberId()
-#define BOKKET_LOG_FMT_DEBUG(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::DEBUG,fmt,_VA_ARGS_)
-#define BOKKET_LOG_FMT_INFO(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::INFO,fmt,_VA_ARGS_)
-#define BOKKET_LOG_FMT_WARN(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::WARNNING,fmt,_VA_ARGS_)
-#define BOKKET_LOG_FMT_ERROR(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::ERROR,fmt,_VA_ARGS_)
-#define BOKKET_LOG_FMT_FATAL(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::FATAL,fmt,_VA_ARGS_)
+#define BOKKET_LOG_FMT_DEBUG(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::DEBUG,fmt,__VA_ARGS__)
+#define BOKKET_LOG_FMT_INFO(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::INFO,fmt,__VA_ARGS__)
+#define BOKKET_LOG_FMT_WARN(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::WARNNING,fmt,__VA_ARGS__)
+#define BOKKET_LOG_FMT_ERROR(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::ERROR,fmt,__VA_ARGS__)
+#define BOKKET_LOG_FMT_FATAL(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::FATAL,fmt,__VA_ARGS__)
+
 
 
 #define BOKKET_LOG_ROOT() bokket::LoggerMgr::GetInstance()->getRoot()

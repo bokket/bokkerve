@@ -6,32 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/bokket/bokkerve-plus-plus/bokket/Log/AsyncFileLogAppender.cpp
-AsyncFileLogAppender.h
-/home/bokket/bokkerve-plus-plus/bokket/Log/AsyncFileLogAppender.h
-
-/home/bokket/bokkerve-plus-plus/bokket/Log/AsyncFileLogAppender.h
-Log.h
-/home/bokket/bokkerve-plus-plus/bokket/Log/Log.h
-../net/CountDownLatch.h
-/home/bokket/bokkerve-plus-plus/bokket/net/CountDownLatch.h
-string
--
-mutex
--
-thread
--
-condition_variable
--
-atomic
--
-iostream
--
-sys/stat.h
--
-../thread/thread.h
-/home/bokket/bokkerve-plus-plus/bokket/thread/thread.h
-
 /home/bokket/bokkerve-plus-plus/bokket/Log/FixedBuffer.h
 string
 -
@@ -179,10 +153,6 @@ gtest/gtest.h
 /home/bokket/bokkerve-plus-plus/test/gtest/gtest.h
 ../bokket/Log/Log.h
 /home/bokket/bokkerve-plus-plus/bokket/Log/Log.h
-../bokket/Log/AsyncFileLogAppender.h
-/home/bokket/bokkerve-plus-plus/bokket/Log/AsyncFileLogAppender.h
-../bokket/Log/AsyncFileLogAppender.cpp
-/home/bokket/bokkerve-plus-plus/bokket/Log/AsyncFileLogAppender.cpp
 ../bokket/thread/thread.h
 /home/bokket/bokkerve-plus-plus/bokket/thread/thread.h
 ../bokket/thread/util.h

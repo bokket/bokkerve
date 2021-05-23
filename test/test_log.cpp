@@ -9,8 +9,8 @@
 
 #include "gtest/gtest.h"
 #include "../bokket/Log/Log.h"
-#include "../bokket/Log/AsyncFileLogAppender.h"
-#include "../bokket/Log/AsyncFileLogAppender.cpp"
+//#include "../bokket/Log/AsyncFileLogAppender.h"
+//#include "../bokket/Log/AsyncFileLogAppender.cpp"
 #include "../bokket/thread/thread.h"
 #include "../bokket/thread/util.h"
 
@@ -68,8 +68,10 @@ int main()
     BOKKET_LOG_INFO(logger)<<"test";
     BOKKET_LOG_ERROR(logger)<<"test macro error";
 
-    //auto l=bokket::LoggerMgr::GetInstance()->getLogger("xx");
-    //BOKKET_LOG_INFO(l)<<"xxx";
+    BOKKET_LOG_FMT_ERROR(logger, "test macro fmt error %s", "wxz");
+
+    auto l=bokket::LoggerMgr::GetInstance()->getLogger("xx");
+    BOKKET_LOG_INFO(l)<<"xxx";
 }
 /*
 int main() {
