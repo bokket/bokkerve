@@ -100,9 +100,22 @@ CMakeFiles/bokket.dir/bokket/Log/LogFile.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bokket.dir/bokket/Log/LogFile.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/bokket/bokkerve-plus-plus/bokket/Log/LogFile.cpp -o CMakeFiles/bokket.dir/bokket/Log/LogFile.cpp.s
 
+CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.o: CMakeFiles/bokket.dir/flags.make
+CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.o: ../bokket/Log/AsyncFileLogAppender.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/bokket/bokkerve-plus-plus/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.o -c /home/bokket/bokkerve-plus-plus/bokket/Log/AsyncFileLogAppender.cpp
+
+CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/bokket/bokkerve-plus-plus/bokket/Log/AsyncFileLogAppender.cpp > CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.i
+
+CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/bokket/bokkerve-plus-plus/bokket/Log/AsyncFileLogAppender.cpp -o CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.s
+
 CMakeFiles/bokket.dir/bokket/thread/util.cpp.o: CMakeFiles/bokket.dir/flags.make
 CMakeFiles/bokket.dir/bokket/thread/util.cpp.o: ../bokket/thread/util.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/bokket/bokkerve-plus-plus/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/bokket.dir/bokket/thread/util.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/bokket/bokkerve-plus-plus/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/bokket.dir/bokket/thread/util.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bokket.dir/bokket/thread/util.cpp.o -c /home/bokket/bokkerve-plus-plus/bokket/thread/util.cpp
 
 CMakeFiles/bokket.dir/bokket/thread/util.cpp.i: cmake_force
@@ -115,7 +128,7 @@ CMakeFiles/bokket.dir/bokket/thread/util.cpp.s: cmake_force
 
 CMakeFiles/bokket.dir/bokket/thread/thread.cpp.o: CMakeFiles/bokket.dir/flags.make
 CMakeFiles/bokket.dir/bokket/thread/thread.cpp.o: ../bokket/thread/thread.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/bokket/bokkerve-plus-plus/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/bokket.dir/bokket/thread/thread.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/bokket/bokkerve-plus-plus/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/bokket.dir/bokket/thread/thread.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bokket.dir/bokket/thread/thread.cpp.o -c /home/bokket/bokkerve-plus-plus/bokket/thread/thread.cpp
 
 CMakeFiles/bokket.dir/bokket/thread/thread.cpp.i: cmake_force
@@ -130,6 +143,7 @@ CMakeFiles/bokket.dir/bokket/thread/thread.cpp.s: cmake_force
 bokket_OBJECTS = \
 "CMakeFiles/bokket.dir/bokket/Log/Log.cpp.o" \
 "CMakeFiles/bokket.dir/bokket/Log/LogFile.cpp.o" \
+"CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.o" \
 "CMakeFiles/bokket.dir/bokket/thread/util.cpp.o" \
 "CMakeFiles/bokket.dir/bokket/thread/thread.cpp.o"
 
@@ -138,11 +152,12 @@ bokket_EXTERNAL_OBJECTS =
 
 ../lib/libbokket.so: CMakeFiles/bokket.dir/bokket/Log/Log.cpp.o
 ../lib/libbokket.so: CMakeFiles/bokket.dir/bokket/Log/LogFile.cpp.o
+../lib/libbokket.so: CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.o
 ../lib/libbokket.so: CMakeFiles/bokket.dir/bokket/thread/util.cpp.o
 ../lib/libbokket.so: CMakeFiles/bokket.dir/bokket/thread/thread.cpp.o
 ../lib/libbokket.so: CMakeFiles/bokket.dir/build.make
 ../lib/libbokket.so: CMakeFiles/bokket.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/bokket/bokkerve-plus-plus/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX shared library ../lib/libbokket.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/bokket/bokkerve-plus-plus/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX shared library ../lib/libbokket.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/bokket.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

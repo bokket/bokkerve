@@ -39,7 +39,7 @@
 #define BOKKET_LOG_LEVEL(logger,level) \
     if(logger->getLevel() <= level )   \
         bokket::LogEventWrap(bokket::LogEvent::ptr (new bokket::LogEvent(logger,level,\
-                __FILE__,__FUNCTION__,__LINE__,bokket::getThreadId(),bokket::getFiberId(),\
+                __FILE__,__FUNCTION__,__LINE__,bokket::Thread::currentThreadTid(),bokket::getFiberId(),\
                 0,std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) ,bokket::Thread::getNowThreadName() ) )).stream()
 //bokket::getFiberId()
 
@@ -54,7 +54,7 @@
 #define BOKKET_LOG_FMT_LEVEL(logger,level,fmt,...) \
     if(logger->getLevel() <= level )   \
         bokket::LogEventWrap(bokket::LogEvent::ptr (new bokket::LogEvent(logger,level,\
-                __FILE__,__FUNCTION__,__LINE__,bokket::getThreadId(),bokket::getFiberId(),\
+                __FILE__,__FUNCTION__,__LINE__,bokket::Thread::currentThreadTid(),bokket::getFiberId(),\
                 0,std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) ,bokket::Thread::getNowThreadName() ) )).getEvent()->format(fmt, __VA_ARGS__)
 
 //bokket::getFiberId()

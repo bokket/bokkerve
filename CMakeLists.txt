@@ -60,7 +60,7 @@ set(LIB_SRC
 		bokket/thread/thread.h
 		bokket/thread/thread.cpp
 		bokket/Log/FixedBuffer.h
-		#./bokket/Config/config.cpp
+		#bokket/Config/config.cpp
 		)
 
 add_library(bokket SHARED ${LIB_SRC})

@@ -60,6 +60,10 @@ TEST(StdoutBenchmarks,LogStdoutAppender) {
 
     BOKKET_LOG_DEBUG(l)<<"xxxxxxx";
     BOKKET_LOG_INFO(l)<<"xxxxxx";
+
+    /*auto m=bokket::LoggerMgr::GetInstance()->getLogger("test");
+    m->addAppender(bokket::LogAppender::ptr(new bokket::LogAppenderAsyncFile("./log-",20)));
+    BOKKET_LOG_INFO(m)<<"file test";*/
 }
 
 int main(int argc, char **argv) {

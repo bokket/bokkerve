@@ -17,9 +17,9 @@ std::mutex mutex_;
 
 void fun1() {
     BOKKET_LOG_INFO(g_logger)<<"name:"<<bokket::Thread::getNowThreadName()
-                             <<"this.name"<<bokket::Thread::getThis()->getName()
-                             <<"id:"<<bokket::getThreadId()
-                             <<"this.id"<<bokket::Thread::getThis()->getId();
+                             <<" this.name:"<<bokket::Thread::getThis()->getName()
+                             <<" id:"<<bokket::getThreadId()
+                             <<" this.id:"<<bokket::Thread::getThis()->getId();
 
     for(int i=0;i<100000;i++) {
         std::lock_guard<std::mutex> lockGuard(mutex_);
@@ -45,9 +45,9 @@ int main() {
     std::vector<bokket::Thread::ptr> thread;
     for(int i=0;i<1;++i) {
         bokket::Thread::ptr thread1(new bokket::Thread(&fun1,"name_"+std::to_string(i*2)));
-        bokket::Thread::ptr thread2(new bokket::Thread(&fun2,"name_"+std::to_string(i*2+1)));
+        //bokket::Thread::ptr thread2(new bokket::Thread(&fun2,"name_"+std::to_string(i*2+1)));
         thread.emplace_back(thread1);
-        thread.emplace_back(thread2);
+        //thread.emplace_back(thread2);
     }
     for(auto i=0;i<thread.size();++i) {
         thread[i]->join();

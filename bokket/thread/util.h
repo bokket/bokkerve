@@ -7,6 +7,8 @@
 
 
 #include <string>
+#include <vector>
+
 #include <stdint.h>
 #include <assert.h>
 #include <unistd.h>
@@ -43,6 +45,11 @@ pid_t getThreadId();
 
 
 uint32_t getFiberId();
+
+void backTrace(std::vector<std::string>& bt,int size=64,int skip=1);
+std::string backTraceToString(int size=64,int skip=2,const std::string& prefix="");
+
+
 }
 
 #endif //BOKKERVE_UTIL_H

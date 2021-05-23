@@ -44,7 +44,7 @@ void LogAppenderAsyncFile::append(Logger::ptr logger, LogLevel level, LogEvent::
 void LogAppenderAsyncFile::start() {
     started_= true;
     running_= true;
-    persitThread_.start();
+    //persitThread_.start();
     latch_.wait();
 }
 

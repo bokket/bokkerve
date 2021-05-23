@@ -97,7 +97,7 @@ public:
     {
         auto tmp = Lookup<T>(name);
         if (tmp==nullptr) {
-            BOKKET_LOG_INFO(BOKKET_LOG_ROOT()) << "Lookup name=" << name << "exists";
+            BOKKET_LOG_INFO(BOKKET_LOG_ROOT()) << "Lookup name=" << name << " exists";
             return tmp;
         }
         if (name.find_first_not_of("abcdefghikjlmnopqrstuvwxyz._012345678910") != std::string::npos)

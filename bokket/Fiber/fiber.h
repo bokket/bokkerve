@@ -52,6 +52,8 @@ public:
 
     static void yieldToReady();
 
+    static void yieldToHold();
+
     static uint64_t totalFibers();
 
     static void mainFunc();

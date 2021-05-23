@@ -166,6 +166,33 @@ test_thread/fast:
 	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/build
 .PHONY : test_thread/fast
 
+bokket/Log/AsyncFileLogAppender.o: bokket/Log/AsyncFileLogAppender.cpp.o
+
+.PHONY : bokket/Log/AsyncFileLogAppender.o
+
+# target to build an object file
+bokket/Log/AsyncFileLogAppender.cpp.o:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.o
+.PHONY : bokket/Log/AsyncFileLogAppender.cpp.o
+
+bokket/Log/AsyncFileLogAppender.i: bokket/Log/AsyncFileLogAppender.cpp.i
+
+.PHONY : bokket/Log/AsyncFileLogAppender.i
+
+# target to preprocess a source file
+bokket/Log/AsyncFileLogAppender.cpp.i:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.i
+.PHONY : bokket/Log/AsyncFileLogAppender.cpp.i
+
+bokket/Log/AsyncFileLogAppender.s: bokket/Log/AsyncFileLogAppender.cpp.s
+
+.PHONY : bokket/Log/AsyncFileLogAppender.s
+
+# target to generate assembly for a file
+bokket/Log/AsyncFileLogAppender.cpp.s:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.s
+.PHONY : bokket/Log/AsyncFileLogAppender.cpp.s
+
 bokket/Log/Log.o: bokket/Log/Log.cpp.o
 
 .PHONY : bokket/Log/Log.o
@@ -339,6 +366,9 @@ help:
 	@echo "... bokket"
 	@echo "... test_Log"
 	@echo "... test_thread"
+	@echo "... bokket/Log/AsyncFileLogAppender.o"
+	@echo "... bokket/Log/AsyncFileLogAppender.i"
+	@echo "... bokket/Log/AsyncFileLogAppender.s"
 	@echo "... bokket/Log/Log.o"
 	@echo "... bokket/Log/Log.i"
 	@echo "... bokket/Log/Log.s"
