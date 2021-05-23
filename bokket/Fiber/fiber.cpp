@@ -3,10 +3,16 @@
 //
 
 #include "fiber.h"
+
 #include <atomic>
+
+
+#include "../Log/Log.h"
 
 namespace bokket
 {
+
+static Logger::ptr g_logger= BOKKET_LOG_NAME("system");
 
 static std::atomic<uint64_t> fiberId_ {0};
 static std::atomic<uint64_t> fiberCount_ {0};

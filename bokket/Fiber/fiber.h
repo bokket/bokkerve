@@ -14,8 +14,7 @@ namespace bokket
 class Fiber: public std::enable_shared_from_this<Fiber>
 {
 public:
-    typedef std::shared_ptr<Fiber> ptr;
-
+    using ptr = std::shared_ptr<Fiber>;
     enum class Status :uint8_t
     {
         INIT,
