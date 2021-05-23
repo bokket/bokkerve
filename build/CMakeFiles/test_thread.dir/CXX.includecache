@@ -147,6 +147,8 @@ syscall.h
 /home/bokket/bokkerve-plus-plus/test/test_thread.cpp
 mutex
 -
+vector
+-
 ../bokket/Log/Log.h
 /home/bokket/bokkerve-plus-plus/bokket/Log/Log.h
 ../bokket/thread/thread.h

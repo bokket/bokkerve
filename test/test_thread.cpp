@@ -3,6 +3,7 @@
 //
 
 #include <mutex>
+#include <vector>
 #include "../bokket/Log/Log.h"
 #include "../bokket/thread/thread.h"
 #include "../bokket/thread/util.h"
@@ -44,9 +45,9 @@ int main() {
     std::vector<bokket::Thread::ptr> thread;
     for(int i=0;i<1;++i) {
         bokket::Thread::ptr thread1(new bokket::Thread(&fun1,"name_"+std::to_string(i*2)));
-        //bokket::Thread::ptr thread2(new bokket::Thread(&fun2,"name_"+std::to_string(i*2+1)));
+        bokket::Thread::ptr thread2(new bokket::Thread(&fun2,"name_"+std::to_string(i*2+1)));
         thread.emplace_back(thread1);
-        //thread.emplace_back(thread2);
+        thread.emplace_back(thread2);
     }
     for(auto i=0;i<thread.size();++i) {
         thread[i]->join();

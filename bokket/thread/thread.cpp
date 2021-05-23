@@ -55,9 +55,7 @@ Thread::Thread(std::function<void()> cb, const std::string &name)
         int num = threadCount.fetch_add(1);
         threadName_=std::to_string(num);
     }
-}
 
-void Thread::start() {
     started_= true;
     int ret = pthread_create(&thread_, nullptr,&Thread::run,this);
 
@@ -70,13 +68,27 @@ void Thread::start() {
     semaphore_.wait();
 }
 
+/*
+void Thread::start() {
+    started_= true;
+    int ret = pthread_create(&thread_, nullptr,&Thread::run,this);
+
+    if(ret) {
+        started_= false;
+        BOKKET_LOG_ERROR(g_logger) << " pthread_create failed,return ret="<< ret
+                                   <<"name=" <<threadName_;
+        throw std::logic_error("pthread_create error");
+    }
+    semaphore_.wait();
+}*/
+
 Thread::~Thread() {
-    /*if(thread_) {
-        ::pthread_detach(thread_);
-    }*/
-    if(started_ && !joined_) {
+    if(thread_) {
         ::pthread_detach(thread_);
     }
+    /*if(started_ && !joined_) {
+        ::pthread_detach(thread_);
+    }*/
 }
 
 bool Thread::isStarted() {
@@ -90,7 +102,7 @@ void Thread::join() {
         if(ret) {
             joined_= false;
             BOKKET_LOG_ERROR(g_logger) << " pthread_join failed,return ret="<< ret
-                                       <<"name=" << threadName_;
+                                       <<" name=" << threadName_;
             throw std::logic_error("pthread_create error");
         }
         thread_ = 0;
