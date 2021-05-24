@@ -22,7 +22,7 @@ public:
     using ptr= std::shared_ptr<Scheduler>;
 
 public:
-    Scheduler(size_t threads=1,bool useCaller=true,const std::string& name="");
+    Scheduler(size_t threads=1,bool useCaller=true,const std::string& name="UNKNOW");
 
     virtual ~Scheduler();
 

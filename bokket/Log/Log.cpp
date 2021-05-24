@@ -93,7 +93,7 @@ Logger::Logger(const std::string &basename)
               ,level_(LogLevel::DEBUG)
 {
     //formatter_.reset(new LogFormatter("%Y-%m-));
-    formatter_.reset(new LogFormatter);
+    //formatter_.reset(new LogFormatter);
 }
 
 void Logger::append(LogLevel level, LogEvent::ptr event) 

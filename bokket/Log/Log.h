@@ -71,6 +71,10 @@
 #define BOKKET_LOG_NAME(name) bokket::LoggerMgr::GetInstance()->getLogger(name)
 
 
+#define SYSTEMLOGGER() BOKKET_LOG_NAME("system")
+
+
+
 namespace bokket
 {
 
@@ -94,30 +98,30 @@ public:
     //const std::string& threadName
     ~LogEvent()=default;
 
-    const std::string& getFilename() const { return filename_; }
+    const std::string& getFilename()        const { return filename_; }
 
-    const std::string& getFunc() const { return func_; }
+    const std::string& getFunc()            const { return func_; }
 
-    uint32_t getElapse() const { return elapse_; }
+    uint32_t getElapse()                    const { return elapse_; }
 
     //thread::id getThreadId() const { return threadId_; }
-    int getThreadId() const { return threadId_; }
+    int getThreadId()                       const { return threadId_; }
 
-    uint32_t getFiberId() const { return fiberId_; }
+    uint32_t getFiberId()                   const { return fiberId_; }
 
-    const std::string& getThreadName() const { return threadName_; }
+    const std::string& getThreadName()      const { return threadName_; }
 
-    int32_t getLine() const { return line_; }
+    int32_t getLine()                       const { return line_; }
 
-    std::time_t getTime() const { return time_; }
+    std::time_t getTime()                   const { return time_; }
 
-    std::string getContent() const { return stringStream_.str(); }
+    std::string getContent()                const { return stringStream_.str(); }
 
-    LogLevel getLevel() const { return level_; }
+    LogLevel getLevel()                     const { return level_; }
 
-    std::shared_ptr<Logger> getLogger() const { return logger_; }
+    std::shared_ptr<Logger> getLogger()     const { return logger_; }
 
-    std::stringstream& getStringStream() { return stringStream_; }
+    std::stringstream& getStringStream()    { return stringStream_; }
     //bokket::detail::LogStream & steam() { return stream_;}
 
 
@@ -215,6 +219,10 @@ class LogAppender
 public:
     using ptr=std::shared_ptr<LogAppender>;
 public:
+    LogAppender()
+    {
+        formatter_.reset(new LogFormatter);
+    }
     virtual ~LogAppender()=default;
     //virtual void append(const std::string& msg,int32_t len,LogLevel level,LogEvent::ptr event)=0;
     virtual void append(std::shared_ptr<Logger> logger,LogLevel level,LogEvent::ptr event)=0;

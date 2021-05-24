@@ -77,7 +77,7 @@ Fiber::Fiber() {
 
     ++fiberCount_;
 
-    BOKKET_LOG_DEBUG(g_logger)<<"Fiber::Fiber";
+    BOKKET_LOG_DEBUG(g_logger)<<"Fiber::Fiber main,id="<<id_;
 }
 
 Fiber::Fiber(std::function<void()> cb, size_t stacksize, bool useCaller)
