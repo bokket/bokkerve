@@ -5,6 +5,9 @@
 #ifndef BOKKERVE_PLUS_PLUS_IOMANAGER_H
 #define BOKKERVE_PLUS_PLUS_IOMANAGER_H
 
+#include <memory>
+#include <shared_mutex>
+
 #include "../Scheduler/scheduler.h"
 #include "../time/timer.h"
 
@@ -44,7 +47,8 @@ private:
 
 
     private:
-        std::mutex mutex_;
+        //std::mutex mutex_;
+        std::shared_mutex mutex_;
         int fd_;
         EventContext context_[2];
 
@@ -81,7 +85,8 @@ private:
     int epfd_;
     int tickleFds_[2];
     std::atomic<size_t> pendingEventCount={0};
-    std::mutex mutex_;
+    //std::mutex mutex_;
+    std::shared_mutex mutex_;
     std::vector<FdContext*> fdContexts_;
 
 
