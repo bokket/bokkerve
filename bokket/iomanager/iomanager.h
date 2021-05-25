@@ -11,7 +11,7 @@
 namespace bokket
 {
 
-class IOManager: public Scheduler, public Timer
+class IOManager: public Scheduler, public TimerManager
 {
 public:
     using ptr = std::shared_ptr<IOManager>;
@@ -24,36 +24,21 @@ public:
         WRITE   = 0x4,
     };
 
-public:
-    IOManager(int fd);
-
-
-protected:
-
-    void tickle() override;
-
-    void stopping() override;
-
-    void idle() override;
-
-    void timerTickle() override;
-
-private:
-
 private:
     struct FdContext
     {
     public:
-        Scheduler* scheduler = nullptr;
-        Fiber::ptr fiber;
-        std::function<void()> cb;
+        struct EventContext
+        {
+            Scheduler* scheduler = nullptr;
+            Fiber::ptr fiber;
+            std::function<void()> cb;
+        };
 
     public:
-        Context& getContext(Event event);
+        EventContext& getContext(Event event);
 
-        void resetContext(Event event);
-
-        void reset();
+        void resetContext(EventContext& ctx);
 
         void triggerEvent(Event event);
 
@@ -61,10 +46,45 @@ private:
     private:
         std::mutex mutex_;
         int fd_;
-        Context context_[2];
+        EventContext context_[2];
 
-        int event_=Event::NONE;
+        Event events_=Event::NONE;
     };
+
+public:
+    IOManager(size_t threads=-1,bool useCaller=true,const std::string& name="UNKNOW");
+    ~IOManager();
+
+    int addEvent(int fd,Event event,std::function<void()> cb= nullptr);
+    bool delEvent(int fd,Event event);
+    bool cancelEvent(int fd,Event event);
+
+    bool cancelAll(int fd);
+
+    static IOManager* getThis();
+
+protected:
+
+    void tickle() override;
+
+    bool stopping() override;
+
+    void idle() override;
+
+    void timerTickle() override;
+
+
+    void contextResize(size_t size);
+    bool stopping(uint64_t& timeout);
+
+private:
+    int epfd_;
+    int tickleFds_[2];
+    std::atomic<size_t> pendingEventCount={0};
+    std::mutex mutex_;
+    std::vector<FdContext*> fdContexts_;
+
+
 };
 
 }

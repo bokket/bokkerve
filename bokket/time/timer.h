@@ -58,7 +58,33 @@ class TimerManager
 friend class Timer;
 
 public:
-    
+    using ptr = std::shared_ptr<TimerManager>;
+public:
+    TimerManager();
+
+    virtual ~TimerManager()=default;
+
+    Timer::ptr addTimer(uint64_t ms,std::function<void()> cb
+                        ,bool recurring=false);
+
+    Timer::ptr addConditionTimer(uint64_t ms,std::function<void()> cb
+                                 ,std::weak_ptr<void> weak_cond,bool recurring=false);
+
+    uint64_t getNextTimer();
+
+    void listExpiredCb(std::vector<std::function<void()>>& cbs);
+
+
+protected:
+    virtual void timerTickle()=0;
+
+    void addTimer(Timer::ptr val,std::mutex& lock);
+
+private:
+    std::mutex mutex_;
+    std::set<Timer::ptr,Timer::Comparator> timers_;
+
+    bool tickled= false;
 
 };
 
