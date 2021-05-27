@@ -8,11 +8,17 @@
 
 #include <string>
 #include <vector>
+#include <chrono>
+
+#include <ctime>
 
 #include <stdint.h>
 #include <assert.h>
 #include <unistd.h>
 #include <syscall.h>
+#include <sys/time.h>
+
+
 
 
 namespace bokket
@@ -50,6 +56,9 @@ void backTrace(std::vector<std::string>& bt,int size=64,int skip=1);
 std::string backTraceToString(int size=64,int skip=2,const std::string& prefix="");
 
 
+uint64_t getCurrentMs();
+
+uint64_t getCurrnetUs();
 }
 
 #endif //BOKKERVE_UTIL_H

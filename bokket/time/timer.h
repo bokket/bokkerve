@@ -8,6 +8,7 @@
 #include <set>
 #include <vector>
 #include <memory>
+#include <shared_mutex>
 
 #include "../thread/thread.h"
 
@@ -78,10 +79,10 @@ public:
 protected:
     virtual void timerTickle()=0;
 
-    void addTimer(Timer::ptr val,std::mutex& lock);
+    void addTimer(Timer::ptr val,std::unique_lock<std::shared_mutex>& lock);
 
 private:
-    std::mutex mutex_;
+    std::shared_mutex mutex_;
     std::set<Timer::ptr,Timer::Comparator> timers_;
 
     bool tickled= false;
