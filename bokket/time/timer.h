@@ -75,6 +75,7 @@ public:
 
     void listExpiredCb(std::vector<std::function<void()>>& cbs);
 
+    bool hasTimer();
 
 protected:
     virtual void timerTickle()=0;
@@ -85,7 +86,7 @@ private:
     std::shared_mutex mutex_;
     std::set<Timer::ptr,Timer::Comparator> timers_;
 
-    bool tickled= false;
+    bool tickled_= false;
 
 };
 

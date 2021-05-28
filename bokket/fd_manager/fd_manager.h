@@ -22,6 +22,7 @@ public:
     using ptr=std::shared_ptr<FdData>;
 public:
 private:
+    int fd_;
 
 };
 
@@ -31,6 +32,10 @@ class FdManager
 public:
     using ptr=std::shared_ptr<FdManager>;
 public:
+    FdManager();
+
+    FdData::ptr get(int fd,bool auto_create=false);
+    void del(int fd);
 private:
     std::shared_mutex mutex_;
     std::vector<FdData::ptr> datas_;
