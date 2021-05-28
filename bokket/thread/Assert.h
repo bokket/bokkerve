@@ -22,7 +22,7 @@
     {\
         if(UNLIKELY(!(x))) \
         {\
-            BOKKET_LOG_ERROR(BOKKET_LOG_ROOT)<<"ASSERTION:" #x \
+            BOKKET_LOG_ERROR(BOKKET_LOG_ROOT())<<"ASSERTION:" #x \
             <<"\nbacktrace:\n"\
             <<bokket::backTraceToString(100,2,"  ");\
             assert(x);\
@@ -36,7 +36,7 @@
     {\
         if(UNLIKELY(!(x))) \
         {\
-            BOKKET_LOG_ERROR(BOKKET_LOG_ROOT)<<"ASSERTION:" #x \
+            BOKKET_LOG_ERROR(BOKKET_LOG_ROOT())<<"ASSERTION:" #x \
             <<"\n"<<w                  \
             <<"\nbacktrace:\n"\
             <<bokket::backTraceToString(100,2,"  ");\

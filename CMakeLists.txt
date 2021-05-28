@@ -56,11 +56,14 @@ set(LIB_SRC
 		#bokket/Log/AsyncFileLogAppender.h
 		#bokket/Log/AsyncFileLogAppender.cpp
 		#bokket/Log/LogStream.cpp
+		bokket/thread/util.h
 		bokket/thread/util.cpp
 		bokket/thread/thread.h
 		bokket/thread/thread.cpp
+		bokket/thread/Assert.h
 		bokket/Log/FixedBuffer.h
-		#bokket/Config/config.cpp
+		bokket/Config/config.h
+
 		)
 
 add_library(bokket SHARED ${LIB_SRC})
@@ -89,6 +92,12 @@ add_executable(test_thread ./test/test_thread.cpp)
 add_dependencies(test_thread bokket)
 #force_redefine_file_macro_for_sources(test_thread)
 target_link_libraries(test_thread ${LIBS})
+
+
+add_executable(test_Util ./test/test_util.cpp)
+add_dependencies(test_Util bokket)
+target_link_libraries(test_Util ${LIBS})
+
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)

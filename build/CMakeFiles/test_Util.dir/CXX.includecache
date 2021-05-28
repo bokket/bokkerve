@@ -108,6 +108,14 @@ condition_variable
 ../base/noncopyable.h
 /home/bokket/bokkerve-plus-plus/bokket/base/noncopyable.h
 
+/home/bokket/bokkerve-plus-plus/bokket/thread/Assert.h
+cstring
+-
+cassert
+-
+util.h
+/home/bokket/bokkerve-plus-plus/bokket/thread/util.h
+
 /home/bokket/bokkerve-plus-plus/bokket/thread/Semaphore.h
 mutex
 -
@@ -152,15 +160,11 @@ syscall.h
 sys/time.h
 -
 
-/home/bokket/bokkerve-plus-plus/test/test_thread.cpp
-mutex
--
-vector
--
-../bokket/Log/Log.h
-/home/bokket/bokkerve-plus-plus/bokket/Log/Log.h
-../bokket/thread/thread.h
-/home/bokket/bokkerve-plus-plus/bokket/thread/thread.h
+/home/bokket/bokkerve-plus-plus/test/test_util.cpp
 ../bokket/thread/util.h
 /home/bokket/bokkerve-plus-plus/bokket/thread/util.h
+../bokket/Log/Log.h
+/home/bokket/bokkerve-plus-plus/bokket/Log/Log.h
+../bokket/thread/Assert.h
+/home/bokket/bokkerve-plus-plus/bokket/thread/Assert.h
 

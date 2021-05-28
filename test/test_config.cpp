@@ -43,7 +43,7 @@ void print_yaml(const YAML::Node& node,int level) {
 }
 
 void test_yaml() {
-    YAML::Node root=YAML::LoadFile("/home/bokket/bokkerve/conf/test.yml");
+    YAML::Node root=YAML::LoadFile("/home/bokket/bokkerve-plus-plus/conf/test.yml");
 
     print_yaml(root,0);
 

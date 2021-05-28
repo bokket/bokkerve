@@ -11,6 +11,8 @@
 #include <unistd.h>
 #include <sys/socket.h>
 #include <stdint.h>
+#include <unistd.h>
+#include <dlfcn.h>
 
 
 namespace bokket

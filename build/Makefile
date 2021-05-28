@@ -73,17 +73,6 @@ CMAKE_BINARY_DIR = /home/bokket/bokkerve-plus-plus/build
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/opt/cmake-3.17/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
@@ -94,6 +83,17 @@ edit_cache:
 edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/opt/cmake-3.17/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -166,32 +166,18 @@ test_thread/fast:
 	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/build
 .PHONY : test_thread/fast
 
-bokket/Log/AsyncFileLogAppender.o: bokket/Log/AsyncFileLogAppender.cpp.o
+#=============================================================================
+# Target rules for targets named test_Util
 
-.PHONY : bokket/Log/AsyncFileLogAppender.o
+# Build rule for target.
+test_Util: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_Util
+.PHONY : test_Util
 
-# target to build an object file
-bokket/Log/AsyncFileLogAppender.cpp.o:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.o
-.PHONY : bokket/Log/AsyncFileLogAppender.cpp.o
-
-bokket/Log/AsyncFileLogAppender.i: bokket/Log/AsyncFileLogAppender.cpp.i
-
-.PHONY : bokket/Log/AsyncFileLogAppender.i
-
-# target to preprocess a source file
-bokket/Log/AsyncFileLogAppender.cpp.i:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.i
-.PHONY : bokket/Log/AsyncFileLogAppender.cpp.i
-
-bokket/Log/AsyncFileLogAppender.s: bokket/Log/AsyncFileLogAppender.cpp.s
-
-.PHONY : bokket/Log/AsyncFileLogAppender.s
-
-# target to generate assembly for a file
-bokket/Log/AsyncFileLogAppender.cpp.s:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.s
-.PHONY : bokket/Log/AsyncFileLogAppender.cpp.s
+# fast build rule for target.
+test_Util/fast:
+	$(MAKE) -f CMakeFiles/test_Util.dir/build.make CMakeFiles/test_Util.dir/build
+.PHONY : test_Util/fast
 
 bokket/Log/Log.o: bokket/Log/Log.cpp.o
 
@@ -355,6 +341,33 @@ test/test_thread.cpp.s:
 	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/test/test_thread.cpp.s
 .PHONY : test/test_thread.cpp.s
 
+test/test_util.o: test/test_util.cpp.o
+
+.PHONY : test/test_util.o
+
+# target to build an object file
+test/test_util.cpp.o:
+	$(MAKE) -f CMakeFiles/test_Util.dir/build.make CMakeFiles/test_Util.dir/test/test_util.cpp.o
+.PHONY : test/test_util.cpp.o
+
+test/test_util.i: test/test_util.cpp.i
+
+.PHONY : test/test_util.i
+
+# target to preprocess a source file
+test/test_util.cpp.i:
+	$(MAKE) -f CMakeFiles/test_Util.dir/build.make CMakeFiles/test_Util.dir/test/test_util.cpp.i
+.PHONY : test/test_util.cpp.i
+
+test/test_util.s: test/test_util.cpp.s
+
+.PHONY : test/test_util.s
+
+# target to generate assembly for a file
+test/test_util.cpp.s:
+	$(MAKE) -f CMakeFiles/test_Util.dir/build.make CMakeFiles/test_Util.dir/test/test_util.cpp.s
+.PHONY : test/test_util.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -365,10 +378,8 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... bokket"
 	@echo "... test_Log"
+	@echo "... test_Util"
 	@echo "... test_thread"
-	@echo "... bokket/Log/AsyncFileLogAppender.o"
-	@echo "... bokket/Log/AsyncFileLogAppender.i"
-	@echo "... bokket/Log/AsyncFileLogAppender.s"
 	@echo "... bokket/Log/Log.o"
 	@echo "... bokket/Log/Log.i"
 	@echo "... bokket/Log/Log.s"
@@ -387,6 +398,9 @@ help:
 	@echo "... test/test_thread.o"
 	@echo "... test/test_thread.i"
 	@echo "... test/test_thread.s"
+	@echo "... test/test_util.o"
+	@echo "... test/test_util.i"
+	@echo "... test/test_util.s"
 .PHONY : help
 
 

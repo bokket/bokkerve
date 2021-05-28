@@ -40,8 +40,9 @@ uint64_t getCurrnetUs() {
     return t.tv_sec*1000000ul+t.tv_usec;
 }
 
-void backTrace(std::vector<std::string>& bt,int size=64,int skip=1) {
-    void** array=static_cast<void**>malloc(sizeof(void*)size);
+
+void backTrace(std::vector<std::string>& bt,int size,int skip) {
+    void** array=static_cast<void**>(malloc((sizeof(void*)*size)));
 
     size_t s=::backtrace(array,size);
 
@@ -60,7 +61,7 @@ void backTrace(std::vector<std::string>& bt,int size=64,int skip=1) {
     free(array);
 }
 
-std::string backTraceToString(int size=64,int skip=2,const std::string& prefix="") {
+std::string backTraceToString(int size,int skip,const std::string& prefix) {
     std::vector<std::string> bt;
     backTrace(bt,size,skip);
     std::stringstream ss;
