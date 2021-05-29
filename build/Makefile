@@ -128,6 +128,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named test_Util
+
+# Build rule for target.
+test_Util: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_Util
+.PHONY : test_Util
+
+# fast build rule for target.
+test_Util/fast:
+	$(MAKE) -f CMakeFiles/test_Util.dir/build.make CMakeFiles/test_Util.dir/build
+.PHONY : test_Util/fast
+
+#=============================================================================
 # Target rules for targets named bokket
 
 # Build rule for target.
@@ -154,6 +167,19 @@ test_Log/fast:
 .PHONY : test_Log/fast
 
 #=============================================================================
+# Target rules for targets named test_Config
+
+# Build rule for target.
+test_Config: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_Config
+.PHONY : test_Config
+
+# fast build rule for target.
+test_Config/fast:
+	$(MAKE) -f CMakeFiles/test_Config.dir/build.make CMakeFiles/test_Config.dir/build
+.PHONY : test_Config/fast
+
+#=============================================================================
 # Target rules for targets named test_thread
 
 # Build rule for target.
@@ -166,18 +192,32 @@ test_thread/fast:
 	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/build
 .PHONY : test_thread/fast
 
-#=============================================================================
-# Target rules for targets named test_Util
+bokket/Config/config.o: bokket/Config/config.cpp.o
 
-# Build rule for target.
-test_Util: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 test_Util
-.PHONY : test_Util
+.PHONY : bokket/Config/config.o
 
-# fast build rule for target.
-test_Util/fast:
-	$(MAKE) -f CMakeFiles/test_Util.dir/build.make CMakeFiles/test_Util.dir/build
-.PHONY : test_Util/fast
+# target to build an object file
+bokket/Config/config.cpp.o:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Config/config.cpp.o
+.PHONY : bokket/Config/config.cpp.o
+
+bokket/Config/config.i: bokket/Config/config.cpp.i
+
+.PHONY : bokket/Config/config.i
+
+# target to preprocess a source file
+bokket/Config/config.cpp.i:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Config/config.cpp.i
+.PHONY : bokket/Config/config.cpp.i
+
+bokket/Config/config.s: bokket/Config/config.cpp.s
+
+.PHONY : bokket/Config/config.s
+
+# target to generate assembly for a file
+bokket/Config/config.cpp.s:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Config/config.cpp.s
+.PHONY : bokket/Config/config.cpp.s
 
 bokket/Log/Log.o: bokket/Log/Log.cpp.o
 
@@ -287,6 +327,33 @@ bokket/thread/util.cpp.s:
 	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/thread/util.cpp.s
 .PHONY : bokket/thread/util.cpp.s
 
+test/test_config.o: test/test_config.cpp.o
+
+.PHONY : test/test_config.o
+
+# target to build an object file
+test/test_config.cpp.o:
+	$(MAKE) -f CMakeFiles/test_Config.dir/build.make CMakeFiles/test_Config.dir/test/test_config.cpp.o
+.PHONY : test/test_config.cpp.o
+
+test/test_config.i: test/test_config.cpp.i
+
+.PHONY : test/test_config.i
+
+# target to preprocess a source file
+test/test_config.cpp.i:
+	$(MAKE) -f CMakeFiles/test_Config.dir/build.make CMakeFiles/test_Config.dir/test/test_config.cpp.i
+.PHONY : test/test_config.cpp.i
+
+test/test_config.s: test/test_config.cpp.s
+
+.PHONY : test/test_config.s
+
+# target to generate assembly for a file
+test/test_config.cpp.s:
+	$(MAKE) -f CMakeFiles/test_Config.dir/build.make CMakeFiles/test_Config.dir/test/test_config.cpp.s
+.PHONY : test/test_config.cpp.s
+
 test/test_log.o: test/test_log.cpp.o
 
 .PHONY : test/test_log.o
@@ -377,9 +444,13 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... bokket"
+	@echo "... test_Config"
 	@echo "... test_Log"
 	@echo "... test_Util"
 	@echo "... test_thread"
+	@echo "... bokket/Config/config.o"
+	@echo "... bokket/Config/config.i"
+	@echo "... bokket/Config/config.s"
 	@echo "... bokket/Log/Log.o"
 	@echo "... bokket/Log/Log.i"
 	@echo "... bokket/Log/Log.s"
@@ -392,6 +463,9 @@ help:
 	@echo "... bokket/thread/util.o"
 	@echo "... bokket/thread/util.i"
 	@echo "... bokket/thread/util.s"
+	@echo "... test/test_config.o"
+	@echo "... test/test_config.i"
+	@echo "... test/test_config.s"
 	@echo "... test/test_log.o"
 	@echo "... test/test_log.i"
 	@echo "... test/test_log.s"

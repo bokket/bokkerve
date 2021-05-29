@@ -12,7 +12,35 @@
 namespace bokket
 {
 
+static thread_local bool t_hook_enable= false;
+static int64_t s_connect_timeout=-1;
 
+struct HookInit
+{
+public:
+    HookInit() {
+        s_connect_timeout=0;
+
+
+    }
+
+};
+
+
+static HookInit s_hook_init;
+
+
+bool is_hook_enable() {
+    return t_hook_enable;
+}
+
+void hook_enable() {
+    t_hook_enable= true;
+}
+
+void hook_disable() {
+    t_hook_enable= false;
+}
 
 }
 
@@ -45,7 +73,7 @@ extern "C"
 
 static int hook_init()
 {
-#define XX(name) g_sys_## name=(name ## _ptr)dlsym(RTLD_NEXT,#name);
+#define XX(name) g_sys_ ## name=(name ## _ptr)dlsym(RTLD_NEXT,#name);
     SYS_HOOK(XX);
 #undef XX
     return 0;
@@ -85,17 +113,50 @@ int fcntl(int fd,int cmd,...) {
         {
             int arg=va_arg(va,int);
             va_end(va);
-            bokket::FdData::ptr data=bokket::FdMgr::GetInstance().get(fd);
+            bokket::FdData::ptr data=bokket::FdMgr::GetInstance()->get(fd);
 
             if(data && bokket::t_hook_enable)
                 arg |=O_NONBLOCK;
 
             ret=g_sys_fcntl(fd,cmd,arg);
-            break;
         }
+            break;
+        case F_GETFL:
 
-        case
+        case F_GETFD:
+        case F_GETOWN:
+        case F_GETSIG:
+        case F_GETPIPE_SZ:
 
+        case F_DUPFD:
+        case F_DUPFD_CLOEXEC:
+        case F_SETFD:
+        case F_SETOWN:
+        case F_SETSIG:
+        case F_SETLEASE:
+        case F_NOTIFY:
+        case F_SETPIPE_SZ:
+        {
+            int arg=va_arg(va,int);
+            va_end(va);
+            return g_sys_fcntl(fd,cmd,arg);
+        }
+            break;
+        case F_GETFD:
+        case F_GETOWN:
+        case F_GETSIG:
+        case F_GETPIPE_SZ:
+        {
+            va_end(va);
+            return g_sys_fcntl(fd,cmd,arg);
+        }
+            break;
+
+        case F_GETOWN_EX:
+        case F_SETOWN_EX:
+        {
+            struct f_owner_exlock
+        }
     }
 }
 

@@ -52,7 +52,10 @@ void test_yaml() {
 
 void test_config() {
     std::cout<<"???"<<std::endl;
-    BOKKET_LOG_INFO(BOKKET_LOG_ROOT())<<"before:"<<g_int_config->getValue();
+    BOKKET_LOG_INFO(BOKKET_LOG_ROOT())<<"before:"<<g_int_config->getValue()
+    <<"  "<<g_int_config->getDescription()<<" "<<g_int_config->getName()
+    <<" "<<g_int_config.get()<<" "<<" "<<g_int_config->getValue()<<" "<<g_int_config->toString();
+    //g_int_config->setValue((int)11)
     BOKKET_LOG_INFO(BOKKET_LOG_ROOT())<<"before:"<<g_float_config->toString();
     
 

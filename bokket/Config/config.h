@@ -48,10 +48,12 @@ template<class T>
 class ConfigVar: public ConfigVarBase
 {
 public:
-    //using ptr=std::shared_ptr<ConfigVar>;
-    typedef std::shared_ptr<ConfigVar> ptr;
+    using ptr=std::shared_ptr<ConfigVar>;
+    //typedef std::shared_ptr<ConfigVar> ptr;
 public:
-    ConfigVar(const std::string & name,const T & default_value, const std::string description="")
+    ConfigVar(const std::string & name
+              ,const T & default_value
+              ,const std::string& description="")
             :ConfigVarBase(name,description)
             ,val_(default_value)
     {}
@@ -91,12 +93,12 @@ private:
     static ConfigVarMap s_datas;
 public:
     template<class T>
-    static typename ConfigVar<T>::ptr Lookup(const std::string& name,
-                                             const T & default_value,
-                                             const std::string & description="")
+    static typename ConfigVar<T>::ptr Lookup(const std::string& name
+                                             ,const T & default_value
+                                             ,const std::string & description="")
     {
         auto tmp = Lookup<T>(name);
-        if (tmp==nullptr) {
+        if (tmp) {
             BOKKET_LOG_INFO(BOKKET_LOG_ROOT()) << "Lookup name=" << name << " exists";
             return tmp;
         }
@@ -124,6 +126,26 @@ public:
     static void LoadFromYaml(const YAML::Node & root);
     static ConfigVarBase::ptr LookupBase(const std::string& name);
 };
+
+/*
+template<class T>
+class LexicalCast<std::string,std::vector<T>>
+{
+public:
+    std::vector<T> operator()(const std::string& v) {
+        YAML::Node node=YAML::Load(v);
+        typename std::vector<T> vec;
+        std::stringstream ss;
+        for(auto i=0;i<node.size();++i) {
+            ss.str("");
+            ss<<node[i];
+            vec.template emplace_back(LexicalCast<std::string,T>()(ss.str()));
+        }
+        return vec;
+    }
+
+};*/
+
 }
 
 

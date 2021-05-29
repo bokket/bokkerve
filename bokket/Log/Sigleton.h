@@ -14,10 +14,10 @@ template <class T>
 class Sigleton: public noncopyable
 {
 public:
-    static T& GetInstance()
+    static T* GetInstance()
     {
-        static Sigleton v;
-        return v;
+        static T v;
+        return &v;
     }
 };
 

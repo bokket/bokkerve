@@ -63,6 +63,7 @@ set(LIB_SRC
 		bokket/thread/Assert.h
 		bokket/Log/FixedBuffer.h
 		bokket/Config/config.h
+		bokket/Config/config.cpp
 
 		)
 
@@ -84,9 +85,9 @@ target_link_libraries(test_Log ${LIBS})
 #force_redefine_file_macro_for_sources(test_Yaml)
 #target_link_libraries(test_Yaml ${LIBS})
 
-#add_executable(test_Config ./test/test_config.cpp)
-#add_dependencies(test_Config bokket)
-#target_link_libraries(test_Config ${LIBS})
+add_executable(test_Config ./test/test_config.cpp)
+add_dependencies(test_Config bokket)
+target_link_libraries(test_Config ${LIBS})
 
 add_executable(test_thread ./test/test_thread.cpp)
 add_dependencies(test_thread bokket)
