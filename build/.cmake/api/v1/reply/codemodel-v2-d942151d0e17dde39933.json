@@ -1,0 +1,95 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "bokket",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "bokket::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-bokket-Debug-d7e2ee32417e6376c707.json",
+					"name" : "bokket",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_Config::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_Config-Debug-e58aa3ab33b86722c1e2.json",
+					"name" : "test_Config",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_Log::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_Log-Debug-b3d6e5a73e1946feba66.json",
+					"name" : "test_Log",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_Util::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_Util-Debug-ad9d7e52130bd673d7f2.json",
+					"name" : "test_Util",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_thread::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_thread-Debug-b25f6d5dda222d8b6ac7.json",
+					"name" : "test_thread",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/bokket/bokkerve-plus-plus/build",
+		"source" : "/home/bokket/bokkerve-plus-plus"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}

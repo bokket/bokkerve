@@ -15,7 +15,11 @@ sstream
 -
 map
 -
+set
+-
 unordered_map
+-
+unordered_set
 -
 boost/lexical_cast.hpp
 -
