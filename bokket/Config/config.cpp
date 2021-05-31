@@ -12,16 +12,16 @@
 
 namespace bokket
 {
-Config::ConfigVarMap Config::s_datas;
+//Config::ConfigVarMap Config::s_datas;
 
 
 static bokket::Logger::ptr g_logger = BOKKET_LOG_NAME("system");
 
-ConfigVarBase::ptr Config::LookupBase(const std::string &name)
+ConfigBase::ptr ConfigManager::LookupBase(const std::string &name)
 {
-    auto it=s_datas.find(name);
+    auto it=datas_.find(name);
 
-    return it==s_datas.end() ? nullptr:it->second;
+    return it==datas_.end() ? nullptr:it->second;
 }
 
 
@@ -46,7 +46,7 @@ static void ListAllMember(const std::string& prefix,const YAML::Node & node,
     }
 }
 
-void Config::LoadFromYaml(const YAML::Node &root)
+void ConfigManager::LoadFromYaml(const YAML::Node &root)
 {
     std::list<std::pair<std::string,const YAML::Node> > all_nodes;
     ListAllMember("",root,all_nodes);
@@ -60,7 +60,7 @@ void Config::LoadFromYaml(const YAML::Node &root)
 
         std::transform(key_t.begin(),key_t.end(),key_t.begin(),::tolower);
 
-        ConfigVarBase::ptr var = LookupBase(key_t);
+        ConfigBase::ptr var = LookupBase(key_t);
 
         if(var) {
             if(value.IsScalar()) {

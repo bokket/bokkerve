@@ -11,6 +11,8 @@ memory
 -
 string
 -
+shared_mutex
+-
 sstream
 -
 map
@@ -27,6 +29,8 @@ yaml-cpp/yaml.h
 -
 ../Log/Log.h
 /home/bokket/bokkerve-plus-plus/bokket/Log/Log.h
+../Log/Sigleton.h
+/home/bokket/bokkerve-plus-plus/bokket/Log/Sigleton.h
 
 /home/bokket/bokkerve-plus-plus/bokket/Log/FixedBuffer.h
 string
@@ -106,6 +110,12 @@ chrono
 stdint.h
 -
 string
+-
+
+/home/bokket/bokkerve-plus-plus/bokket/Log/Sigleton.h
+../base/noncopyable.h
+/home/bokket/bokkerve-plus-plus/bokket/base/noncopyable.h
+memory
 -
 
 /home/bokket/bokkerve-plus-plus/bokket/base/Singleton.h

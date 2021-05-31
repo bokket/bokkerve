@@ -10,12 +10,13 @@
 
 
 
-bokket::ConfigVar<int>::ptr g_int_config=
-        bokket::Config::Lookup("system.port",static_cast<int>(8080),"system port");
+bokket::Config<int>::ptr g_int_config=
+        CONFIG()->Lookup("system.port",static_cast<int>(8080),"system port");
+        //bokket::ConfigMgr::GetInstance()->Lookup("system.port",static_cast<int>(8080),"system port");
 
-
-bokket::ConfigVar<float>::ptr g_float_config=
-        bokket::Config::Lookup("system.value",static_cast<float >(10.2f),"system value");
+bokket::Config<float>::ptr g_float_config=
+        CONFIG()->Lookup("system.value",static_cast<float >(10.2f),"system value");
+        //bokket::ConfigMgr::GetInstance()->Lookup("system.value",static_cast<float >(10.2f),"system value");
 
 
 void print_yaml(const YAML::Node& node,int level) {
@@ -60,7 +61,9 @@ void test_config() {
     
 
     YAML::Node root=YAML::LoadFile("/home/bokket/bokkerve/conf/test.yml");
-    bokket::Config::LoadFromYaml(root);
+    //bokket::ConfigMgr::GetInstance()->LoadFromYaml(root);
+    CONFIG_LOAD(root);
+
 
     BOKKET_LOG_INFO(BOKKET_LOG_ROOT())<<"after:"<<g_int_config->getValue();
     BOKKET_LOG_INFO(BOKKET_LOG_ROOT())<<"after:"<<g_float_config->toString();

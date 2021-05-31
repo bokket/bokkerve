@@ -74,7 +74,6 @@
 #define SYSTEMLOGGER() BOKKET_LOG_NAME("system")
 
 
-
 namespace bokket
 {
 
