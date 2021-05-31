@@ -155,8 +155,16 @@ int fcntl(int fd,int cmd,...) {
         case F_GETOWN_EX:
         case F_SETOWN_EX:
         {
-            struct f_owner_exlock
+            struct f_owner_exlock* arg=::va_arg(va,struct f_owner_exlock*);
+            ::va_end(va);
+            return g_sys_fcntl(fd,cmd,arg);
         }
+            break;
+
+        default:
+            ::va_end(va);
+            return g_sys_fcntl(fd,cmd,arg);
+            break;
     }
 }
 

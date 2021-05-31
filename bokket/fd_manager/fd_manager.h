@@ -9,7 +9,11 @@
 #include <memory>
 #include <vector>
 #include <shared_mutex>
-#include "../thread/thread.h"
+
+
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include "../Log/Sigleton.h"
 
 
@@ -21,8 +25,15 @@ class FdData: public std::enable_shared_from_this<FdData>
 public:
     using ptr=std::shared_ptr<FdData>;
 public:
+    FdData(int fd);
+
+    int64_t getTimeOut(int type);
+
+    void setTimerOut(int type,int64_t v);
 private:
     int fd_;
+    int64_t recvTimeOut_;
+    int64_t sendTimeOut_;
 
 };
 
