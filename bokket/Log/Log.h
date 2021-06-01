@@ -71,7 +71,7 @@
 #define BOKKET_LOG_NAME(name) bokket::LoggerMgr::GetInstance()->getLogger(name)
 
 
-#define SYSTEMLOGGER() BOKKET_LOG_NAME("system")
+#define SYSTEM_LOG() BOKKET_LOG_NAME("system")
 
 
 namespace bokket

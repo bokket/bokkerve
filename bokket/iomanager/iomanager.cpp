@@ -142,47 +142,15 @@ void IOManager::timerTickle() {
 }
 
 
-EventContext & IOManager::FdContext::getContext(Event event)
-{
-    switch (event) {
-        case Event::READ:
-            return read;
-        case Event::WRITE:
-            return write;
-        default:
-            return ;
-    }
-}
-
-
-void IOManager::FdContext::resetContext(EventContext& ctx) {
-    ctx.scheduler= nullptr;
-    ctx.fiber.reset();
-    ctx.cb= nullptr;
-}
-
-
-void IOManager::FdContext::triggerEvent(Event event) {
-
-    events_=events_& ~ event;
-    EventContext& ctx=getContext(event);
-
-    if(ctx.cb) {
-        ctx.scheduler->schedule(&ctx.cb);
-    } else {
-        ctx.scheduler->schedule(&ctx.fiber);
-    }
-
-    ctx.scheduler= nullptr;
-    return;
-}
 
 IOManager::IOManager(size_t threads, bool useCaller, const std::string &name)
                     :Scheduler(threads,useCaller,name)
 {
     epfd_=epoll_create(5000);
+    ASSERT(epfd_>0);
 
-    inr rt=::pipe(tickleFds_);
+    int rt=::pipe(tickleFds_);
+    ASSERT(!rt);
 
     epoll_event event;
     memset(&event,0,sizeof(epoll_event));
@@ -190,8 +158,10 @@ IOManager::IOManager(size_t threads, bool useCaller, const std::string &name)
     event.data.fd=tickleFds_[0];
 
     rt=fcntl(tickleFds_[0],F_SETFL,O_NONBLOCK);
+    ASSERT(!rt);
 
     rt=epoll_ctl(epfd_,EPOLL_CTL_ADD,tickleFds_[0],&event);
+    ASSERT(!rt);
 
     contextResize(32);
 
@@ -206,53 +176,61 @@ IOManager::~IOManager() noexcept {
     close(tickleFds_[1]);
 
 
-    for(auto i=0;i<fdContexts_.size();++i) {
+    /*for(auto i=0;i<fdContexts_.size();++i) {
         id(fdContexts_[i]) {
             delete fdContexts_[i];
         }
+    }*/
+
+    for(auto& ioContext: ioContexts_) {
+        if(ioContext)
+            delete ioContext;
     }
 }
 
 void IOManager::contextResize(size_t size) {
-    fdContexts_.resize(size);
+    ioContexts_.resize(size);
 
-    for(auto i=0;i<fdContexts_.size();++i) {
+    /*for(auto i=0;i<ioContexts_.size();++i) {
         if(!fdContexts_[i]) {
-            fdContexts_[i] = new FdContext;
+            fdContexts_[i] = new ioContext;
             fdContexts_[i]->fd_ = i;
         }
+    }*/
+    for(auto i=0;i<ioContexts_.size();++i) {
+        ioContexts_[i]=new IOContext(i);
     }
 }
 
-int IOManager::addEvent(int fd, Event event, std::function<void()> cb) {
-    FdContext* fd_context= nullptr;
+int IOManager::addEvent(int fd, IOContext::Event event, std::function<void()> cb) {
+    IOContext* io_context= nullptr;
 
     std::unique_lock<std::shared_mutex> uniqueLock(mutex_);
 
-    if(static_cast<int>(fdContexts_.size()) > fd ) {
-        fd_context=fdContexts_[fd];
+    if(static_cast<int>(ioContexts_.size()) > fd ) {
+        io_context=ioContexts_[fd];
         uniqueLock.unlock();
     } else {
         uniqueLock.unlock();
         std::unique_lock<std::shared_mutex> uniqueLock1(mutex_);
         contextResize(fd*1.5);
-        fd_context=fdContexts_[fd];
+        io_context=ioContexts_[fd];
     }
 
-    std::unique_lock<std::shared_mutex> uniqueLock1(fd_context->mutex_);
+    std::unique_lock<std::shared_mutex> uniqueLock1(io_context->mutex_);
 
-    if(fd_context->events_ & event) {
+    if(io_context->events_ & event) {
         BOKKET_LOG_ERROR(g_logger)<<"addEvent assert fd="<<fd
                                 <<" event="<<event
-                                <<" fd_context.event="<<fd_context->events_;
+                                <<" io_context.event="<<io_context->events_;
 
     }
 
-    int op=fd_context->events_ ? EPOLL_CTL_MOD:EPOLL_CTL_ADD;
+    int op=io_context->events_ ? EPOLL_CTL_MOD:EPOLL_CTL_ADD;
     epoll_event epevent;
     //memset(&event,0,sizeof(epoll_event));
-    epevent.events=EPOLLET | fd_context->events_ | event;
-    epevent.data.ptr=fd_context;
+    epevent.events=EPOLLET | io_context->events_ | event;
+    epevent.data.ptr=io_context;
 
     int rt=epoll_ctl(epfd_,op,fd,&epevent);
 
@@ -264,9 +242,9 @@ int IOManager::addEvent(int fd, Event event, std::function<void()> cb) {
     }
 
     ++pendingEventCount;
-    fd_context->events_=fd_context->events_ | event;
+    io_context->events_=io_context->events_ | event;
 
-    FdContext::EventContext& event_context=fd_context->getContext(event);
+    IOContext::Context& event_context=io_context->getContext(event);
 
 
     event_context.scheduler=Scheduler::getThis();
@@ -275,6 +253,7 @@ int IOManager::addEvent(int fd, Event event, std::function<void()> cb) {
         event_context.cb.swap(cb);
     } else {
         event_context.fiber=Fiber::getThis();
+        ASSERT(event_context.fiber->getStatus()==Fiber::Status::EXEC);
 
     }
     return 0;
@@ -282,29 +261,29 @@ int IOManager::addEvent(int fd, Event event, std::function<void()> cb) {
 }
 
 
-bool IOManager::delEvent(int fd, Event event) {
+bool IOManager::delEvent(int fd, IOContext::Event event) {
     std::unique_lock<std::shared_mutex> uniqueLock(mutex_);
-    if(static_cast<int>(fdContexts_.size()) <= fd ) {
+    if(static_cast<int>(ioContexts_.size()) <= fd ) {
         return false;
     }
 
-    FdContext* fd_context=fdContexts_[fd];
+    IOContext* io_context=ioContexts_[fd];
     uniqueLock.unlock();
 
 
-    std::unique_lock<std::shared_mutex> uniqueLock1(fd_context->mutex_);
+    std::unique_lock<std::shared_mutex> uniqueLock1(io_context->mutex_);
 
 
-    if(!(fd_context->events_ & event)) {
+    if(!(io_context->events_ & event)) {
         return false;
     }
 
 
-    Event new_event=(fd_context->events_ & ~event);
+    IOContext::Event new_event=(io_context->events_ & ~event);
     int op=new_event ? EPOLL_CTL_MOD:EPOLL_CTL_DEL;
     epoll_event epevent;
     epevent.events=EPOLLET | new_event;
-    epevent.data.ptr=fd_context;
+    epevent.data.ptr=io_context;
 
     int rt=epoll_ctl(epfd_,op,fd,&epevent);
 
@@ -316,33 +295,34 @@ bool IOManager::delEvent(int fd, Event event) {
     }
 
     --pendingEventCount;
-    fd_context->events_=new_event;
+    io_context->events_=new_event;
 
-    FdContext::EventContext& event_context=fd_context->getContext(event);
+    IOContext::Context& event_context=io_context->getContext(event);
 
-    fd_context->resetContext(event_context);
+
+    io_context->resetContext(event_context);
     return true;
 }
 
-bool IOManager::cancelEvent(int fd, Event event) {
+bool IOManager::cancelEvent(int fd, IOContext::Event event) {
     std::unique_lock<std::shared_mutex> uniqueLock(mutex_);
-    if(static_cast<int>(fdContexts_.size()) <= fd ) {
+    if(static_cast<int>(ioContexts_.size()) <= fd ) {
         return false;
     }
 
-    FdContext* fd_context=fdContexts_[fd];
+    IOContext* io_context=ioContexts_[fd];
     uniqueLock.unlock();
 
-    std::unique_lock<std::shared_mutex> uniqueLock1(fd_context->mutex_);
-    if(!(fd_context->events_ & event)) {
+    std::unique_lock<std::shared_mutex> uniqueLock1(io_context->mutex_);
+    if(!(io_context->events_ & event)) {
         return false;
     }
 
-    Event new_event=(fd_context->events_ & ~event);
+    IOContext::Event new_event=(io_context->events_ & ~event);
     int op=new_event ? EPOLL_CTL_MOD:EPOLL_CTL_DEL;
     epoll_event epevent;
     epevent.events=EPOLLET | new_event;
-    epevent.data.ptr=fd_context;
+    epevent.data.ptr=io_context;
 
     int rt=epoll_ctl(epfd_,op,fd,&epevent);
 
@@ -353,29 +333,29 @@ bool IOManager::cancelEvent(int fd, Event event) {
         return false;
     }
 
-    fd_context->triggerEvent(event);
+    io_context->triggerEvent(event);
     --pendingEventCount;
     return true;
 }
 
 bool IOManager::cancelAll(int fd) {
     std::unique_lock<std::shared_mutex> uniqueLock(mutex_);
-    if(static_cast<int>(fdContexts_.size()) <= fd ) {
+    if(static_cast<int>(ioContexts_.size()) <= fd ) {
         return false;
     }
 
-    FdContext* fd_context=fdContexts_[fd];
+    IOContext* io_context=ioContexts_[fd];
     uniqueLock.unlock();
 
-    std::unique_lock<std::shared_mutex> uniqueLock1(fd_context->mutex_);
-    if(!(fd_context->events_ )) {
+    std::unique_lock<std::shared_mutex> uniqueLock1(io_context->mutex_);
+    if(!(io_context->events_ )) {
         return false;
     }
 
     int op=EPOLL_CTL_DEL;
     epoll_event epevent;
     epevent.events=0;
-    epevent.data.ptr=fd_context;
+    epevent.data.ptr=io_context;
 
     int rt=epoll_ctl(epfd_,op,fd,&epevent);
 
@@ -386,12 +366,12 @@ bool IOManager::cancelAll(int fd) {
         return false;
     }
 
-    if(fd_context->events_ & Event::READ) {
-        fd_context->triggerEvent(Event::READ);
+    if(io_context->events_ & IOContext::Event::READ) {
+        io_context->triggerEvent(IOContext::Event::READ);
         --pendingEventCount;
     }
-    if(fd_context->events_ & Event::WRITE) {
-        fd_context->triggerEvent(Event::WRITE);
+    if(io_context->events_ & IOContext::Event::WRITE) {
+        io_context->triggerEvent(IOContext::Event::WRITE);
         --pendingEventCount;
     }
 

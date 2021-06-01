@@ -8,8 +8,7 @@
 #include <memory>
 #include <shared_mutex>
 
-#include "../Scheduler/scheduler.h"
-#include "../time/timer.h"
+#include "iocontext.h"
 
 namespace bokket
 {
@@ -18,50 +17,17 @@ class IOManager: public Scheduler, public TimerManager
 {
 public:
     using ptr = std::shared_ptr<IOManager>;
-
 public:
-    enum class Event
-    {
-        NONE    = 0x0,
-        READ    = 0x1,
-        WRITE   = 0x4,
-    };
-
-private:
-    struct FdContext
-    {
-    public:
-        struct EventContext
-        {
-            Scheduler* scheduler = nullptr;
-            Fiber::ptr fiber;
-            std::function<void()> cb;
-        };
-
-    public:
-        EventContext& getContext(Event event);
-
-        void resetContext(EventContext& ctx);
-
-        void triggerEvent(Event event);
-
-
-    private:
-        //std::mutex mutex_;
-        std::shared_mutex mutex_;
-        int fd_;
-        EventContext context_[2];
-
-        Event events_=Event::NONE;
-    };
-
-public:
-    IOManager(size_t threads=-1,bool useCaller=true,const std::string& name="UNKNOW");
+    IOManager(size_t threads=-1,bool useCaller=true
+             ,const std::string& name="UNKNOW");
     ~IOManager();
 
-    int addEvent(int fd,Event event,std::function<void()> cb= nullptr);
-    bool delEvent(int fd,Event event);
-    bool cancelEvent(int fd,Event event);
+    int addEvent(int fd,IOContext::Event event,std::function<void()> cb= nullptr);
+    bool delEvent(int fd,IOContext::Event event);
+
+    bool delAll(int fd);
+
+    bool cancelEvent(int fd,IOContext::Event event);
 
     bool cancelAll(int fd);
 
@@ -87,7 +53,7 @@ private:
     std::atomic<size_t> pendingEventCount={0};
     //std::mutex mutex_;
     std::shared_mutex mutex_;
-    std::vector<FdContext*> fdContexts_;
+    std::vector<IOContext*> ioContexts_;
 
 
 };

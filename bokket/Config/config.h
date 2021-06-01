@@ -32,7 +32,7 @@ namespace bokket
 
 
 #define CONFIG() bokket::ConfigMgr::GetInstance()
-#define CONFIG_LOAD(name) bokket::ConfigMgr::GetInstance()->LoadFromYaml(name);
+#define CONFIG_LOAD(name) bokket::ConfigMgr::GetInstance()->LoadFromYaml(name)
 
 
 template<class F,class T>

@@ -11,7 +11,7 @@
 namespace bokket
 {
 
-SYSTEMLOGGER();
+SYSTEM_LOG();
 
 FdData::FdData(int fd)
               :fd_(fd)
