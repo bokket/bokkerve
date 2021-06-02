@@ -28,9 +28,9 @@ static uint32_t countBytes(T value) {
 
 
 Address::ptr Address::create(const sockaddr *address) {
-    if(address== nullptr) {
+    if(address== nullptr) 
         return nullptr;
-    }
+
     Address::ptr addr;
 
     switch (address->sa_family) {
@@ -38,6 +38,7 @@ Address::ptr Address::create(const sockaddr *address) {
             addr.reset(new IPv4Address(*(const sockaddr_in*)address));
             break;
         case AF_INET6:
+            //addr.reset(new IPv6Address(*(const sockaddr_in6*)address));
             addr.reset(new IPv6Address(*(const sockaddr_in6*)address));
             break;
         default:
@@ -76,7 +77,7 @@ Address::ptr Address::getAddrInfo(const std::string &host
                                   , int family, int type, int protocol) {
     std::vector<Address::ptr> address;
     if(getAddrInfo(address,host,family,type,protocol)) {
-        return res[0];
+        return address[0];
     }
     return nullptr;
 }
@@ -127,13 +128,13 @@ bool Address::getAddrInfo(std::vector <Address::ptr> &address, const std::string
 
     if(error) {
         BOKKET_LOG_ERROR(g_logger)<<"Address::getAddressInfo("<<host<<","<<family<<","
-        <<type<<")err="<<error<<" errstr="<<strerror(error);
+        <<type<<") err="<<error<<" errstr="<<strerror(error);
         return false;
     }
 
     next=res;
     while(next) {
-        address.emplace_back(create(next->ai_addr,static_cast<socklen_t>(next->ai_addrlen)));
+        address.emplace_back(create(next->ai_addr));
         BOKKET_LOG_INFO(g_logger)<<((sockaddr_in*)next->ai_addr)->sin_addr.s_addr;
         next=next->ai_next;
     }
@@ -163,21 +164,25 @@ bool Address::getInterfaceAddress(std::multimap <std::string, std::pair<Address:
             switch (next->ifa_addr->sa_family) {
                 case AF_INET:
                 {
-                    addr=create(next->ifa_addr,sizeof(sockaddr_in));
+                    addr=create(next->ifa_addr);
                     uint32_t netmask=((sockaddr_in*)next->ifa_netmask)->sin_addr.s_addr;
-                    prefix_len=
-                }
+                    prefix_len=countBytes(netmask);
                     break;
+                }
                 case AF_INET6:
                 {
-                    addr=create(next->ifa_addr,sizeof(sockaddr_in6));
-                    uint32_t netmask=((sockaddr_in6*)next->ifa_netmask)->sin6_addr;
+                    addr=create(next->ifa_addr);
+                    //#define s6_addr			__in6_u.__u6_addr8
+                    //uint32_t netmask=((sockaddr_in6*)next->ifa_netmask)->sin6_addr.__in6_u.__u6_addr8;
+                    in6_addr& netmask=((sockaddr_in6*)next->ifa_netmask)->sin6_addr;
+                    
+
                     prefix_len=0;
                     for(int i=0;i<16;++i) {
-                        prefix_len+=
+                        prefix_len+=countBytes(netmask.s6_addr[i]);
                     }
-                }
                     break;
+                }
                 default:
                     break;
             }
@@ -198,7 +203,7 @@ bool Address::getInterfaceAddress(std::multimap <std::string, std::pair<Address:
 
 bool Address::getInterfaceAddress(std::vector <std::pair<Address::ptr, uint32_t>> &address, const std::string &iface,
                                   int family) {
-    if(iface.empty() || iface="*") {
+    if(iface.empty() || iface=="*" ) {
         if(family==AF_INET || family==AF_UNSPEC ) {
             address.emplace_back(std::make_pair(Address::ptr(new IPv4Address()),0u));
         }
@@ -251,7 +256,7 @@ IPv4Address::ptr IPv4Address::create(const std::string &address, uint16_t port) 
     IPv4Address::ptr IPv4(new IPv4Address);
     IPv4->addr_.sin_port=LittleEndian(port);
 
-    int error=::inet_pton(AF_INET,address,&IPv4->addr_.sin_addr);
+    int error=::inet_pton(AF_INET,address.data(),&IPv4->addr_.sin_addr);
 
     if(error<=0) {
         BOKKET_LOG_ERROR(g_logger)<<"IPv4Address::create("<<address<<","<<port<<"),error="
@@ -272,11 +277,11 @@ Address::ptr IPv4Address::broadcastAddress(uint32_t prefix_len) {
 }
 
 Address::ptr IPv4Address::networdAddress(uint32_t perfix_len) {
-    if(prefix_len>32)
+    if(perfix_len>32)
         return nullptr;
 
     sockaddr_in sockaddr=addr_;
-    sockaddr.sin_addr.s_addr &= LittleEndian(createMask<uint32_t>(prefix_len));
+    sockaddr.sin_addr.s_addr &= LittleEndian(createMask<uint32_t>(perfix_len));
 
     return IPv4Address::ptr (new IPv4Address(sockaddr));
 }
@@ -297,7 +302,7 @@ std::string IPv4Address::toString() const {
       <<((addr>>16)&0xff) <<"."
       <<((addr>>8)&0xff) <<"."
       <<(addr&0xff);
-    ss<"."<<LittleEndian(addr_.sin_port);
+    ss<<"."<<LittleEndian(addr_.sin_port);
     return ss.str();
 }
 
@@ -305,17 +310,44 @@ std::string IPv4Address::toString() const {
 IPv6Address::ptr IPv6Address::create(const std::string &address, uint16_t port) {
     IPv6Address::ptr IPv6(new IPv6Address);
     IPv6->addr_.sin6_port=LittleEndian(port);
-    int result=::inet_pton(AF_INET6,address,&IPv6->addr_.sin6_addr);
+    int result=::inet_pton(AF_INET6,address.data(),&IPv6->addr_.sin6_addr);
     if(result<=0) {
         BOKKET_LOG_ERROR(g_logger)<<"IPv6Address::create("<<address<<","<<port<<"),ret="
-                                  <<result<<" errno="<<error<<" errstr="<<gai_strerror(error);
+                                  <<result<<" errno="<<errno<<" errstr="<<gai_strerror(errno);
         return nullptr;
     }
     return IPv6;
 }
 
+
+
 std::string IPv6Address::toString() const {
-    uint16_t *addr=(uint16_t*)addr_.sin6_addr
+    //uint16_t *addr=(uint16_t*)addr_.sin6_addr.__in6_u.__u6_addr8;
+    //#define s6_addr			__in6_u.__u6_addr8
+    uint16_t *addr=(uint16_t*)addr_.sin6_addr.s6_addr;
+
+    std::stringstream ss;
+    ss<<"[";
+    bool used_zero= false;
+    for(auto i=0;i<8;++i) {
+        if(addr[i]==0 && !used_zero) {
+            continue;
+        }
+        if(i && addr[i-1]==0 && !used_zero) {
+            ss<<":";
+            used_zero= true;
+        }
+        if(i) {
+            ss<<":";
+        }
+        ss<<std::hex<<static_cast<int>(LittleEndian(addr[i]))<<std::dec;
+    }
+
+    if(!used_zero&& addr[7]==0)
+        ss<<"::";
+
+    ss<<"]:"<<LittleEndian(addr_.sin6_port);
+    return ss.str();
 }
 
 std::string UnknownAddress::toString() const {

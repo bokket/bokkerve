@@ -65,6 +65,10 @@ set(LIB_SRC
 		bokket/Config/config.h
 		bokket/Config/config.cpp
 
+		bokket/address/address.h
+		bokket/address/address.cpp
+		bokket/address/endian.h
+
 		)
 
 add_library(bokket SHARED ${LIB_SRC})
@@ -98,6 +102,10 @@ target_link_libraries(test_thread ${LIBS})
 add_executable(test_Util ./test/test_util.cpp)
 add_dependencies(test_Util bokket)
 target_link_libraries(test_Util ${LIBS})
+
+add_executable(test_Address ./test/test_Address.cpp)
+add_dependencies(test_Address bokket)
+target_link_libraries(test_Address ${LIBS})
 
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)

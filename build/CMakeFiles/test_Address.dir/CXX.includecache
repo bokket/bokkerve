@@ -86,12 +86,6 @@ stdint.h
 string
 -
 
-/home/bokket/bokkerve-plus-plus/bokket/address/address.cpp
-address.h
-/home/bokket/bokkerve-plus-plus/bokket/address/address.h
-../Log/Log.h
-/home/bokket/bokkerve-plus-plus/bokket/Log/Log.h
-
 /home/bokket/bokkerve-plus-plus/bokket/address/address.h
 map
 -
@@ -199,4 +193,14 @@ syscall.h
 -
 sys/time.h
 -
+
+/home/bokket/bokkerve-plus-plus/test/test_Address.cpp
+iostream
+-
+../bokket/Log/Log.h
+/home/bokket/bokkerve-plus-plus/bokket/Log/Log.h
+../bokket/address/address.h
+/home/bokket/bokkerve-plus-plus/bokket/address/address.h
+../bokket/address/endian.h
+/home/bokket/bokkerve-plus-plus/bokket/address/endian.h
 

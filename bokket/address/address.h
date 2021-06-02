@@ -10,6 +10,7 @@
 #include <vector>
 #include <memory>
 #include <tuple>
+#include <utility>
 #include <iostream>
 
 
@@ -32,7 +33,7 @@ class Address
 {
 public:
     using ptr=std::shared_ptr<Address>;
-private:
+public:
     static Address::ptr create(const sockaddr* address);
 public:
     static Address::ptr create(const std::string& address,uint16_t port=0);
@@ -51,9 +52,9 @@ public:
                                     ,const std::string& iface,int family=AF_INET);
 
 public:
-    virtual ~Address();
+    virtual ~Address() {};
 
-    virtual int getFamily() const;
+    virtual int getFamily() const=0;
 
     virtual uint32_t getPort() const =0;
     virtual void setPort(uint16_t v) =0;
@@ -62,14 +63,14 @@ public:
     virtual sockaddr* getAddr() =0;
     virtual socklen_t getAddrLen() const=0;
 
-    virtual ostream & insert(ostream& os) const=0;
+    //virtual ostream & insert(ostream& os) const=0;
 
     virtual std::string toString() const=0;
 
 
-    virtual Address::ptr broadcastAddress(uint32_t prefix_len)=0;
-    virtual Address::ptr networdAddress(uint32_t perfix_len)=0;
-    virtual Address::ptr subnetMask(uint32_t prefix_len)=0;
+    //virtual Address::ptr broadcastAddress(uint32_t prefix_len)=0;
+    //virtual Address::ptr networdAddress(uint32_t perfix_len)=0;
+    //virtual Address::ptr subnetMask(uint32_t prefix_len)=0;
 
     bool operator<(const Address& rhs) const;
     bool operator==(const Address& rhs) const;
@@ -83,7 +84,7 @@ public:
 public:
     IPv4Address(const sockaddr_in& address) { addr_=address; }
     IPv4Address(uint32_t address=INADDR_ANY,uint16_t port=0) {
-        memset(&addr_,0,sizeof(add_));
+        memset(&addr_,0,sizeof(addr_));
         addr_.sin_family=AF_INET;
         addr_.sin_port=LittleEndian(port);
         addr_.sin_addr.s_addr=LittleEndian(address);
@@ -100,12 +101,12 @@ public:
 
     //ostream& insert(ostream& os) const override;
 
-    Address::ptr broadcastAddress(uint32_t prefix_len) override;
-    Address::ptr networdAddress(uint32_t perfix_len) override;
-    Address::ptr subnetMask(uint32_t prefix_len) override;
+    Address::ptr broadcastAddress(uint32_t prefix_len);
+    Address::ptr networdAddress(uint32_t perfix_len);
+    Address::ptr subnetMask(uint32_t prefix_len);
 
     uint32_t getPort() const override { return LittleEndian(addr_.sin_port); }
-    void setPort(uint16_t v) override { return addr_.sin_port=LittleEndian(v); }
+    void setPort(uint16_t v) override { addr_.sin_port=LittleEndian(v); }
 
     std::string toString() const override;
 
@@ -130,26 +131,29 @@ public:
         memset(&addr_,0,sizeof(addr_));
         addr_.sin6_family=AF_INET6;
         addr_.sin6_port=LittleEndian(port);
-        memcpy(&addr_.sin6_addr.__in6_u);
+        memcpy(&addr_.sin6_addr,address,16);
     }
 
     static IPv6Address::ptr create(const std::string& address,uint16_t port=0);
 
 public:
-    const sockaddr* getAddr() const override { return reinterpret_cast<sockaddr*>(&addr_); }
+    const sockaddr* getAddr() const override { 
+        return reinterpret_cast<const sockaddr*>(&addr_); 
+        //return (const sockaddr*)&addr_;
+    }
     sockaddr* getAddr() override  { return reinterpret_cast<sockaddr*>(&addr_); }
-    socklen_t getAddrLen() override { return sizeof(addr_); }
+    socklen_t getAddrLen() const override { return sizeof(addr_); }
 
     int getFamily() const override { return getAddr()->sa_family; }
 
     //ostream& insert(ostream& os) const override;
 
-    IPAddress::ptr broadcastAddress(uint32_t prefix_len) override;
-    IPAddress::ptr networdAddress(uint32_t perfix_len) override;
-    IPAddress::ptr subnetMask(uint32_t prefix_len) override;
+    //Address::ptr broadcastAddress(uint32_t prefix_len) override;
+    //Address::ptr networdAddress(uint32_t perfix_len) override;
+    //Address::ptr subnetMask(uint32_t prefix_len) override;
 
     uint32_t getPort() const override { return LittleEndian(addr_.sin6_port); }
-    void setPort(uint16_t v) override { return addr_.sin6_port=LittleEndian(v); }
+    void setPort(uint16_t v) override { addr_.sin6_port=LittleEndian(v); }
 
     std::string toString() const override;
 
@@ -157,19 +161,20 @@ private:
     sockaddr_in6 addr_;
 };
 
+/*
 class UnixAddress: public Address
 {
 public:
-    typedef shared_ptr <UnixAddress> ptr;
+    using ptr= std::shared_ptr <UnixAddress>;
 public:
 
     UnixAddress();
-    UnixAddress(const string & path);
+    UnixAddress(const std::string & path);
 ;
 
     const sockaddr *getAddr() const override { return reinterpret_cast<sockaddr*>(&addr_); }
     sockaddr *getAddr() override { return reinterpret_cast<sockaddr*>(&addr_); }
-    socklen_t getAddrLen() override { return sizeof(addr_); }
+    socklen_t getAddrLen() const override { return sizeof(addr_); }
 
     //ostream &insert(ostream &os) const override;
 
@@ -183,7 +188,7 @@ public:
 private:
     sockaddr_un addr_;
     socklen_t length_;
-}
+};*/
 
 class UnknownAddress : public Address
 {
@@ -198,12 +203,21 @@ public:
         addr_=addr;
     }
 
-    const sockaddr* getAddr() const override { return reinterpret_cast<sockaddr*>(&addr_); }
+    const sockaddr* getAddr() const override { 
+        return reinterpret_cast<const sockaddr*>(&addr_); 
+        //return (const sockaddr*)&addr_;
+    }
     sockaddr* getAddr() override { return reinterpret_cast<sockaddr*>(&addr_); }
     socklen_t getAddrLen() const override { return sizeof(addr_); }
     //std::ostream& insert(std::ostream& os) const override;
 
     std::string toString() const override;
+
+private:
+    uint32_t getPort() const override {}
+    void setPort(uint16_t v) override {}
+    int getFamily() const override {}
+
 private:
     sockaddr addr_;
 };

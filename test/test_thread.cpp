@@ -43,7 +43,7 @@ int main() {
     BOKKET_LOG_INFO(g_logger)<<"thread test begin";
 
     std::vector<bokket::Thread::ptr> thread;
-    for(int i=0;i<1;++i) {
+    for(int i=0;i<5;++i) {
         bokket::Thread::ptr thread1(new bokket::Thread(&fun1,"name_"+std::to_string(i*2)));
         //bokket::Thread::ptr thread2(new bokket::Thread(&fun2,"name_"+std::to_string(i*2+1)));
         thread.emplace_back(thread1);

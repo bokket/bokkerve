@@ -128,6 +128,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named test_Address
+
+# Build rule for target.
+test_Address: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_Address
+.PHONY : test_Address
+
+# fast build rule for target.
+test_Address/fast:
+	$(MAKE) -f CMakeFiles/test_Address.dir/build.make CMakeFiles/test_Address.dir/build
+.PHONY : test_Address/fast
+
+#=============================================================================
 # Target rules for targets named test_Util
 
 # Build rule for target.
@@ -273,6 +286,33 @@ bokket/Log/LogFile.cpp.s:
 	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/LogFile.cpp.s
 .PHONY : bokket/Log/LogFile.cpp.s
 
+bokket/address/address.o: bokket/address/address.cpp.o
+
+.PHONY : bokket/address/address.o
+
+# target to build an object file
+bokket/address/address.cpp.o:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/address/address.cpp.o
+.PHONY : bokket/address/address.cpp.o
+
+bokket/address/address.i: bokket/address/address.cpp.i
+
+.PHONY : bokket/address/address.i
+
+# target to preprocess a source file
+bokket/address/address.cpp.i:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/address/address.cpp.i
+.PHONY : bokket/address/address.cpp.i
+
+bokket/address/address.s: bokket/address/address.cpp.s
+
+.PHONY : bokket/address/address.s
+
+# target to generate assembly for a file
+bokket/address/address.cpp.s:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/address/address.cpp.s
+.PHONY : bokket/address/address.cpp.s
+
 bokket/thread/thread.o: bokket/thread/thread.cpp.o
 
 .PHONY : bokket/thread/thread.o
@@ -326,6 +366,33 @@ bokket/thread/util.s: bokket/thread/util.cpp.s
 bokket/thread/util.cpp.s:
 	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/thread/util.cpp.s
 .PHONY : bokket/thread/util.cpp.s
+
+test/test_Address.o: test/test_Address.cpp.o
+
+.PHONY : test/test_Address.o
+
+# target to build an object file
+test/test_Address.cpp.o:
+	$(MAKE) -f CMakeFiles/test_Address.dir/build.make CMakeFiles/test_Address.dir/test/test_Address.cpp.o
+.PHONY : test/test_Address.cpp.o
+
+test/test_Address.i: test/test_Address.cpp.i
+
+.PHONY : test/test_Address.i
+
+# target to preprocess a source file
+test/test_Address.cpp.i:
+	$(MAKE) -f CMakeFiles/test_Address.dir/build.make CMakeFiles/test_Address.dir/test/test_Address.cpp.i
+.PHONY : test/test_Address.cpp.i
+
+test/test_Address.s: test/test_Address.cpp.s
+
+.PHONY : test/test_Address.s
+
+# target to generate assembly for a file
+test/test_Address.cpp.s:
+	$(MAKE) -f CMakeFiles/test_Address.dir/build.make CMakeFiles/test_Address.dir/test/test_Address.cpp.s
+.PHONY : test/test_Address.cpp.s
 
 test/test_config.o: test/test_config.cpp.o
 
@@ -444,6 +511,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... bokket"
+	@echo "... test_Address"
 	@echo "... test_Config"
 	@echo "... test_Log"
 	@echo "... test_Util"
@@ -457,12 +525,18 @@ help:
 	@echo "... bokket/Log/LogFile.o"
 	@echo "... bokket/Log/LogFile.i"
 	@echo "... bokket/Log/LogFile.s"
+	@echo "... bokket/address/address.o"
+	@echo "... bokket/address/address.i"
+	@echo "... bokket/address/address.s"
 	@echo "... bokket/thread/thread.o"
 	@echo "... bokket/thread/thread.i"
 	@echo "... bokket/thread/thread.s"
 	@echo "... bokket/thread/util.o"
 	@echo "... bokket/thread/util.i"
 	@echo "... bokket/thread/util.s"
+	@echo "... test/test_Address.o"
+	@echo "... test/test_Address.i"
+	@echo "... test/test_Address.s"
 	@echo "... test/test_config.o"
 	@echo "... test/test_config.i"
 	@echo "... test/test_config.s"

@@ -32,6 +32,21 @@ CMakeFiles/bokket.dir/bokket/Log/Log.cpp.o: ../bokket/thread/util.h
 CMakeFiles/bokket.dir/bokket/Log/LogFile.cpp.o: ../bokket/Log/LogFile.cpp
 CMakeFiles/bokket.dir/bokket/Log/LogFile.cpp.o: ../bokket/Log/LogFile.h
 
+CMakeFiles/bokket.dir/bokket/address/address.cpp.o: ../bokket/Log/FixedBuffer.h
+CMakeFiles/bokket.dir/bokket/address/address.cpp.o: ../bokket/Log/Log.h
+CMakeFiles/bokket.dir/bokket/address/address.cpp.o: ../bokket/Log/LogFile.h
+CMakeFiles/bokket.dir/bokket/address/address.cpp.o: ../bokket/Log/LogLevel.h
+CMakeFiles/bokket.dir/bokket/address/address.cpp.o: ../bokket/address/address.cpp
+CMakeFiles/bokket.dir/bokket/address/address.cpp.o: ../bokket/address/address.h
+CMakeFiles/bokket.dir/bokket/address/address.cpp.o: ../bokket/address/endian.h
+CMakeFiles/bokket.dir/bokket/address/address.cpp.o: ../bokket/base/Singleton.h
+CMakeFiles/bokket.dir/bokket/address/address.cpp.o: ../bokket/base/SpinLock.h
+CMakeFiles/bokket.dir/bokket/address/address.cpp.o: ../bokket/base/noncopyable.h
+CMakeFiles/bokket.dir/bokket/address/address.cpp.o: ../bokket/net/CountDownLatch.h
+CMakeFiles/bokket.dir/bokket/address/address.cpp.o: ../bokket/thread/Semaphore.h
+CMakeFiles/bokket.dir/bokket/address/address.cpp.o: ../bokket/thread/thread.h
+CMakeFiles/bokket.dir/bokket/address/address.cpp.o: ../bokket/thread/util.h
+
 CMakeFiles/bokket.dir/bokket/thread/thread.cpp.o: ../bokket/Log/FixedBuffer.h
 CMakeFiles/bokket.dir/bokket/thread/thread.cpp.o: ../bokket/Log/Log.h
 CMakeFiles/bokket.dir/bokket/thread/thread.cpp.o: ../bokket/Log/LogFile.h

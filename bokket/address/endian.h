@@ -5,9 +5,8 @@
 #ifndef BOKKERVE_PLUS_PLUS_ENDIAN_H
 #define BOKKERVE_PLUS_PLUS_ENDIAN_H
 
-
-#include <byteswap.h>
 #include <stdint.h>
+#include <byteswap.h>
 
 #include <type_traits>
 namespace bokket
@@ -22,13 +21,13 @@ byteswap(T value) {
 template<class T>
 typename std::enable_if<sizeof(T)==sizeof(uint32_t),T>::type
 byteswap(T value) {
-        return (T)bswap_32(static_cast<uint32_t>(value));
+    return (T)bswap_32(static_cast<uint32_t>(value));
 }
 
 template<class T>
 typename std::enable_if<sizeof(T)==sizeof(uint16_t),T>::type
 byteswap(T value) {
-return (T)bswap_16(static_cast<uint16_t>(value));
+    return (T)bswap_16(static_cast<uint16_t>(value));
 }
 
 #if BIG_ENDIAN
