@@ -19,6 +19,8 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <netdb.h>
+#include <ifaddrs.h>
+#include <netinet/in.h>
 
 
 #include "endian.h"
@@ -35,12 +37,12 @@ private:
 public:
     static Address::ptr create(const std::string& address,uint16_t port=0);
 
-    static bool getAddrInfo(std::vector<Address::ptr>& result,const std::string& host
+    static bool getAddrInfo(std::vector<Address::ptr>& address,const std::string& host
                        ,int family=AF_INET,int type=SOCK_STREAM,int protocol=0);
     static Address::ptr getAddrInfo(const std::string& host
                                   ,int family=AF_INET,int type=SOCK_STREAM,int protocol=0);
     //static shared_ptr<Address> LookupAnyIPAddress(const string & host
-     //                                               ,int family=AF_INET,int type=0,int protocol=0);
+    //                                                ,int family=AF_INET,int type=0,int protocol=0);
 
     static bool getInterfaceAddress(std::multimap<std::string
                                     ,std::pair<Address::ptr,uint32_t>>& address
@@ -80,9 +82,14 @@ public:
     using ptr =std::shared_ptr<IPv4Address>;
 public:
     IPv4Address(const sockaddr_in& address) { addr_=address; }
-    IPv4Address(uint32_t address=INADDR_ANY,uint16_t port=0);
+    IPv4Address(uint32_t address=INADDR_ANY,uint16_t port=0) {
+        memset(&addr_,0,sizeof(add_));
+        addr_.sin_family=AF_INET;
+        addr_.sin_port=LittleEndian(port);
+        addr_.sin_addr.s_addr=LittleEndian(address);
+    }
 
-    static IPv4Address::ptr create(const string& address,uint16_t port=0);
+    static IPv4Address::ptr create(const std::string& address,uint16_t port=0);
 
 public:
     const sockaddr* getAddr() const override { return reinterpret_cast<const sockaddr*>(&addr_); }
@@ -111,11 +118,22 @@ class IPv6Address: public Address
 public:
     using ptr= std::shared_ptr<IPv6Address>;
 public:
-    IPv6Address();
-    IPv6Address(const sockaddr_in6& address);
-    IPv6Address(const uint8_t address[16],uint16_t port=0);
+    IPv6Address() {
+        memset(&addr_,0,sizeof(addr_));
+        addr_.sin6_family=AF_INET6;
+    }
 
-    static IPv6Address::ptr create(const string& address,uint16_t port=0);
+    IPv6Address(const sockaddr_in6& address) {
+        addr_=address;
+    }
+    IPv6Address(const uint8_t address[16],uint16_t port=0) {
+        memset(&addr_,0,sizeof(addr_));
+        addr_.sin6_family=AF_INET6;
+        addr_.sin6_port=LittleEndian(port);
+        memcpy(&addr_.sin6_addr.__in6_u);
+    }
+
+    static IPv6Address::ptr create(const std::string& address,uint16_t port=0);
 
 public:
     const sockaddr* getAddr() const override { return reinterpret_cast<sockaddr*>(&addr_); }
@@ -172,8 +190,13 @@ class UnknownAddress : public Address
 public:
     using ptr=std::shared_ptr<UnknownAddress>;
 public:
-    UnknownAddress(int family);
-    UnknownAddress(const sockaddr& addr);
+    UnknownAddress(int family) {
+        memset(&addr_,0,sizeof(addr_));
+        addr_.sa_family=family;
+    }
+    UnknownAddress(const sockaddr& addr) {
+        addr_=addr;
+    }
 
     const sockaddr* getAddr() const override { return reinterpret_cast<sockaddr*>(&addr_); }
     sockaddr* getAddr() override { return reinterpret_cast<sockaddr*>(&addr_); }
@@ -185,7 +208,10 @@ private:
     sockaddr addr_;
 };
 
-std::ostream& operator<<(std::ostream& os,const Address& addr);
+std::ostream& operator<<(std::ostream& os,const Address& addr) {
+    os<<addr.toString();
+    return os;
+}
 
 }
 
