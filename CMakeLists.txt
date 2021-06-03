@@ -5,7 +5,7 @@ project(bokket)
 set(CMAKE_CXX_STANDARD 17)
 set(CXX_FLAGS
 		-O2
-		-g
+		-g2
 		-ggdb
 		-rdynamic
 		-Wall
@@ -14,6 +14,8 @@ set(CXX_FLAGS
 		-std=c++17
 		-pthread
 		)
+
+
 #set(CMAKE_CXX_FLAGS
 #	-rdynamic
 #	-O0

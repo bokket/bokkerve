@@ -36,13 +36,16 @@ Address::ptr Address::create(const sockaddr *address) {
     switch (address->sa_family) {
         case AF_INET:
             addr.reset(new IPv4Address(*(const sockaddr_in*)address));
+            BOKKET_LOG_INFO(g_logger)<<"IPv4 addr="<<addr->getAddr()<<" port="<<addr->getPort()<<" debug string="<<addr->toString();
             break;
         case AF_INET6:
             //addr.reset(new IPv6Address(*(const sockaddr_in6*)address));
             addr.reset(new IPv6Address(*(const sockaddr_in6*)address));
+            BOKKET_LOG_INFO(g_logger)<<"IPv6 addr="<<addr->getAddr()<<" port="<<addr->getPort()<<" debug string="<<addr->toString();
             break;
         default:
             addr.reset(new UnknownAddress(*address));
+            BOKKET_LOG_INFO(g_logger)<<"UnkownAddress addr="<<addr->getAddr()<<" port="<<addr->getPort()<<" debug string="<<addr->toString();
             break;
     }
     return addr;
@@ -54,10 +57,10 @@ Address::ptr Address::create(const std::string &address, uint16_t port) {
 
     hints.ai_family=AF_UNSPEC;
 
-    int error=::getaddrinfo(address.data(), nullptr,&hints,&res);
-    if(error) {
-        BOKKET_LOG_ERROR(g_logger)<<"Address::create("<<address<<","<<port<<"),error="
-        <<error<<",errstr="<<gai_strerror(error);
+    int ret=::getaddrinfo(address.data(), nullptr,&hints,&res);
+    if(ret) {
+        BOKKET_LOG_ERROR(g_logger)<<"Address::create("<<address<<","<<port<<"),ret="
+        <<ret<<" errno="<<errno<<" ,errstr="<<gai_strerror(errno);
         return nullptr;
     }
 
@@ -102,40 +105,47 @@ bool Address::getAddrInfo(std::vector <Address::ptr> &address, const std::string
 
     if(!host.empty() && host[0]=='[') {
         const char* endipv6=(const char*)memchr(host.c_str()+1,']',host.size()-1);
+        BOKKET_LOG_INFO(g_logger)<<"IPv6="<<endipv6;
         if(endipv6) {
             if(*(endipv6+1)==':') {
                 service=endipv6+2;
             }
             node=host.substr(1,endipv6-host.c_str()-1);
         }
+        BOKKET_LOG_INFO(g_logger)<<"node="<<node.c_str();
     }
 
     if(node.empty()) {
         service=(const char*)memchr(host.c_str(),':',host.size());
+        BOKKET_LOG_INFO(g_logger)<<"service="<<service;
         if(service) {
             if(!memchr(service+1,':',host.c_str()+host.size()-service-1)) {
                 node=host.substr(0,service-host.c_str());
                 ++service;
             }
         }
+        BOKKET_LOG_INFO(g_logger)<<"node="<<node.c_str();
     }
 
-    if(node.empty())
+    if(node.empty()) {
         node=host;
+    
+        BOKKET_LOG_INFO(g_logger)<<"node="<<node.c_str();
+    }
 
-    int error=::getaddrinfo(node.c_str(),service,&hits,&res);
+    int ret=::getaddrinfo(node.c_str(),service,&hits,&res);
 
 
-    if(error) {
+    if(ret) {
         BOKKET_LOG_ERROR(g_logger)<<"Address::getAddressInfo("<<host<<","<<family<<","
-        <<type<<") err="<<error<<" errstr="<<strerror(error);
+        <<type<<") ret="<<ret<<" errno="<<errno<<" errstr="<<strerror(errno);
         return false;
     }
 
     next=res;
     while(next) {
         address.emplace_back(create(next->ai_addr));
-        BOKKET_LOG_INFO(g_logger)<<((sockaddr_in*)next->ai_addr)->sin_addr.s_addr;
+        BOKKET_LOG_INFO(g_logger)<<"this "<<((sockaddr_in*)next->ai_addr)->sin_addr.s_addr;
         next=next->ai_next;
     }
 

@@ -1,7 +1,0 @@
-/home/bokket/bokkerve-plus-plus/cmake/CMakeFiles/edit_cache.dir
-/home/bokket/bokkerve-plus-plus/cmake/CMakeFiles/rebuild_cache.dir
-/home/bokket/bokkerve-plus-plus/cmake/CMakeFiles/test_Util.dir
-/home/bokket/bokkerve-plus-plus/cmake/CMakeFiles/bokket.dir
-/home/bokket/bokkerve-plus-plus/cmake/CMakeFiles/test_Log.dir
-/home/bokket/bokkerve-plus-plus/cmake/CMakeFiles/test_Config.dir
-/home/bokket/bokkerve-plus-plus/cmake/CMakeFiles/test_thread.dir
