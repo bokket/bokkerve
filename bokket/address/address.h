@@ -23,7 +23,7 @@
 #include <ifaddrs.h>
 #include <netinet/in.h>
 
-
+#include "../Log/Log.h"
 #include "endian.h"
 
 namespace bokket

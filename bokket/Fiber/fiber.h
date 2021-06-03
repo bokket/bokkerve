@@ -9,6 +9,11 @@
 #include <functional>
 #include <ucontext.h>
 
+#include "../Log/Log.h"
+#include "../Config/config.h"
+#include "../thread/Assert.h"
+#include "../Scheduler/scheduler.h"
+
 namespace bokket
 {
 class Fiber: public std::enable_shared_from_this<Fiber>
@@ -26,6 +31,7 @@ public:
     };
 
 private:
+
     Fiber();
 
 public:
@@ -34,9 +40,9 @@ public:
 
     void reset(std::function<void()> cb);
 
-    void swapIn();
+   // void swapIn();
 
-    void swapOut();
+  //  void swapOut();
 
     void call();
 
@@ -56,9 +62,9 @@ public:
 
     static uint64_t totalFibers();
 
-    static void mainFunc();
+    static void run();
 
-    static void callerMainFunc();
+    static void mainRun();
 
     static uint64_t getFiberId();
 private:

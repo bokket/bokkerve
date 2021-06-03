@@ -10,7 +10,7 @@
 #include <list>
 #include <mutex>
 
-
+#include "../Log/Log.h"
 #include "../Fiber/fiber.h"
 #include "../thread/thread.h"
 namespace bokket
@@ -35,25 +35,25 @@ public:
     void stop();
 
 
-    template<class FiberOrCb>
-    void schedule(FiberOrCb fc,int thread=-1) {
+    template<class T>
+    void schedule(T fc) {
         bool need_tickle= false;
         {
             std::lock_guard<std::mutex> lockGuard(mutex_);
-            need_tickle=scheduleNoLock(fc,thread);
+            need_tickle=scheduleNoLock(fc);
         }
         if(need_tickle) {
             tickle();
         }
     }
 
-    template<class InputIterator>
-    void schedule(InputIterator begin,InputIterator end) {
+    template<class Iterator>
+    void schedule(Iterator begin,Iterator end) {
         bool need_tickle= false;
         {
             std::lock_guard <std::mutex> lockGuard(mutex_);
             while (begin != end) {
-                need_tickle=scheduleNoLock(&*begin,-1) || need_tickle;
+                need_tickle=scheduleNoLock(&*begin) || need_tickle;
                 ++begin;
             }
         }
@@ -74,45 +74,52 @@ protected:
     bool hasIdleThreads() { return idleThreadCount>0; }
 
 private:
-    template<class FiberOrCb>
-    bool scheduleNoLock(FiberOrCb fc,int thread) {
+    template<class T>
+    bool scheduleNoLock(T fc,int thread) {
         bool need_tickle=fibers_.empty();
-        FiberAndThread fat(fc,thread);
-        if(fat.fiber_ || fat.cb_ ) {
-            fibers_.push_back(fat);
+        //FiberAndThread fat(fc,thread);
+        FiberOrCb ft(fc);
+        if(ft.fiber_ || ft.cb_ ) {
+            fibers_.push_back(ft);
         }
         return need_tickle;
     }
 
 private:
-    struct FiberAndThread {
+    struct FiberOrCb {
         Fiber::ptr fiber_;
         std::function<void()> cb_;
-        int thread_;
-        FiberAndThread(Fiber::ptr fiber,int thread)
+        //int thread_;
+        /*FiberOrCb(Fiber::ptr fiber,int thread)
                       :fiber_(fiber),thread_(thread)
         {}
 
-        FiberAndThread(Fiber::ptr* fiber,int thread)
-                      :thread_(thread)
+        FiberOrCb(Fiber::ptr* fiber,int thread)
+                 :thread_(thread)
         {
             fiber_.swap(*fiber);
-        }
+        }*/
+        FiberOrCb() {}
 
-        FiberAndThread()
-                      :thread_(-1)
+        FiberOrCb(Fiber::ptr fiber)
+                 :fiber_(fiber) {}
+
+        FiberOrCb(std::function<void()> cb)
+                 :cb_(cb)
+
+                //:thread_(-1)
         {}
 
         void reset() {
             fiber_= nullptr;
             cb_= nullptr;
-            thread_=-1;
+            //thread_=-1;
         }
     };
 private:
     std::mutex mutex_;
     std::vector<Thread::ptr> threads_;
-    std::list<FiberAndThread> fibers_;
+    std::list<FiberOrCb> fibers_;
 
     Fiber::ptr rootFiber_;
 

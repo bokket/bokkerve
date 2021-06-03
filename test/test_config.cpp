@@ -76,7 +76,6 @@ void test_config() {
 }
 
 int main() {
-    test_config();
-
     test_yaml();
+    test_config();
 }

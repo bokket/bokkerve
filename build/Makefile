@@ -128,6 +128,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named test_Fiber
+
+# Build rule for target.
+test_Fiber: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_Fiber
+.PHONY : test_Fiber
+
+# fast build rule for target.
+test_Fiber/fast:
+	$(MAKE) -f CMakeFiles/test_Fiber.dir/build.make CMakeFiles/test_Fiber.dir/build
+.PHONY : test_Fiber/fast
+
+#=============================================================================
 # Target rules for targets named test_Address
 
 # Build rule for target.
@@ -231,6 +244,33 @@ bokket/Config/config.s: bokket/Config/config.cpp.s
 bokket/Config/config.cpp.s:
 	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Config/config.cpp.s
 .PHONY : bokket/Config/config.cpp.s
+
+bokket/Fiber/fiber.o: bokket/Fiber/fiber.cpp.o
+
+.PHONY : bokket/Fiber/fiber.o
+
+# target to build an object file
+bokket/Fiber/fiber.cpp.o:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o
+.PHONY : bokket/Fiber/fiber.cpp.o
+
+bokket/Fiber/fiber.i: bokket/Fiber/fiber.cpp.i
+
+.PHONY : bokket/Fiber/fiber.i
+
+# target to preprocess a source file
+bokket/Fiber/fiber.cpp.i:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.i
+.PHONY : bokket/Fiber/fiber.cpp.i
+
+bokket/Fiber/fiber.s: bokket/Fiber/fiber.cpp.s
+
+.PHONY : bokket/Fiber/fiber.s
+
+# target to generate assembly for a file
+bokket/Fiber/fiber.cpp.s:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.s
+.PHONY : bokket/Fiber/fiber.cpp.s
 
 bokket/Log/Log.o: bokket/Log/Log.cpp.o
 
@@ -394,6 +434,33 @@ test/test_Address.cpp.s:
 	$(MAKE) -f CMakeFiles/test_Address.dir/build.make CMakeFiles/test_Address.dir/test/test_Address.cpp.s
 .PHONY : test/test_Address.cpp.s
 
+test/test_Fiber.o: test/test_Fiber.cpp.o
+
+.PHONY : test/test_Fiber.o
+
+# target to build an object file
+test/test_Fiber.cpp.o:
+	$(MAKE) -f CMakeFiles/test_Fiber.dir/build.make CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.o
+.PHONY : test/test_Fiber.cpp.o
+
+test/test_Fiber.i: test/test_Fiber.cpp.i
+
+.PHONY : test/test_Fiber.i
+
+# target to preprocess a source file
+test/test_Fiber.cpp.i:
+	$(MAKE) -f CMakeFiles/test_Fiber.dir/build.make CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.i
+.PHONY : test/test_Fiber.cpp.i
+
+test/test_Fiber.s: test/test_Fiber.cpp.s
+
+.PHONY : test/test_Fiber.s
+
+# target to generate assembly for a file
+test/test_Fiber.cpp.s:
+	$(MAKE) -f CMakeFiles/test_Fiber.dir/build.make CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.s
+.PHONY : test/test_Fiber.cpp.s
+
 test/test_config.o: test/test_config.cpp.o
 
 .PHONY : test/test_config.o
@@ -513,12 +580,16 @@ help:
 	@echo "... bokket"
 	@echo "... test_Address"
 	@echo "... test_Config"
+	@echo "... test_Fiber"
 	@echo "... test_Log"
 	@echo "... test_Util"
 	@echo "... test_thread"
 	@echo "... bokket/Config/config.o"
 	@echo "... bokket/Config/config.i"
 	@echo "... bokket/Config/config.s"
+	@echo "... bokket/Fiber/fiber.o"
+	@echo "... bokket/Fiber/fiber.i"
+	@echo "... bokket/Fiber/fiber.s"
 	@echo "... bokket/Log/Log.o"
 	@echo "... bokket/Log/Log.i"
 	@echo "... bokket/Log/Log.s"
@@ -537,6 +608,9 @@ help:
 	@echo "... test/test_Address.o"
 	@echo "... test/test_Address.i"
 	@echo "... test/test_Address.s"
+	@echo "... test/test_Fiber.o"
+	@echo "... test/test_Fiber.i"
+	@echo "... test/test_Fiber.s"
 	@echo "... test/test_config.o"
 	@echo "... test/test_config.i"
 	@echo "... test/test_config.s"

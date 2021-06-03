@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "../lib/libbokket.pdb"
   "../lib/libbokket.so"
   "CMakeFiles/bokket.dir/bokket/Config/config.cpp.o"
+  "CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o"
   "CMakeFiles/bokket.dir/bokket/Log/Log.cpp.o"
   "CMakeFiles/bokket.dir/bokket/Log/LogFile.cpp.o"
   "CMakeFiles/bokket.dir/bokket/address/address.cpp.o"

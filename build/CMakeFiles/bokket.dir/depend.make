@@ -16,6 +16,24 @@ CMakeFiles/bokket.dir/bokket/Config/config.cpp.o: ../bokket/thread/Semaphore.h
 CMakeFiles/bokket.dir/bokket/Config/config.cpp.o: ../bokket/thread/thread.h
 CMakeFiles/bokket.dir/bokket/Config/config.cpp.o: ../bokket/thread/util.h
 
+CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/Config/config.h
+CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/Fiber/fiber.cpp
+CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/Fiber/fiber.h
+CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/Log/FixedBuffer.h
+CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/Log/Log.h
+CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/Log/LogFile.h
+CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/Log/LogLevel.h
+CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/Log/Sigleton.h
+CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/Scheduler/scheduler.h
+CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/base/Singleton.h
+CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/base/SpinLock.h
+CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/base/noncopyable.h
+CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/net/CountDownLatch.h
+CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/thread/Assert.h
+CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/thread/Semaphore.h
+CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/thread/thread.h
+CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/thread/util.h
+
 CMakeFiles/bokket.dir/bokket/Log/Log.cpp.o: ../bokket/Log/FixedBuffer.h
 CMakeFiles/bokket.dir/bokket/Log/Log.cpp.o: ../bokket/Log/Log.cpp
 CMakeFiles/bokket.dir/bokket/Log/Log.cpp.o: ../bokket/Log/Log.h
@@ -60,15 +78,19 @@ CMakeFiles/bokket.dir/bokket/thread/thread.cpp.o: ../bokket/thread/thread.cpp
 CMakeFiles/bokket.dir/bokket/thread/thread.cpp.o: ../bokket/thread/thread.h
 CMakeFiles/bokket.dir/bokket/thread/thread.cpp.o: ../bokket/thread/util.h
 
+CMakeFiles/bokket.dir/bokket/thread/util.cpp.o: ../bokket/Config/config.h
 CMakeFiles/bokket.dir/bokket/thread/util.cpp.o: ../bokket/Fiber/fiber.h
 CMakeFiles/bokket.dir/bokket/thread/util.cpp.o: ../bokket/Log/FixedBuffer.h
 CMakeFiles/bokket.dir/bokket/thread/util.cpp.o: ../bokket/Log/Log.h
 CMakeFiles/bokket.dir/bokket/thread/util.cpp.o: ../bokket/Log/LogFile.h
 CMakeFiles/bokket.dir/bokket/thread/util.cpp.o: ../bokket/Log/LogLevel.h
+CMakeFiles/bokket.dir/bokket/thread/util.cpp.o: ../bokket/Log/Sigleton.h
+CMakeFiles/bokket.dir/bokket/thread/util.cpp.o: ../bokket/Scheduler/scheduler.h
 CMakeFiles/bokket.dir/bokket/thread/util.cpp.o: ../bokket/base/Singleton.h
 CMakeFiles/bokket.dir/bokket/thread/util.cpp.o: ../bokket/base/SpinLock.h
 CMakeFiles/bokket.dir/bokket/thread/util.cpp.o: ../bokket/base/noncopyable.h
 CMakeFiles/bokket.dir/bokket/thread/util.cpp.o: ../bokket/net/CountDownLatch.h
+CMakeFiles/bokket.dir/bokket/thread/util.cpp.o: ../bokket/thread/Assert.h
 CMakeFiles/bokket.dir/bokket/thread/util.cpp.o: ../bokket/thread/Semaphore.h
 CMakeFiles/bokket.dir/bokket/thread/util.cpp.o: ../bokket/thread/thread.h
 CMakeFiles/bokket.dir/bokket/thread/util.cpp.o: ../bokket/thread/util.cpp

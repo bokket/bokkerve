@@ -33,6 +33,7 @@ Address::ptr Address::create(const sockaddr *address) {
 
     Address::ptr addr;
 
+
     switch (address->sa_family) {
         case AF_INET:
             addr.reset(new IPv4Address(*(const sockaddr_in*)address));

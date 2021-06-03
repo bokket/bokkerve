@@ -67,28 +67,32 @@ set(LIB_SRC
 		bokket/Config/config.h
 		bokket/Config/config.cpp
 
+
 		bokket/address/address.h
 		bokket/address/address.cpp
 		bokket/address/endian.h
+
+		bokket/Fiber/fiber.h
+		bokket/Fiber/fiber.cpp
+
+		#bokket/Scheduler/scheduler.cpp
+		bokket/Scheduler/scheduler.h
 
 		)
 
 add_library(bokket SHARED ${LIB_SRC})
 
 
-add_executable(test_Log test/test_log.cpp)
+add_executable(test_Log ./test/test_log.cpp)
 add_dependencies(test_Log bokket)
-#force_redefine_file_macro_for_sources(test_log)
 target_link_libraries(test_Log ${LIBS})
 
-#add_executable(test_LogStream ./test/test_LogStream.cpp)
+#add_executable(test_LogStream /test/test_LogStream.cpp)
 #add_dependencies(test_LogStream bokket)
-#force_redefine_file_macro_for_sources(test_LogStream)
 #target_link_libraries(test_LogStream ${LIBS})
 
-#add_executable(test_Yaml ./test/test_yaml.cpp)
+#add_executable(test_Yaml /test/test_yaml.cpp)
 #add_dependencies(test_Yaml bokket)
-#force_redefine_file_macro_for_sources(test_Yaml)
 #target_link_libraries(test_Yaml ${LIBS})
 
 add_executable(test_Config ./test/test_config.cpp)
@@ -97,7 +101,6 @@ target_link_libraries(test_Config ${LIBS})
 
 add_executable(test_thread ./test/test_thread.cpp)
 add_dependencies(test_thread bokket)
-#force_redefine_file_macro_for_sources(test_thread)
 target_link_libraries(test_thread ${LIBS})
 
 
@@ -108,6 +111,11 @@ target_link_libraries(test_Util ${LIBS})
 add_executable(test_Address ./test/test_Address.cpp)
 add_dependencies(test_Address bokket)
 target_link_libraries(test_Address ${LIBS})
+
+
+add_executable(test_Fiber ./test/test_Fiber.cpp)
+add_dependencies(test_Fiber bokket)
+target_link_libraries(test_Fiber ${LIBS})
 
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
