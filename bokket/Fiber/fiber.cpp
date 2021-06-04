@@ -6,7 +6,7 @@
 
 #include <atomic>
 
-
+#include "../Scheduler/scheduler.h"
 #include "../Log/Log.h"
 
 namespace bokket

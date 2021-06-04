@@ -10,29 +10,35 @@
 #include <list>
 #include <mutex>
 
-#include "../Log/Log.h"
+
+#include "../Hook/hook.h"
 #include "../Fiber/fiber.h"
 #include "../thread/thread.h"
+
 namespace bokket
 {
 
 class Scheduler
 {
+
+
 public:
     using ptr= std::shared_ptr<Scheduler>;
 
 public:
-    Scheduler(size_t threads=1,bool useCaller=true,const std::string& name="UNKNOW");
+    Scheduler(size_t threadCount=1,bool useCaller=true,const std::string& name="UNKNOW");
 
     virtual ~Scheduler();
 
 public:
     const std::string& getName() const { return name_; }
     static Scheduler* getThis();
-    static Fiber* getMainFiber();
 
+    static Fiber* getMainFiber();
     void start();
     void stop();
+
+    std::string toString();
 
 
     template<class T>
@@ -69,17 +75,18 @@ protected:
     virtual bool stopping();
     virtual void idle();
 
+    //void setThis(Scheduler* scheduler);
     void setThis();
 
     bool hasIdleThreads() { return idleThreadCount>0; }
 
 private:
     template<class T>
-    bool scheduleNoLock(T fc,int thread) {
+    bool scheduleNoLock(T fc) {
         bool need_tickle=fibers_.empty();
         //FiberAndThread fat(fc,thread);
         FiberOrCb ft(fc);
-        if(ft.fiber_ || ft.cb_ ) {
+        if(ft.fiber || ft.cb ) {
             fibers_.push_back(ft);
         }
         return need_tickle;
@@ -87,8 +94,9 @@ private:
 
 private:
     struct FiberOrCb {
-        Fiber::ptr fiber_;
-        std::function<void()> cb_;
+        public:
+        Fiber::ptr fiber;
+        std::function<void()> cb;
         //int thread_;
         /*FiberOrCb(Fiber::ptr fiber,int thread)
                       :fiber_(fiber),thread_(thread)
@@ -101,18 +109,18 @@ private:
         }*/
         FiberOrCb() {}
 
-        FiberOrCb(Fiber::ptr fiber)
-                 :fiber_(fiber) {}
+        FiberOrCb(Fiber::ptr f)
+                 :fiber(f) {}
 
-        FiberOrCb(std::function<void()> cb)
-                 :cb_(cb)
+        FiberOrCb(std::function<void()> c)
+                 :cb(c)
 
                 //:thread_(-1)
         {}
 
         void reset() {
-            fiber_= nullptr;
-            cb_= nullptr;
+            fiber= nullptr;
+            cb= nullptr;
             //thread_=-1;
         }
     };

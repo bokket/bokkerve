@@ -5,6 +5,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o"
   "CMakeFiles/bokket.dir/bokket/Log/Log.cpp.o"
   "CMakeFiles/bokket.dir/bokket/Log/LogFile.cpp.o"
+  "CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.o"
   "CMakeFiles/bokket.dir/bokket/address/address.cpp.o"
   "CMakeFiles/bokket.dir/bokket/thread/thread.cpp.o"
   "CMakeFiles/bokket.dir/bokket/thread/util.cpp.o"

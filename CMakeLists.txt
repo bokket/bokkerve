@@ -29,14 +29,46 @@ set(CXX_FLAGS
 #	-Wno-unused-function
 #	-Wno-unused-variable -pthread)
 
+
+
+set(LIB_SRC
+		bokket/Log/Log.cpp
+		#bokket/Log/Log.h
+		bokket/Log/LogFile.cpp
+		#bokket/Log/AsyncFileLogAppender.h
+		#bokket/Log/AsyncFileLogAppender.cpp
+		#bokket/Log/LogStream.cpp
+		#bokket/thread/util.h
+		bokket/thread/util.cpp
+		#bokket/thread/thread.h
+		bokket/thread/thread.cpp
+		bokket/thread/Assert.h
+		bokket/Log/FixedBuffer.h
+		#bokket/Config/config.h
+		bokket/Config/config.cpp
+
+
+		#bokket/address/address.h
+		bokket/address/address.cpp
+		bokket/address/endian.h
+
+		#bokket/Fiber/fiber.h
+		bokket/Fiber/fiber.cpp
+
+		bokket/Scheduler/scheduler.cpp
+		#bokket/Scheduler/scheduler.h
+
+		)
+
+add_library(bokket SHARED ${LIB_SRC})
+
+
 include_directories(/usr/local/include)
 link_directories(/usr/local/lib)
 
 find_library(YAMLCPP yaml-cpp)
 #message("****", ${YAMLCPP})
-
 find_library(PTHREAD pthread)
-
 find_library(GTEST gtest)
 #message("****", ${PTHREAD})
 #link_libraries(-lyaml-cpp)
@@ -51,36 +83,6 @@ set(LIBS
 message("***", ${LIBS})
 
 
-set(LIB_SRC
-		bokket/Log/Log.cpp
-		bokket/Log/Log.h
-		bokket/Log/LogFile.cpp
-		#bokket/Log/AsyncFileLogAppender.h
-		#bokket/Log/AsyncFileLogAppender.cpp
-		#bokket/Log/LogStream.cpp
-		bokket/thread/util.h
-		bokket/thread/util.cpp
-		bokket/thread/thread.h
-		bokket/thread/thread.cpp
-		bokket/thread/Assert.h
-		bokket/Log/FixedBuffer.h
-		bokket/Config/config.h
-		bokket/Config/config.cpp
-
-
-		bokket/address/address.h
-		bokket/address/address.cpp
-		bokket/address/endian.h
-
-		bokket/Fiber/fiber.h
-		bokket/Fiber/fiber.cpp
-
-		#bokket/Scheduler/scheduler.cpp
-		bokket/Scheduler/scheduler.h
-
-		)
-
-add_library(bokket SHARED ${LIB_SRC})
 
 
 add_executable(test_Log ./test/test_log.cpp)
@@ -116,6 +118,8 @@ target_link_libraries(test_Address ${LIBS})
 add_executable(test_Fiber ./test/test_Fiber.cpp)
 add_dependencies(test_Fiber bokket)
 target_link_libraries(test_Fiber ${LIBS})
+
+
 
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)

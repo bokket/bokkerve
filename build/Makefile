@@ -326,6 +326,33 @@ bokket/Log/LogFile.cpp.s:
 	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/LogFile.cpp.s
 .PHONY : bokket/Log/LogFile.cpp.s
 
+bokket/Scheduler/scheduler.o: bokket/Scheduler/scheduler.cpp.o
+
+.PHONY : bokket/Scheduler/scheduler.o
+
+# target to build an object file
+bokket/Scheduler/scheduler.cpp.o:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.o
+.PHONY : bokket/Scheduler/scheduler.cpp.o
+
+bokket/Scheduler/scheduler.i: bokket/Scheduler/scheduler.cpp.i
+
+.PHONY : bokket/Scheduler/scheduler.i
+
+# target to preprocess a source file
+bokket/Scheduler/scheduler.cpp.i:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.i
+.PHONY : bokket/Scheduler/scheduler.cpp.i
+
+bokket/Scheduler/scheduler.s: bokket/Scheduler/scheduler.cpp.s
+
+.PHONY : bokket/Scheduler/scheduler.s
+
+# target to generate assembly for a file
+bokket/Scheduler/scheduler.cpp.s:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.s
+.PHONY : bokket/Scheduler/scheduler.cpp.s
+
 bokket/address/address.o: bokket/address/address.cpp.o
 
 .PHONY : bokket/address/address.o
@@ -596,6 +623,9 @@ help:
 	@echo "... bokket/Log/LogFile.o"
 	@echo "... bokket/Log/LogFile.i"
 	@echo "... bokket/Log/LogFile.s"
+	@echo "... bokket/Scheduler/scheduler.o"
+	@echo "... bokket/Scheduler/scheduler.i"
+	@echo "... bokket/Scheduler/scheduler.s"
 	@echo "... bokket/address/address.o"
 	@echo "... bokket/address/address.i"
 	@echo "... bokket/address/address.s"

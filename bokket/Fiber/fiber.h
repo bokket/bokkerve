@@ -12,12 +12,13 @@
 #include "../Log/Log.h"
 #include "../Config/config.h"
 #include "../thread/Assert.h"
-#include "../Scheduler/scheduler.h"
 
 namespace bokket
 {
+class Scheduler;    
 class Fiber: public std::enable_shared_from_this<Fiber>
 {
+    friend class Scheduler;
 public:
     using ptr = std::shared_ptr<Fiber>;
     enum class Status :uint8_t
@@ -40,9 +41,9 @@ public:
 
     void reset(std::function<void()> cb);
 
-   // void swapIn();
+    void swapIn();
 
-  //  void swapOut();
+    void swapOut();
 
     void call();
 
@@ -51,6 +52,8 @@ public:
     uint64_t getId() const { return id_; }
 
     Status getStatus() const { return status_; }
+
+    void setStatus(Status status) { status_=status; }
 public:
     static void setThis(Fiber* fiber);
 
