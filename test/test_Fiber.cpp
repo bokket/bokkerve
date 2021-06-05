@@ -17,14 +17,17 @@ void run_in_fiber() {
     BOKKET_LOG_INFO(g_logger)<<"run in fiber 2";*/
 
     BOKKET_LOG_INFO(g_logger)<<"run in fiber begin";
-    bokket::Fiber::yieldToHold();
+    //bokket::Fiber::yieldToHold();
+    bokket::Fiber::getThis()->back();
     BOKKET_LOG_INFO(g_logger)<<"run in fiber end";
-    bokket::Fiber::yieldToHold();
+    //bokket::Fiber::yieldToHold();
 }
 
 void test_fiber() {
     BOKKET_LOG_INFO(g_logger)<<"main begin 1";
 
+{
+    bokket::Fiber::getThis();
 
     bokket::Fiber::ptr fiber(new bokket::Fiber(run_in_fiber));
 
@@ -32,12 +35,12 @@ void test_fiber() {
     BOKKET_LOG_INFO(g_logger)<<"main after call1";
     fiber->call();
     BOKKET_LOG_INFO(g_logger)<<"main after call2";
+    //fiber->swapIn();
+    //BOKKET_LOG_INFO(g_logger)<<"main after swapIn";
     /*fiber->swapIn();
-    BOKKET_LOG_INFO(g_logger)<<"main after swapIn";
-    fiber->swapIn();
     BOKKET_LOG_INFO(g_logger)<<"main after end";
     fiber->swapIn();*/
-
+}
     BOKKET_LOG_INFO(g_logger)<<"main after end 2";
 }
 
@@ -46,7 +49,7 @@ int main() {
 
     std::vector<bokket::Thread::ptr> threads;
 
-    for(int i=0;i<3;++i) {
+    for(int i=0;i<5;++i) {
         threads.emplace_back(bokket::Thread::ptr(
             new bokket::Thread(&test_fiber,"name_"+std::to_string(i))));
     }

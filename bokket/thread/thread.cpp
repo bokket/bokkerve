@@ -54,7 +54,9 @@ Thread::Thread(std::function<void()> cb, const std::string &name)
         threadName_ = "UNKNOW" ;
         int num = threadCount.fetch_add(1);
         threadName_=std::to_string(num);
+        
     }
+    t_threadName=threadName_;
     start();
 }
 
@@ -109,7 +111,7 @@ void * Thread::run(void *arg) {
     thread->tid_ = Thread::currentThreadTid();
 
     //设置该进程线程的名字
-    ::pthread_setname_np(::pthread_self(),thread->threadName_.substr(0,15).c_str());
+    //::pthread_setname_np(::pthread_self(),thread->threadName_.substr(0,15).c_str());
 
     std::function<void()> cb;
     cb.swap(thread->cb_);

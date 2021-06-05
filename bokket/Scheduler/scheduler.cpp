@@ -146,7 +146,8 @@ bool Scheduler::stopping() {
 void Scheduler::idle() {
     BOKKET_LOG_INFO(g_logger)<<name_<<"idle running";
     while(!stopping())
-        Fiber::yieldToHold();
+        Fiber::yield();
+        //Fiber::yieldToHold();
 }
 
 void Scheduler::run() {
@@ -197,8 +198,9 @@ void Scheduler::run() {
                      && ft.fiber->getStatus()!=Fiber::Status::EXCEPT) {
             ft.fiber->swapIn();
             activeThreadCount--;
-            if(ft.fiber->getStatus()!=Fiber::Status::READY)
-                schedule(ft.fiber);
+            if(ft.fiber->getStatus()!=Fiber::Status::TERM)
+                //schedule(ft.fiber);
+                ft.fiber->setStatus(Fiber::Status::INIT);
                 //ft.fiber_->getStatus()==Fiber::Status::INIT;
         } else if(ft.cb) {
             if(cb_fiber)
@@ -206,7 +208,7 @@ void Scheduler::run() {
             else
                 cb_fiber.reset(new Fiber(ft.cb));
 
-            ft.reset();
+            //ft.reset();
             cb_fiber->swapIn();
             activeThreadCount--;
 

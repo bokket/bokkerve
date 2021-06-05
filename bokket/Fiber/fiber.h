@@ -24,10 +24,10 @@ public:
     enum class Status :uint8_t
     {
         INIT,
-        HOLD,
+        //HOLD,
         EXEC,
         TERM,
-        READY,
+        //READY,
         EXCEPT
     };
 
@@ -59,9 +59,9 @@ public:
 
     static Fiber::ptr getThis();
 
-    static void yieldToReady();
-
-    static void yieldToHold();
+    //static void yieldToReady();
+    static void yield();
+    //static void yieldToHold();
 
     static uint64_t totalFibers();
 
@@ -71,6 +71,7 @@ public:
 
     static uint64_t getFiberId();
 private:
+    
     uint64_t id_ = 0;
     uint32_t stackSize_=0;
 

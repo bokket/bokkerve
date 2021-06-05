@@ -1,0 +1,113 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "bokket",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "bokket::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-bokket-Debug-c746869ae6d9e0cb7ddb.json",
+					"name" : "bokket",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_Address::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_Address-Debug-1f5cd26aa6b1a0b4d8b8.json",
+					"name" : "test_Address",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_Config::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_Config-Debug-42fd139cf860a4564406.json",
+					"name" : "test_Config",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_Fiber::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_Fiber-Debug-1588ad1b04c1d13f7018.json",
+					"name" : "test_Fiber",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_Log::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_Log-Debug-d72d613a52e9d9d04953.json",
+					"name" : "test_Log",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_Util::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_Util-Debug-2378a691789a01bd4de9.json",
+					"name" : "test_Util",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_thread::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_thread-Debug-5340b95b1df2a3445602.json",
+					"name" : "test_thread",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/bokket/bokkerve-plus-plus/build",
+		"source" : "/home/bokket/bokkerve-plus-plus"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}
