@@ -5,23 +5,43 @@
 #ifndef BOKKET_TIMERMANAGER_H
 #define BOKKET_TIMERMANAGER_H
 
-
-#include "../base/noncopyable.h"
-#include "Timer.h"
 #include <vector>
 #include <memory>
+#include <queue>
 
-namespace bokket::net
+
+#include "Timer.h"
+#include "../base/noncopyable.h"
+
+namespace bokket
 {
 
-    class EventLoop;
+struct TimerCompare {
+    bool operator()(const Timer::ptr& lhs, const Timer::ptr &rhs) const {
+        if(lhs->when()==rhs->when()) {
+            return lhs->getTimerId() > rhs->getTimerId();
+        } else {
+            return lhs->when() > rhs->when();
+        }
+    }
+};
 
-    struct Timer
+class EventLoop;
+class Channel;
 
-    class TimerManager
-    {
+class TimerQueue: public noncopyable
+{
+private:
+    std::priority_queue<Timer::ptr,std::vector<Timer::ptr,TimerCompare>> timers_;
+    EventLoop* loop_;
 
-    };
+
+    int timerFd_;
+    Channel::ptr timerfdChannel_;
+
+
+};
+
 }
 
 

@@ -15,15 +15,15 @@ using namespace std;
 
 namespace bokket
 {
-namespace net
-{
+
     class EventLoop;
 
     //Channel通道 表示一个请求 或者是一个链接
-    class Channel
+    class Channel: public enable_shared_from_this<Channel>
     {
     public:
         using EventCallback=function<void()>;
+        using ptr=std::shared_ptr<Channel>;
 
     public:
         enum Status
@@ -143,7 +143,7 @@ namespace net
         EventCallback closeCallback_;
         EventCallback errorCallback_;
     };
-}
+
 }
 
 
