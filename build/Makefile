@@ -128,19 +128,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named test_Fiber
-
-# Build rule for target.
-test_Fiber: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 test_Fiber
-.PHONY : test_Fiber
-
-# fast build rule for target.
-test_Fiber/fast:
-	$(MAKE) -f CMakeFiles/test_Fiber.dir/build.make CMakeFiles/test_Fiber.dir/build
-.PHONY : test_Fiber/fast
-
-#=============================================================================
 # Target rules for targets named test_Address
 
 # Build rule for target.
@@ -167,6 +154,19 @@ test_Util/fast:
 .PHONY : test_Util/fast
 
 #=============================================================================
+# Target rules for targets named test_thread
+
+# Build rule for target.
+test_thread: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_thread
+.PHONY : test_thread
+
+# fast build rule for target.
+test_thread/fast:
+	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/build
+.PHONY : test_thread/fast
+
+#=============================================================================
 # Target rules for targets named bokket
 
 # Build rule for target.
@@ -178,6 +178,19 @@ bokket: cmake_check_build_system
 bokket/fast:
 	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/build
 .PHONY : bokket/fast
+
+#=============================================================================
+# Target rules for targets named test_AsyncLog
+
+# Build rule for target.
+test_AsyncLog: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_AsyncLog
+.PHONY : test_AsyncLog
+
+# fast build rule for target.
+test_AsyncLog/fast:
+	$(MAKE) -f CMakeFiles/test_AsyncLog.dir/build.make CMakeFiles/test_AsyncLog.dir/build
+.PHONY : test_AsyncLog/fast
 
 #=============================================================================
 # Target rules for targets named test_Log
@@ -204,19 +217,6 @@ test_Config: cmake_check_build_system
 test_Config/fast:
 	$(MAKE) -f CMakeFiles/test_Config.dir/build.make CMakeFiles/test_Config.dir/build
 .PHONY : test_Config/fast
-
-#=============================================================================
-# Target rules for targets named test_thread
-
-# Build rule for target.
-test_thread: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 test_thread
-.PHONY : test_thread
-
-# fast build rule for target.
-test_thread/fast:
-	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/build
-.PHONY : test_thread/fast
 
 bokket/Config/config.o: bokket/Config/config.cpp.o
 
@@ -245,32 +245,32 @@ bokket/Config/config.cpp.s:
 	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Config/config.cpp.s
 .PHONY : bokket/Config/config.cpp.s
 
-bokket/Fiber/fiber.o: bokket/Fiber/fiber.cpp.o
+bokket/Log/AsyncFileLogAppender.o: bokket/Log/AsyncFileLogAppender.cpp.o
 
-.PHONY : bokket/Fiber/fiber.o
+.PHONY : bokket/Log/AsyncFileLogAppender.o
 
 # target to build an object file
-bokket/Fiber/fiber.cpp.o:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o
-.PHONY : bokket/Fiber/fiber.cpp.o
+bokket/Log/AsyncFileLogAppender.cpp.o:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.o
+.PHONY : bokket/Log/AsyncFileLogAppender.cpp.o
 
-bokket/Fiber/fiber.i: bokket/Fiber/fiber.cpp.i
+bokket/Log/AsyncFileLogAppender.i: bokket/Log/AsyncFileLogAppender.cpp.i
 
-.PHONY : bokket/Fiber/fiber.i
+.PHONY : bokket/Log/AsyncFileLogAppender.i
 
 # target to preprocess a source file
-bokket/Fiber/fiber.cpp.i:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.i
-.PHONY : bokket/Fiber/fiber.cpp.i
+bokket/Log/AsyncFileLogAppender.cpp.i:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.i
+.PHONY : bokket/Log/AsyncFileLogAppender.cpp.i
 
-bokket/Fiber/fiber.s: bokket/Fiber/fiber.cpp.s
+bokket/Log/AsyncFileLogAppender.s: bokket/Log/AsyncFileLogAppender.cpp.s
 
-.PHONY : bokket/Fiber/fiber.s
+.PHONY : bokket/Log/AsyncFileLogAppender.s
 
 # target to generate assembly for a file
-bokket/Fiber/fiber.cpp.s:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.s
-.PHONY : bokket/Fiber/fiber.cpp.s
+bokket/Log/AsyncFileLogAppender.cpp.s:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.s
+.PHONY : bokket/Log/AsyncFileLogAppender.cpp.s
 
 bokket/Log/Log.o: bokket/Log/Log.cpp.o
 
@@ -325,33 +325,6 @@ bokket/Log/LogFile.s: bokket/Log/LogFile.cpp.s
 bokket/Log/LogFile.cpp.s:
 	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Log/LogFile.cpp.s
 .PHONY : bokket/Log/LogFile.cpp.s
-
-bokket/Scheduler/scheduler.o: bokket/Scheduler/scheduler.cpp.o
-
-.PHONY : bokket/Scheduler/scheduler.o
-
-# target to build an object file
-bokket/Scheduler/scheduler.cpp.o:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.o
-.PHONY : bokket/Scheduler/scheduler.cpp.o
-
-bokket/Scheduler/scheduler.i: bokket/Scheduler/scheduler.cpp.i
-
-.PHONY : bokket/Scheduler/scheduler.i
-
-# target to preprocess a source file
-bokket/Scheduler/scheduler.cpp.i:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.i
-.PHONY : bokket/Scheduler/scheduler.cpp.i
-
-bokket/Scheduler/scheduler.s: bokket/Scheduler/scheduler.cpp.s
-
-.PHONY : bokket/Scheduler/scheduler.s
-
-# target to generate assembly for a file
-bokket/Scheduler/scheduler.cpp.s:
-	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.s
-.PHONY : bokket/Scheduler/scheduler.cpp.s
 
 bokket/address/address.o: bokket/address/address.cpp.o
 
@@ -461,32 +434,32 @@ test/test_Address.cpp.s:
 	$(MAKE) -f CMakeFiles/test_Address.dir/build.make CMakeFiles/test_Address.dir/test/test_Address.cpp.s
 .PHONY : test/test_Address.cpp.s
 
-test/test_Fiber.o: test/test_Fiber.cpp.o
+test/test_AsyncFileLog.o: test/test_AsyncFileLog.cpp.o
 
-.PHONY : test/test_Fiber.o
+.PHONY : test/test_AsyncFileLog.o
 
 # target to build an object file
-test/test_Fiber.cpp.o:
-	$(MAKE) -f CMakeFiles/test_Fiber.dir/build.make CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.o
-.PHONY : test/test_Fiber.cpp.o
+test/test_AsyncFileLog.cpp.o:
+	$(MAKE) -f CMakeFiles/test_AsyncLog.dir/build.make CMakeFiles/test_AsyncLog.dir/test/test_AsyncFileLog.cpp.o
+.PHONY : test/test_AsyncFileLog.cpp.o
 
-test/test_Fiber.i: test/test_Fiber.cpp.i
+test/test_AsyncFileLog.i: test/test_AsyncFileLog.cpp.i
 
-.PHONY : test/test_Fiber.i
+.PHONY : test/test_AsyncFileLog.i
 
 # target to preprocess a source file
-test/test_Fiber.cpp.i:
-	$(MAKE) -f CMakeFiles/test_Fiber.dir/build.make CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.i
-.PHONY : test/test_Fiber.cpp.i
+test/test_AsyncFileLog.cpp.i:
+	$(MAKE) -f CMakeFiles/test_AsyncLog.dir/build.make CMakeFiles/test_AsyncLog.dir/test/test_AsyncFileLog.cpp.i
+.PHONY : test/test_AsyncFileLog.cpp.i
 
-test/test_Fiber.s: test/test_Fiber.cpp.s
+test/test_AsyncFileLog.s: test/test_AsyncFileLog.cpp.s
 
-.PHONY : test/test_Fiber.s
+.PHONY : test/test_AsyncFileLog.s
 
 # target to generate assembly for a file
-test/test_Fiber.cpp.s:
-	$(MAKE) -f CMakeFiles/test_Fiber.dir/build.make CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.s
-.PHONY : test/test_Fiber.cpp.s
+test/test_AsyncFileLog.cpp.s:
+	$(MAKE) -f CMakeFiles/test_AsyncLog.dir/build.make CMakeFiles/test_AsyncLog.dir/test/test_AsyncFileLog.cpp.s
+.PHONY : test/test_AsyncFileLog.cpp.s
 
 test/test_config.o: test/test_config.cpp.o
 
@@ -606,26 +579,23 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... bokket"
 	@echo "... test_Address"
+	@echo "... test_AsyncLog"
 	@echo "... test_Config"
-	@echo "... test_Fiber"
 	@echo "... test_Log"
 	@echo "... test_Util"
 	@echo "... test_thread"
 	@echo "... bokket/Config/config.o"
 	@echo "... bokket/Config/config.i"
 	@echo "... bokket/Config/config.s"
-	@echo "... bokket/Fiber/fiber.o"
-	@echo "... bokket/Fiber/fiber.i"
-	@echo "... bokket/Fiber/fiber.s"
+	@echo "... bokket/Log/AsyncFileLogAppender.o"
+	@echo "... bokket/Log/AsyncFileLogAppender.i"
+	@echo "... bokket/Log/AsyncFileLogAppender.s"
 	@echo "... bokket/Log/Log.o"
 	@echo "... bokket/Log/Log.i"
 	@echo "... bokket/Log/Log.s"
 	@echo "... bokket/Log/LogFile.o"
 	@echo "... bokket/Log/LogFile.i"
 	@echo "... bokket/Log/LogFile.s"
-	@echo "... bokket/Scheduler/scheduler.o"
-	@echo "... bokket/Scheduler/scheduler.i"
-	@echo "... bokket/Scheduler/scheduler.s"
 	@echo "... bokket/address/address.o"
 	@echo "... bokket/address/address.i"
 	@echo "... bokket/address/address.s"
@@ -638,9 +608,9 @@ help:
 	@echo "... test/test_Address.o"
 	@echo "... test/test_Address.i"
 	@echo "... test/test_Address.s"
-	@echo "... test/test_Fiber.o"
-	@echo "... test/test_Fiber.i"
-	@echo "... test/test_Fiber.s"
+	@echo "... test/test_AsyncFileLog.o"
+	@echo "... test/test_AsyncFileLog.i"
+	@echo "... test/test_AsyncFileLog.s"
 	@echo "... test/test_config.o"
 	@echo "... test/test_config.i"
 	@echo "... test/test_config.s"

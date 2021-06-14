@@ -6,45 +6,27 @@
 
 #IncludeRegexTransform: 
 
-/home/bokket/bokkerve-plus-plus/bokket/Config/config.h
-memory
--
+/home/bokket/bokkerve-plus-plus/bokket/Log/AsyncFileLogAppender.h
+Log.h
+/home/bokket/bokkerve-plus-plus/bokket/Log/Log.h
 string
 -
-shared_mutex
+mutex
 -
-sstream
+thread
 -
-map
+condition_variable
 -
-set
+atomic
 -
-unordered_map
+iostream
 -
-unordered_set
+sys/stat.h
 -
-boost/lexical_cast.hpp
--
-yaml-cpp/yaml.h
--
-../Log/Log.h
-/home/bokket/bokkerve-plus-plus/bokket/Log/Log.h
-../Log/Sigleton.h
-/home/bokket/bokkerve-plus-plus/bokket/Log/Sigleton.h
-
-/home/bokket/bokkerve-plus-plus/bokket/Fiber/fiber.h
-memory
--
-functional
--
-ucontext.h
--
-../Log/Log.h
-/home/bokket/bokkerve-plus-plus/bokket/Log/Log.h
-../Config/config.h
-/home/bokket/bokkerve-plus-plus/bokket/Config/config.h
-../thread/Assert.h
-/home/bokket/bokkerve-plus-plus/bokket/thread/Assert.h
+../thread/thread.h
+/home/bokket/bokkerve-plus-plus/bokket/thread/thread.h
+../net/CountDownLatch.h
+/home/bokket/bokkerve-plus-plus/bokket/net/CountDownLatch.h
 
 /home/bokket/bokkerve-plus-plus/bokket/Log/FixedBuffer.h
 string
@@ -126,12 +108,6 @@ stdint.h
 string
 -
 
-/home/bokket/bokkerve-plus-plus/bokket/Log/Sigleton.h
-../base/noncopyable.h
-/home/bokket/bokkerve-plus-plus/bokket/base/noncopyable.h
-memory
--
-
 /home/bokket/bokkerve-plus-plus/bokket/base/Singleton.h
 noncopyable.h
 /home/bokket/bokkerve-plus-plus/bokket/base/noncopyable.h
@@ -153,14 +129,6 @@ condition_variable
 -
 ../base/noncopyable.h
 /home/bokket/bokkerve-plus-plus/bokket/base/noncopyable.h
-
-/home/bokket/bokkerve-plus-plus/bokket/thread/Assert.h
-cstring
--
-cassert
--
-util.h
-/home/bokket/bokkerve-plus-plus/bokket/thread/util.h
 
 /home/bokket/bokkerve-plus-plus/bokket/thread/Semaphore.h
 mutex
@@ -206,15 +174,11 @@ syscall.h
 sys/time.h
 -
 
-/home/bokket/bokkerve-plus-plus/test/test_Fiber.cpp
-../bokket/Fiber/fiber.h
-/home/bokket/bokkerve-plus-plus/bokket/Fiber/fiber.h
-../bokket/thread/thread.h
-/home/bokket/bokkerve-plus-plus/bokket/thread/thread.h
-../bokket/Log/Log.h
-/home/bokket/bokkerve-plus-plus/bokket/Log/Log.h
+/home/bokket/bokkerve-plus-plus/test/test_AsyncFileLog.cpp
 iostream
 -
-vector
--
+../bokket/Log/Log.h
+/home/bokket/bokkerve-plus-plus/bokket/Log/Log.h
+../bokket/Log/AsyncFileLogAppender.h
+/home/bokket/bokkerve-plus-plus/bokket/Log/AsyncFileLogAppender.h
 

@@ -4,6 +4,9 @@
 
 #include "iomanager.h"
 
+
+#include "iocontext.h"
+
 #include <cerrno>
 #include <cstdint>
 #include <sys/epoll.h>
@@ -55,7 +58,7 @@ void IOManager::idle() {
         }
 
         int rt=0;
-        do {
+        while(true) {
             static const int MAT_TIMEOUT=3000;
             if(next_timeout!=~0ull) {
                 next_timeout=static_cast<int>(next_timeout>MAT_TIMEOUT
@@ -66,11 +69,11 @@ void IOManager::idle() {
             rt=epoll_wait(epfd_,events,64,static_cast<int>(next_timeout));
 
             if(rt<0 && errno==EINTR) {
-
+                continue;
             } else {
                 break;
             }
-        } while (true);
+        }
 
     std::vector<std::function<void()>> cbs;
     listExpiredCb(cbs);
@@ -87,42 +90,41 @@ void IOManager::idle() {
             continue;
         }
 
-        FdContext* fd_context=dynamic_cast<FdContext*>(event.data.ptr);
-        std::unique_lock<std::shared_mutex> uniqueLock(fd_context->mutex_);
-        if(event.events & (EPOLLERR | EPOLLHUP)) {
-            event.events | = EPOLLIN | EPOLLOUT;
-        }
-        int real_events=Event::NONE;
-        if(event.events & EPOLLIN) {
-            real_events | = Event::READ;
-        }
-        if(event.events & EPOLLOUT) {
-            real_events | = Event::WRITE;
-        }
+        IOContext* io_context=(IOContext*)event.data.ptr;
+        std::unique_lock<std::shared_mutex> uniqueLock(io_context->mutex_);
+        if(event.events & (EPOLLERR | EPOLLHUP))
+            event.events |= EPOLLIN | EPOLLOUT;
+        int real_events=IOContext::Event::NONE;
 
-        if(fd_context->events_ & Event::NONE) {
+        if(event.events & EPOLLIN) 
+            real_events|=IOContext::Event::READ;
+
+        if(event.events & EPOLLOUT) 
+            real_events|=IOContext::Event::WRITE;
+
+        //if(io_context->events_ & IOContext::Event::NONE) 
+        if((io_context->events_ &real_events)==IOContext::Event::NONE)
             continue;
-        }
 
-        int left_events=(fd_context->events_ & ~real_events);
+        int left_events=(io_context->events_ & ~real_events);
 
         int op=left_events ? EPOLL_CTL_MOD : EPOLL_CTL_DEL;
         event.events=EPOLLET | left_events;
 
-        int rt2=epoll_ctl(epfd_,op,fd_context->fd_,&event);
+        int rt2=epoll_ctl(epfd_,op,io_context->fd_,&event);
 
         if(rt2) {
             BOKKET_LOG_ERROR(g_logger) << "epoll_ctl(" << epfd_ << ","
-                                       << op << "," << fd << "," << epevent.events << "):"
+                                       << op << "," << io_context->fd_ << "," << epevent.events << "):"
                                        << rt << "(" << errno << ")(" << ::strerror(errno) << ")";
             continue;
         }
-        if(real_events&Event::READ) {
-            fd_context->triggerEvent(Event::READ);
+        if(real_events&IOContext::Event::READ) {
+            io_context->triggerEvent(IOContext::Event::READ);
             --pendingEventCount;
         }
-        if(real_events&Event::WRITE) {
-            fd_context->triggerEvent(Event::WRITE);
+        if(real_events&IOContext::Event::WRITE) {
+            io_context->triggerEvent(IOContext::Event::WRITE);
             --pendingEventCount;
         }
     }

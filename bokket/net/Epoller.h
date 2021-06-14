@@ -18,8 +18,6 @@ using namespace std;
 
 namespace bokket
 {
-namespace net
-{
     class EventLoop;
     class Channel;
 
@@ -57,7 +55,7 @@ namespace net
         EventList events_;
         int epollfd_;
     };
-}
+
 }
 
 

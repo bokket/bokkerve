@@ -112,9 +112,11 @@ void AppendFileWriter::flush()
 }
 
 
-MmapFileWrite::MmapFileWrite(const std::string &filename,size_t memSize)
+//MmapFileWrite::MmapFileWrite(const std::string &filename,size_t memSize)
+MmapFileWrite::MmapFileWrite(const std::string &filename)
 {
-    memSize_=memSize;
+    //memSize_=memSize;
+    memSize_=0;
 
     writen_=0;
 
@@ -131,7 +133,8 @@ MmapFileWrite::MmapFileWrite(const std::string &filename,size_t memSize)
         fprintf(stderr,"open new file failed , errno=%d",errno);
     else
     {
-        int n=::ftruncate(fd_,memSize);
+        //int n=::ftruncate(fd_,memSize);
+        int n=::ftruncate(fd_,memSize_);
         
 
         buffer_=static_cast<char*>(mmap(nullptr,memSize_,PROT_READ | PROT_WRITE ,MAP_SHARED,fd_,0));
@@ -171,10 +174,12 @@ void MmapFileWrite::flush()
         msync(buffer_,memSize_,MS_ASYNC);
 }
 
-LogFile::LogFile(const std::string basename, size_t rollSize, int flushInterval, int check_freq_count,
-                                 FileWriterType writerType)
-                                 :basename_(basename),rollSize_(rollSize),flushInterval_(flushInterval),checkFreqCount_(check_freq_count)
-                                 ,count_(0),startOfPeriod_(0),lastRoll_(0),lastFlush_(0)
+/*LogFile::LogFile(const std::string basename, size_t rollSize, int flushInterval, int check_freq_count,
+                                 FileWriterType writerType)*/
+LogFile::LogFile(const std::string basename, FileWriterType writerType)
+                :basename_(basename)
+                                 /*:basename_(basename),rollSize_(rollSize),flushInterval_(flushInterval),checkFreqCount_(check_freq_count)
+                                 ,count_(0),startOfPeriod_(0),lastRoll_(0),lastFlush_(0)*/
                                  //,stream_()
                                  //,mutex_(std::make_unique<std::mutex>())
 {
@@ -186,13 +191,14 @@ LogFile::LogFile(const std::string basename, size_t rollSize, int flushInterval,
     std::string filename=getLogFileName(basename_,&time);
 
     if(writerType==FileWriterType::MMAPFILE)
-        file_=std::make_unique<MmapFileWrite>(filename,rollSize_);
+        file_=std::make_unique<MmapFileWrite>(filename);
+        //file_=std::make_unique<MmapFileWrite>(filename,rollSize_);
     else
         file_=std::make_unique<AppendFileWriter>(filename);
 
     writerType_=writerType;
 
-    rollFile();
+    //rollFile();
 }
 
 
@@ -218,7 +224,7 @@ void LogFile::append_unlocked(const std::string &msg, int32_t len)
 {
     file_->append(msg,len);
 
-    if(file_->getWrittenBytes() > rollSize_) {
+    /*if(file_->getWrittenBytes() > rollSize_) {
         rollFile();
     } else {
         ++count_;
@@ -235,7 +241,7 @@ void LogFile::append_unlocked(const std::string &msg, int32_t len)
                 file_->flush();
             }
         }
-    }
+    }*/
 }
 
 
@@ -250,6 +256,7 @@ void LogFile::flush()
     file_->flush();
 }
 
+/*
 bool LogFile::rollFile()
 {
 
@@ -272,7 +279,7 @@ bool LogFile::rollFile()
         return true;
     }
     return false;
-}
+}*/
 
 
 

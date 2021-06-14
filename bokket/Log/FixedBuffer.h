@@ -60,7 +60,7 @@ public:
         }
     }*/
     const char* data() const { return data_; }
-    int avail() const
+    int available() const
     {
         //向上转换
         //return static_cast<int>(end()-cur_);

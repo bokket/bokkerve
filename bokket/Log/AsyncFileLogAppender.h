@@ -6,7 +6,6 @@
 #define BOKKET_ASYNCFILELOGAPPENDER_H
 
 #include "Log.h"
-#include "../net/CountDownLatch.h"
 #include <string>
 #include <mutex>
 #include <thread>
@@ -15,7 +14,7 @@
 #include <iostream>
 #include <sys/stat.h>
 #include "../thread/thread.h"
-
+#include "../net/CountDownLatch.h"
 
 namespace bokket
 {
@@ -23,7 +22,9 @@ namespace bokket
 class LogAppenderAsyncFile: public LogAppender
 {
 public:
-    LogAppenderAsyncFile(const std::string& filename,std::time_t persistPeriod);
+    using ptr=std::shared_ptr<LogAppenderAsyncFile>;
+public:
+    LogAppenderAsyncFile(const std::string& filename,std::time_t persistPeriod=3);
     ~LogAppenderAsyncFile();
 
     //void append(const std::string& msg,int32_t line,LogLevel level,LogEvent::ptr event) override;

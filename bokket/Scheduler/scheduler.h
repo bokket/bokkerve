@@ -82,18 +82,19 @@ protected:
 
 private:
     template<class T>
-    bool scheduleNoLock(T fc) {
+    bool scheduleNoLock(T t) {
         bool need_tickle=fibers_.empty();
         //FiberAndThread fat(fc,thread);
-        FiberOrCb ft(fc);
-        if(ft.fiber || ft.cb ) {
-            fibers_.push_back(ft);
+        //FiberOrCb ft(fc);
+        SchedulerTask task(t);
+        if(task.fiber || task.cb ) {
+            fibers_.push_back(task);
         }
         return need_tickle;
     }
 
 private:
-    struct FiberOrCb {
+    struct SchedulerTask {
         public:
         Fiber::ptr fiber;
         std::function<void()> cb;

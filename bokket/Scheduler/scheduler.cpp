@@ -29,8 +29,8 @@ Scheduler::Scheduler(size_t threadCount, bool useCaller, const std::string &name
         bokket::Thread::setName(name_);
 
         t_scheduler_fiber=rootFiber_.get();
-        //rootThread_=Thread::getId();
-        rootThread_=bokket::getThreadId();
+        rootThread_=static_cast<int>(Thread::getId());
+        //rootThread_=bokket::getThreadId();
         threadIds_.emplace_back(rootThread_);
     } else
         rootThread_=-1;
@@ -59,7 +59,7 @@ void Scheduler::start() {
     for(auto i=0;i<threadCount_;++i) {
         threads_[i].reset(new Thread(std::bind(&Scheduler::run,this),
                                      name_+"_"+std::to_string(i)));
-        threadIds_.emplace_back(threads_[i]->getId());
+        threadIds_.emplace_back(static_cast<int>(threads_[i]->getId()));
     }
 }
 

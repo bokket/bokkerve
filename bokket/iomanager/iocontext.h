@@ -21,7 +21,7 @@ class IOContext
 friend class IOManager;
 
 public:
-    enum class Event
+    enum class Event:int64_t
     {
         NONE    = 0x0,
         READ    = 0x1,

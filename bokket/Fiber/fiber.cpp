@@ -75,6 +75,7 @@ void Fiber::yieldToHold() {
     cur->swapOut();
 }*/
 
+
 void Fiber::yield() {
     Fiber::ptr cur=getThis();
     ASSERT(cur->status_==Status::EXEC);
@@ -100,11 +101,14 @@ Fiber::Fiber() {
 
 
 Fiber::Fiber(std::function<void()> cb, size_t stacksize, bool useCaller)
+//Fiber::Fiber(std::function<void()> cb, size_t stacksize)
             :id_(++fiberId_)
             ,cb_(cb) {
 
     //std::lock_guard<std::mutex> lc(mutex_);
     ++fiberCount_;
+
+    BOKKET_LOG_INFO(g_logger)<<"fiber Count="<<fiberCount_<<" id="<<id_;
 
     BOKKET_LOG_INFO(g_logger)<<"fiber stack size="<<g_fiber_stack_size->getValue();
 
@@ -122,19 +126,31 @@ Fiber::Fiber(std::function<void()> cb, size_t stacksize, bool useCaller)
     //ctx_.uc_stack.ss_size = stackSize_;
     ctx_.uc_stack.ss_size=stackSize_;
 
+    BOKKET_LOG_INFO(g_logger)<<"fiber Count="<<fiberCount_<<" id="<<id_;
+
+    BOKKET_LOG_INFO(g_logger)<<"fiber Count="<<fiberCount_<<" id="<<id_;
 
     if(!useCaller ) {
+        BOKKET_LOG_INFO(g_logger)<<"fiber Count="<<fiberCount_<<" id="<<id_;
+
         makecontext(&ctx_,&Fiber::run,0);
         BOKKET_LOG_INFO(g_logger)<<"Fiber::Fiber public main id="<<id_<<" (This is Fiber run)";
     } else {
+        BOKKET_LOG_INFO(g_logger)<<"fiber Count="<<fiberCount_<<" id="<<id_;
+
         makecontext(&ctx_,&Fiber::mainRun,0);
         BOKKET_LOG_INFO(g_logger)<<"Fiber::Fiber public main id="<<id_<<" (This is main Fiber run)";
     }
+    //makecontext(&ctx_,&Fiber::mainRun,0);
+
+    BOKKET_LOG_INFO(g_logger)<<"fiber Count="<<fiberCount_<<" id="<<id_;
+
 
     BOKKET_LOG_DEBUG(g_logger)<<"Fiber::Fiber id="<<id_;
 }
 
 Fiber::~Fiber() {
+    BOKKET_LOG_INFO(g_logger)<<"Fiber::~Fiber:"<<id_;
     --fiberCount_;
 
 
@@ -147,6 +163,7 @@ Fiber::~Fiber() {
                     ||  status_ == Status::INIT);
 
         StackAllocator::Free(stack_,stackSize_);
+        BOKKET_LOG_INFO(g_logger)<<"free stack:"<<id_;
     } else {
         //static_assert(!cb_,"functional wrang");
         //static_assert(status_==Status::EXEC,"");
@@ -181,6 +198,26 @@ void Fiber::reset(std::function<void()> cb) {
     status_=Status::INIT;
 
 }
+/*
+void Fiber::resume() {
+    setThis(this);
+    status_=Status::EXEC;
+    BOKKET_LOG_INFO(g_logger)<<"Fiber::call"<<" fiber id="<<getFiberId();
+
+    if(swapcontext(&t_threadFiber->ctx_,&ctx_)) {
+        ASSERT_MSG(false,"swapcontext");
+    }
+}
+
+void Fiber::yield() {
+    setThis(t_threadFiber.get());
+
+
+    if(swapcontext(&ctx_,&t_threadFiber->ctx_)) {
+        ASSERT_MSG(false,"swapcontext");
+    }
+}
+*/
 
 void Fiber::call() {
     setThis(this);
@@ -221,6 +258,8 @@ void Fiber::swapOut() {
 
 
 void Fiber::run() {
+    BOKKET_LOG_INFO(g_logger)<<"fiber Count="<<fiberCount_;
+
     Fiber::ptr cur=getThis();
     ASSERT(cur);
     try {
@@ -273,6 +312,7 @@ void Fiber::mainRun() {
 
     cur.reset();
     raw_ptr->back();
+    //raw_ptr->yield();
 
     ASSERT_MSG(false,"never reach fiber id="+std::to_string(raw_ptr->getId()));
 }

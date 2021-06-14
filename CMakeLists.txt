@@ -36,7 +36,7 @@ set(LIB_SRC
 		#bokket/Log/Log.h
 		bokket/Log/LogFile.cpp
 		#bokket/Log/AsyncFileLogAppender.h
-		#bokket/Log/AsyncFileLogAppender.cpp
+		bokket/Log/AsyncFileLogAppender.cpp
 		#bokket/Log/LogStream.cpp
 		#bokket/thread/util.h
 		bokket/thread/util.cpp
@@ -53,9 +53,9 @@ set(LIB_SRC
 		bokket/address/endian.h
 
 		#bokket/Fiber/fiber.h
-		bokket/Fiber/fiber.cpp
+		#bokket/Fiber/fiber.cpp
 
-		bokket/Scheduler/scheduler.cpp
+		#bokket/Scheduler/scheduler.cpp
 		#bokket/Scheduler/scheduler.h
 
 		)
@@ -89,6 +89,10 @@ add_executable(test_Log ./test/test_log.cpp)
 add_dependencies(test_Log bokket)
 target_link_libraries(test_Log ${LIBS})
 
+add_executable(test_AsyncLog ./test/test_AsyncFileLog.cpp)
+add_dependencies(test_AsyncLog bokket)
+target_link_libraries(test_AsyncLog ${LIBS})
+
 #add_executable(test_LogStream /test/test_LogStream.cpp)
 #add_dependencies(test_LogStream bokket)
 #target_link_libraries(test_LogStream ${LIBS})
@@ -115,9 +119,14 @@ add_dependencies(test_Address bokket)
 target_link_libraries(test_Address ${LIBS})
 
 
-add_executable(test_Fiber ./test/test_Fiber.cpp)
-add_dependencies(test_Fiber bokket)
-target_link_libraries(test_Fiber ${LIBS})
+#add_executable(test_Fiber ./test/test_Fiber.cpp)
+#add_dependencies(test_Fiber bokket)
+#target_link_libraries(test_Fiber ${LIBS})
+
+
+#add_executable(test_Ucontext ./test/test_ucontext.cpp)
+#add_dependencies(test_Ucontext bokket)
+#target_link_libraries(test_Ucontext ${LIBS})
 
 
 

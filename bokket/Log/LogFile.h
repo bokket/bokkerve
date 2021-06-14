@@ -39,7 +39,8 @@ public:
 class MmapFileWrite: public FileWriter
 {
 public:
-    MmapFileWrite(const std::string& filename,size_t memSize);
+    //MmapFileWrite(const std::string& filename,size_t memSize);
+    MmapFileWrite(const std::string& filename);
 
     ~MmapFileWrite();
 
@@ -83,10 +84,10 @@ private:
 class LogFile
 {
 public:
-    LogFile(const std::string basename,size_t rollSize,
+    /*LogFile(const std::string basename,size_t rollSize,
             int flushInterval,int check_freq_count,
-            FileWriterType writerType);
-
+            FileWriterType writerType);*/
+    LogFile(const std::string basename,FileWriterType writerType);
 
     ~LogFile()=default;
 
@@ -95,7 +96,7 @@ public:
 
     void flush();
 
-    bool rollFile();
+    //bool rollFile();
 
     //bool reopen();
 
@@ -108,15 +109,15 @@ private:
     //bokket::detail::LogStream stream_;
 
 
-    const size_t rollSize_; // 日志文件达到rolSize_换一个新文件
-    const int flushInterval_;
-    const int checkFreqCount_;
+    //const size_t rollSize_; // 日志文件达到rolSize_换一个新文件
+    //const int flushInterval_;
+    //const int checkFreqCount_;
 
-    int count_;
+    //int count_;
     //std::unique_ptr<std::mutex> mutex_;
-    time_t startOfPeriod_;	// 开始记录日志时间（调整至零点的时间）
-    time_t lastRoll_;			// 上一次滚动日志文件时间
-    time_t lastFlush_;		// 上一次日志写入文件时间
+    //time_t startOfPeriod_;	// 开始记录日志时间（调整至零点的时间）
+    //time_t lastRoll_;			// 上一次滚动日志文件时间
+    //time_t lastFlush_;		// 上一次日志写入文件时间
 
     std::unique_ptr<FileWriter> file_;
 

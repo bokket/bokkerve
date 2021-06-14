@@ -6,45 +6,50 @@
 #define BOKKET_EVENTLOOP_H
 
 
-#include "../base/noncopyable.h"
-#include "../base/Timestamp.h"
-#include "../base/Thread.h"
-#include "../base/MutexLock.h"
+#include <mutex>
 #include <vector>
-#include <functional>
+#include <atomic>
+#include <memory>
 #include <atomic>
 #include <thread>
-#include <memory>
-#include <mutex>
+#include <functional>
+
+#include "../thread/thread.h"
+#include "../base/noncopyable.h"
 
 
 namespace bokket
 {
-namespace net
-{
+
 
 class Channel;
 class Epoller;
+class TimerQueue;
 
 class EventLoop: public noncopyable
 {
 public:
-    using Functor=function<void()>;
+    using Task=function<void()>;
 
 public:
     EventLoop();
     ~EventLoop();
 
 
-    Timestamp pollReturnTime() const { return pollReturnTime_; }
+    //Timestamp pollReturnTime() const { return pollReturnTime_; }
 
     size_t queueSize() const;
 
     void loop();
     void quit();
-    void runInLoop(Functor cb);
-    void setFrameFunctor(const Functor cb);
-    void queueInLoop(const Functor& cb);
+
+    void runInLoop(const Task& cb);
+    void runInLoop(Task && cb);
+
+    void setFrameTask(const Task cb);
+
+    void queueInLoop(const Task& cb);
+    void queueInLoop(Task && cb);
 
     void wakeup();
     void updateChannel(Channel* channel);
@@ -53,28 +58,28 @@ public:
 
     void assertInLoopThread();
 
-
-    bool isInLoopThread() const { return threadId_==CurrentThread::tid(); }
+    bool isInLoopThread() const { return tid_==bokket::Thread::currentThreadTid(); }
 
     bool eventHandling() const { return eventHandling_; }
+
 
     static EventLoop* getEventLoopOfCurrentThread();
 
     void printActiveChannels() const;
 private:
     void handleRead();
-    void doPendingFunctors();
+    void doPendingTasks();
 
 
     bool looping_;
     //atomic<bool> quit_;
-    atomic_bool quit_;
+    std::atomic_bool quit_;
     //atomic<bool> eventHandling_;
     atomic_bool eventHandling_;
-    //atomic<bool> callingPendingFunctors_;
-    atomic_bool callingPendingFunctors_;
+    //atomic<bool> callingPendingTasks_;
+    atomic_bool callingPendingTasks_;
 
-    const pid_t threadId_;
+    const pid_t tid_;
     //const thread::id threadId_;
     int wakeupFd_;// 用于eventfd
     std::unique_ptr<Channel> wakeupChannel_;// 该通道将会纳入poller_来管理
@@ -83,7 +88,7 @@ private:
 
     //mutable MutexLock mutex_;
     mutable std::mutex mutex_;
-    vector<Functor> pendingFunctors_;//小任务列表
+    vector<Task> pendingTasks_;//小任务列表
 
     using ChannelList=vector<Channel*>;
     ChannelList activeChannels_;//活跃通道列表 // Epoller返回的活动通道
@@ -91,11 +96,11 @@ private:
 
     Channel* currentActiveChannel_;//当前正在处理的通道
 
-    Timestamp pollReturnTime_;//epoll_wait返回时间
+    //Timestamp pollReturnTime_;//epoll_wait返回时间
 
-    Functor functor_;
+    Task Task_;
 };
-}
+
 }
 
 

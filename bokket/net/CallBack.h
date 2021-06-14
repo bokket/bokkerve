@@ -6,9 +6,8 @@
 #define BOKKET_CALLBACK_H
 
 
-#include <functional>
 #include <memory>
-#include "Timestamp.h"
+#include <functional>
 
 
 namespace bokket
@@ -21,7 +20,6 @@ using std::placeholders::_4;
 using std::placeholders::_5;
 
 
-using TimerCallback=function<void()>;
 
 }
 

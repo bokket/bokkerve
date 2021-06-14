@@ -28,7 +28,8 @@ public:
 
     void countLatch()
     {
-        std::unique_lock<std::mutex> uniqueLock(mutex_);
+        //std::unique_lock<std::mutex> uniqueLock(mutex_);
+        std::lock_guard<std::mutex> lockGuard(mutex_);
         count_--;
         if(count_<=0)
             cond_.notify_all();

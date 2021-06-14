@@ -36,18 +36,23 @@ private:
     Fiber();
 
 public:
-    Fiber(std::function<void()>cb, size_t stacksize =0,bool useCaller = false);
+    //Fiber(std::function<void()>cb, size_t stacksize =0,bool useCaller = false);
+    Fiber(std::function<void()>cb, size_t stacksize =0);
     ~Fiber();
 
     void reset(std::function<void()> cb);
 
-    void swapIn();
+    //执行当前携程
+    /*void swapIn();
 
+    //切换到当前线程的协程
     void swapOut();
 
     void call();
 
-    void back();
+    void back();*/
+   void yield();
+    void resume();
 
     uint64_t getId() const { return id_; }
 
@@ -60,20 +65,20 @@ public:
     static Fiber::ptr getThis();
 
     //static void yieldToReady();
-    static void yield();
+    //static void yield();
     //static void yieldToHold();
 
     static uint64_t totalFibers();
 
-    static void run();
+    //static void run();
 
     static void mainRun();
 
     static uint64_t getFiberId();
 private:
     
-    uint64_t id_ = 0;
-    uint32_t stackSize_=0;
+    uint64_t id_ ;
+    uint32_t stackSize_;
 
     Status status_ = Status::INIT;
 

@@ -84,6 +84,9 @@ void test_ipv4() {
     //auto addr=bokket::Address::create("127.0.2.22");
     if(addr) {
         BOKKET_LOG_INFO(g_logger)<<addr->toString();
+        BOKKET_LOG_INFO(g_logger)<<addr->broadcastAddress(24)->toString();
+        BOKKET_LOG_INFO(g_logger)<<addr->subnetMask(24)->toString();
+        BOKKET_LOG_INFO(g_logger)<<addr->networdAddress(24)->toString();
     } else 
         BOKKET_LOG_ERROR(g_logger)<<"get IPv4 Address Info fail";
 
