@@ -72,8 +72,6 @@ build CMakeFiles/test_Address.dir/test/test_Address.cpp.o: CXX_COMPILER__test_Ad
   FLAGS = -g   -std=gnu++17
   OBJECT_DIR = CMakeFiles/test_Address.dir
   OBJECT_FILE_DIR = CMakeFiles/test_Address.dir/test
-  TARGET_COMPILE_PDB = CMakeFiles/test_Address.dir/
-  TARGET_PDB = ../bin/test_Address.pdb
 
 
 # =============================================================================
@@ -91,9 +89,8 @@ build ../bin/test_Address: CXX_EXECUTABLE_LINKER__test_Address_Debug CMakeFiles/
   OBJECT_DIR = CMakeFiles/test_Address.dir
   POST_BUILD = :
   PRE_LINK = :
-  TARGET_COMPILE_PDB = CMakeFiles/test_Address.dir/
   TARGET_FILE = ../bin/test_Address
-  TARGET_PDB = ../bin/test_Address.pdb
+  TARGET_PDB = test_Address.dbg
 
 # =============================================================================
 # Object build statements for EXECUTABLE target test_Util
@@ -109,8 +106,6 @@ build CMakeFiles/test_Util.dir/test/test_util.cpp.o: CXX_COMPILER__test_Util_Deb
   FLAGS = -g   -std=gnu++17
   OBJECT_DIR = CMakeFiles/test_Util.dir
   OBJECT_FILE_DIR = CMakeFiles/test_Util.dir/test
-  TARGET_COMPILE_PDB = CMakeFiles/test_Util.dir/
-  TARGET_PDB = ../bin/test_Util.pdb
 
 
 # =============================================================================
@@ -128,9 +123,8 @@ build ../bin/test_Util: CXX_EXECUTABLE_LINKER__test_Util_Debug CMakeFiles/test_U
   OBJECT_DIR = CMakeFiles/test_Util.dir
   POST_BUILD = :
   PRE_LINK = :
-  TARGET_COMPILE_PDB = CMakeFiles/test_Util.dir/
   TARGET_FILE = ../bin/test_Util
-  TARGET_PDB = ../bin/test_Util.pdb
+  TARGET_PDB = test_Util.dbg
 
 # =============================================================================
 # Object build statements for EXECUTABLE target test_thread
@@ -146,8 +140,6 @@ build CMakeFiles/test_thread.dir/test/test_thread.cpp.o: CXX_COMPILER__test_thre
   FLAGS = -g   -std=gnu++17
   OBJECT_DIR = CMakeFiles/test_thread.dir
   OBJECT_FILE_DIR = CMakeFiles/test_thread.dir/test
-  TARGET_COMPILE_PDB = CMakeFiles/test_thread.dir/
-  TARGET_PDB = ../bin/test_thread.pdb
 
 
 # =============================================================================
@@ -165,9 +157,8 @@ build ../bin/test_thread: CXX_EXECUTABLE_LINKER__test_thread_Debug CMakeFiles/te
   OBJECT_DIR = CMakeFiles/test_thread.dir
   POST_BUILD = :
   PRE_LINK = :
-  TARGET_COMPILE_PDB = CMakeFiles/test_thread.dir/
   TARGET_FILE = ../bin/test_thread
-  TARGET_PDB = ../bin/test_thread.pdb
+  TARGET_PDB = test_thread.dbg
 
 # =============================================================================
 # Object build statements for SHARED_LIBRARY target bokket
@@ -184,8 +175,6 @@ build CMakeFiles/bokket.dir/bokket/Log/Log.cpp.o: CXX_COMPILER__bokket_Debug ../
   FLAGS = -g -fPIC   -std=gnu++17
   OBJECT_DIR = CMakeFiles/bokket.dir
   OBJECT_FILE_DIR = CMakeFiles/bokket.dir/bokket/Log
-  TARGET_COMPILE_PDB = CMakeFiles/bokket.dir/
-  TARGET_PDB = ../lib/libbokket.pdb
 
 build CMakeFiles/bokket.dir/bokket/Log/LogFile.cpp.o: CXX_COMPILER__bokket_Debug ../bokket/Log/LogFile.cpp || cmake_object_order_depends_target_bokket_Debug
   DEFINES = -Dbokket_EXPORTS
@@ -193,8 +182,6 @@ build CMakeFiles/bokket.dir/bokket/Log/LogFile.cpp.o: CXX_COMPILER__bokket_Debug
   FLAGS = -g -fPIC   -std=gnu++17
   OBJECT_DIR = CMakeFiles/bokket.dir
   OBJECT_FILE_DIR = CMakeFiles/bokket.dir/bokket/Log
-  TARGET_COMPILE_PDB = CMakeFiles/bokket.dir/
-  TARGET_PDB = ../lib/libbokket.pdb
 
 build CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.o: CXX_COMPILER__bokket_Debug ../bokket/Log/AsyncFileLogAppender.cpp || cmake_object_order_depends_target_bokket_Debug
   DEFINES = -Dbokket_EXPORTS
@@ -202,8 +189,6 @@ build CMakeFiles/bokket.dir/bokket/Log/AsyncFileLogAppender.cpp.o: CXX_COMPILER_
   FLAGS = -g -fPIC   -std=gnu++17
   OBJECT_DIR = CMakeFiles/bokket.dir
   OBJECT_FILE_DIR = CMakeFiles/bokket.dir/bokket/Log
-  TARGET_COMPILE_PDB = CMakeFiles/bokket.dir/
-  TARGET_PDB = ../lib/libbokket.pdb
 
 build CMakeFiles/bokket.dir/bokket/thread/util.cpp.o: CXX_COMPILER__bokket_Debug ../bokket/thread/util.cpp || cmake_object_order_depends_target_bokket_Debug
   DEFINES = -Dbokket_EXPORTS
@@ -211,8 +196,6 @@ build CMakeFiles/bokket.dir/bokket/thread/util.cpp.o: CXX_COMPILER__bokket_Debug
   FLAGS = -g -fPIC   -std=gnu++17
   OBJECT_DIR = CMakeFiles/bokket.dir
   OBJECT_FILE_DIR = CMakeFiles/bokket.dir/bokket/thread
-  TARGET_COMPILE_PDB = CMakeFiles/bokket.dir/
-  TARGET_PDB = ../lib/libbokket.pdb
 
 build CMakeFiles/bokket.dir/bokket/thread/thread.cpp.o: CXX_COMPILER__bokket_Debug ../bokket/thread/thread.cpp || cmake_object_order_depends_target_bokket_Debug
   DEFINES = -Dbokket_EXPORTS
@@ -220,8 +203,6 @@ build CMakeFiles/bokket.dir/bokket/thread/thread.cpp.o: CXX_COMPILER__bokket_Deb
   FLAGS = -g -fPIC   -std=gnu++17
   OBJECT_DIR = CMakeFiles/bokket.dir
   OBJECT_FILE_DIR = CMakeFiles/bokket.dir/bokket/thread
-  TARGET_COMPILE_PDB = CMakeFiles/bokket.dir/
-  TARGET_PDB = ../lib/libbokket.pdb
 
 build CMakeFiles/bokket.dir/bokket/Config/config.cpp.o: CXX_COMPILER__bokket_Debug ../bokket/Config/config.cpp || cmake_object_order_depends_target_bokket_Debug
   DEFINES = -Dbokket_EXPORTS
@@ -229,8 +210,6 @@ build CMakeFiles/bokket.dir/bokket/Config/config.cpp.o: CXX_COMPILER__bokket_Deb
   FLAGS = -g -fPIC   -std=gnu++17
   OBJECT_DIR = CMakeFiles/bokket.dir
   OBJECT_FILE_DIR = CMakeFiles/bokket.dir/bokket/Config
-  TARGET_COMPILE_PDB = CMakeFiles/bokket.dir/
-  TARGET_PDB = ../lib/libbokket.pdb
 
 build CMakeFiles/bokket.dir/bokket/address/address.cpp.o: CXX_COMPILER__bokket_Debug ../bokket/address/address.cpp || cmake_object_order_depends_target_bokket_Debug
   DEFINES = -Dbokket_EXPORTS
@@ -238,8 +217,6 @@ build CMakeFiles/bokket.dir/bokket/address/address.cpp.o: CXX_COMPILER__bokket_D
   FLAGS = -g -fPIC   -std=gnu++17
   OBJECT_DIR = CMakeFiles/bokket.dir
   OBJECT_FILE_DIR = CMakeFiles/bokket.dir/bokket/address
-  TARGET_COMPILE_PDB = CMakeFiles/bokket.dir/
-  TARGET_PDB = ../lib/libbokket.pdb
 
 
 # =============================================================================
@@ -256,9 +233,8 @@ build ../lib/libbokket.so: CXX_SHARED_LIBRARY_LINKER__bokket_Debug CMakeFiles/bo
   PRE_LINK = :
   SONAME = libbokket.so
   SONAME_FLAG = -Wl,-soname,
-  TARGET_COMPILE_PDB = CMakeFiles/bokket.dir/
   TARGET_FILE = ../lib/libbokket.so
-  TARGET_PDB = ../lib/libbokket.pdb
+  TARGET_PDB = bokket.so.dbg
 
 # =============================================================================
 # Object build statements for EXECUTABLE target test_AsyncLog
@@ -274,8 +250,6 @@ build CMakeFiles/test_AsyncLog.dir/test/test_AsyncFileLog.cpp.o: CXX_COMPILER__t
   FLAGS = -g   -std=gnu++17
   OBJECT_DIR = CMakeFiles/test_AsyncLog.dir
   OBJECT_FILE_DIR = CMakeFiles/test_AsyncLog.dir/test
-  TARGET_COMPILE_PDB = CMakeFiles/test_AsyncLog.dir/
-  TARGET_PDB = ../bin/test_AsyncLog.pdb
 
 
 # =============================================================================
@@ -293,9 +267,8 @@ build ../bin/test_AsyncLog: CXX_EXECUTABLE_LINKER__test_AsyncLog_Debug CMakeFile
   OBJECT_DIR = CMakeFiles/test_AsyncLog.dir
   POST_BUILD = :
   PRE_LINK = :
-  TARGET_COMPILE_PDB = CMakeFiles/test_AsyncLog.dir/
   TARGET_FILE = ../bin/test_AsyncLog
-  TARGET_PDB = ../bin/test_AsyncLog.pdb
+  TARGET_PDB = test_AsyncLog.dbg
 
 # =============================================================================
 # Object build statements for EXECUTABLE target test_Log
@@ -311,8 +284,6 @@ build CMakeFiles/test_Log.dir/test/test_log.cpp.o: CXX_COMPILER__test_Log_Debug 
   FLAGS = -g   -std=gnu++17
   OBJECT_DIR = CMakeFiles/test_Log.dir
   OBJECT_FILE_DIR = CMakeFiles/test_Log.dir/test
-  TARGET_COMPILE_PDB = CMakeFiles/test_Log.dir/
-  TARGET_PDB = ../bin/test_Log.pdb
 
 
 # =============================================================================
@@ -330,9 +301,8 @@ build ../bin/test_Log: CXX_EXECUTABLE_LINKER__test_Log_Debug CMakeFiles/test_Log
   OBJECT_DIR = CMakeFiles/test_Log.dir
   POST_BUILD = :
   PRE_LINK = :
-  TARGET_COMPILE_PDB = CMakeFiles/test_Log.dir/
   TARGET_FILE = ../bin/test_Log
-  TARGET_PDB = ../bin/test_Log.pdb
+  TARGET_PDB = test_Log.dbg
 
 # =============================================================================
 # Object build statements for EXECUTABLE target test_Config
@@ -348,8 +318,6 @@ build CMakeFiles/test_Config.dir/test/test_config.cpp.o: CXX_COMPILER__test_Conf
   FLAGS = -g   -std=gnu++17
   OBJECT_DIR = CMakeFiles/test_Config.dir
   OBJECT_FILE_DIR = CMakeFiles/test_Config.dir/test
-  TARGET_COMPILE_PDB = CMakeFiles/test_Config.dir/
-  TARGET_PDB = ../bin/test_Config.pdb
 
 
 # =============================================================================
@@ -367,9 +335,8 @@ build ../bin/test_Config: CXX_EXECUTABLE_LINKER__test_Config_Debug CMakeFiles/te
   OBJECT_DIR = CMakeFiles/test_Config.dir
   POST_BUILD = :
   PRE_LINK = :
-  TARGET_COMPILE_PDB = CMakeFiles/test_Config.dir/
   TARGET_FILE = ../bin/test_Config
-  TARGET_PDB = ../bin/test_Config.pdb
+  TARGET_PDB = test_Config.dbg
 
 # =============================================================================
 # Target aliases.
@@ -412,14 +379,14 @@ build all: phony ../bin/test_Address ../bin/test_Util ../bin/test_thread ../lib/
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE | ../CMakeLists.txt /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCCompiler.cmake.in /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCCompilerABI.c /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCInformation.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCXXCompiler.cmake.in /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCXXCompilerABI.cpp /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCXXInformation.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCommonLanguageInclude.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCompilerIdDetection.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeDetermineCCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeDetermineCXXCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeDetermineCompileFeatures.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeDetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeDetermineCompilerABI.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeDetermineCompilerId.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeDetermineSystem.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeFindBinUtils.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeGenericSystem.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeInitializeConfigs.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeLanguageInformation.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeNinjaFindMake.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeParseImplicitIncludeInfo.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeParseImplicitLinkInfo.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeSystem.cmake.in /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeSystemSpecificInformation.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeSystemSpecificInitialize.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeTestCCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeTestCXXCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeTestCompilerCommon.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/ADSP-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/ARMCC-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/ARMClang-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/AppleClang-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Borland-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Bruce-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/CMakeCommonCompilerMacros.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Clang-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Clang-DetermineCompilerInternal.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Comeau-CXX-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Compaq-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Cray-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Embarcadero-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Fujitsu-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/GHS-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/GNU-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/GNU-C.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/GNU-CXX.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/GNU-FindBinUtils.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/GNU.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/HP-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/HP-CXX-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/IAR-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/IBMCPP-C-DetermineVersionInternal.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Intel-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/MSVC-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/NVIDIA-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/OpenWatcom-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/PGI-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/PathScale-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/SCO-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/SDCC-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/SunPro-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/SunPro-CXX-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/TI-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/TinyCC-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/VisualAge-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/VisualAge-CXX-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Watcom-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/XL-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/XL-CXX-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/XLClang-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/zOS-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Internal/CMakeCheckCompilerFlag.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Internal/FeatureTesting.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/Linux-Determine-CXX.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/Linux-GNU-C.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/Linux-GNU-CXX.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/Linux-GNU.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/Linux.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.17.0/CMakeCCompiler.cmake CMakeFiles/3.17.0/CMakeCXXCompiler.cmake CMakeFiles/3.17.0/CMakeSystem.cmake
+build build.ninja: RERUN_CMAKE | ../CMakeLists.txt /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCInformation.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCXXInformation.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCommonLanguageInclude.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeGenericSystem.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeInitializeConfigs.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeLanguageInformation.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeSystemSpecificInformation.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeSystemSpecificInitialize.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/CMakeCommonCompilerMacros.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/GNU-C.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/GNU-CXX.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/GNU.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Internal/CMakeCheckCompilerFlag.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/Linux-GNU-C.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/Linux-GNU-CXX.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/Linux-GNU.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/Linux.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.17.0/CMakeCCompiler.cmake CMakeFiles/3.17.0/CMakeCXXCompiler.cmake CMakeFiles/3.17.0/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build ../CMakeLists.txt /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCCompiler.cmake.in /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCCompilerABI.c /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCInformation.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCXXCompiler.cmake.in /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCXXCompilerABI.cpp /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCXXInformation.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCommonLanguageInclude.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCompilerIdDetection.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeDetermineCCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeDetermineCXXCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeDetermineCompileFeatures.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeDetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeDetermineCompilerABI.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeDetermineCompilerId.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeDetermineSystem.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeFindBinUtils.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeGenericSystem.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeInitializeConfigs.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeLanguageInformation.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeNinjaFindMake.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeParseImplicitIncludeInfo.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeParseImplicitLinkInfo.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeSystem.cmake.in /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeSystemSpecificInformation.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeSystemSpecificInitialize.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeTestCCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeTestCXXCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeTestCompilerCommon.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/ADSP-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/ARMCC-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/ARMClang-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/AppleClang-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Borland-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Bruce-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/CMakeCommonCompilerMacros.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Clang-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Clang-DetermineCompilerInternal.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Comeau-CXX-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Compaq-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Cray-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Embarcadero-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Fujitsu-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/GHS-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/GNU-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/GNU-C.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/GNU-CXX.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/GNU-FindBinUtils.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/GNU.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/HP-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/HP-CXX-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/IAR-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/IBMCPP-C-DetermineVersionInternal.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Intel-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/MSVC-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/NVIDIA-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/OpenWatcom-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/PGI-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/PathScale-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/SCO-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/SDCC-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/SunPro-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/SunPro-CXX-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/TI-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/TinyCC-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/VisualAge-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/VisualAge-CXX-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/Watcom-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/XL-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/XL-CXX-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/XLClang-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/zOS-C-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Internal/CMakeCheckCompilerFlag.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Internal/FeatureTesting.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/Linux-Determine-CXX.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/Linux-GNU-C.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/Linux-GNU-CXX.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/Linux-GNU.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/Linux.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.17.0/CMakeCCompiler.cmake CMakeFiles/3.17.0/CMakeCXXCompiler.cmake CMakeFiles/3.17.0/CMakeSystem.cmake: phony
+build ../CMakeLists.txt /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCInformation.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCXXInformation.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeCommonLanguageInclude.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeGenericSystem.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeInitializeConfigs.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeLanguageInformation.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeSystemSpecificInformation.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/CMakeSystemSpecificInitialize.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/CMakeCommonCompilerMacros.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/GNU-C.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/GNU-CXX.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Compiler/GNU.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Internal/CMakeCheckCompilerFlag.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/Linux-GNU-C.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/Linux-GNU-CXX.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/Linux-GNU.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/Linux.cmake /opt/cmake-3.17/share/cmake-3.17/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.17.0/CMakeCCompiler.cmake CMakeFiles/3.17.0/CMakeCXXCompiler.cmake CMakeFiles/3.17.0/CMakeSystem.cmake: phony
 
 
 #############################################

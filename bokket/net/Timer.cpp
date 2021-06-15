@@ -15,10 +15,9 @@ Timer::Timer(const std::function<void()> &cb, const std::chrono::steady_clock::t
              :cb_(cb)
              ,when_(when)
              ,interval_(interval)
-             ,repeat_(interval.count()>std::chrono::microseconds ::zero())
+             ,repeat_(interval.count()>std::chrono::microseconds::zero().count())
              ,id_(++timersCreated_)
 {
-    std::chrono::microseconds::zero()
 }
 
 void Timer::run() const {
