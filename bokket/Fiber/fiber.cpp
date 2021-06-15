@@ -74,14 +74,14 @@ void Fiber::yieldToHold() {
     ASSERT(cur->status_==Status::HOLD);
     cur->status_=Status::HOLD;
     cur->swapOut();
-}*/
+}
 
 
 void Fiber::yield() {
     Fiber::ptr cur=getThis();
     ASSERT(cur->status_==Status::EXEC);
     cur->swapOut();
-}
+}*/
 
 uint64_t Fiber::totalFibers() {
     return fiberCount_;

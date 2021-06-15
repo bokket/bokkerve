@@ -55,9 +55,9 @@ set(LIB_SRC
 		bokket/address/endian.h
 
 		#bokket/Fiber/fiber.h
-		#bokket/Fiber/fiber.cpp
+		bokket/Fiber/fiber.cpp
 
-		#bokket/Scheduler/scheduler.cpp
+		bokket/Scheduler/scheduler.cpp
 		#bokket/Scheduler/scheduler.h
 
 		)
@@ -91,7 +91,7 @@ if(BUILD_TEST)
 	bokket_add_executable(test_Thread "test/test_thread.cpp" bokket "${LIBS}")
 	bokket_add_executable(test_Util "test/test_util.cpp" bokket "${LIBS}")
 	bokket_add_executable(test_Address "test/test_Address.cpp" bokket "${LIBS}")
-	#bokket_add_executable(test_Thread "test/test_thread.cpp" bokket "${LIBS}")
+	bokket_add_executable(test_Fiber "test/test_Fiber.cpp" bokket "${LIBS}")
 endif()
 #add_executable(test_Log ./test/test_log.cpp)
 #add_dependencies(test_Log bokket)

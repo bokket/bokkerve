@@ -26,7 +26,7 @@ public:
     using ptr= std::shared_ptr<Scheduler>;
 
 public:
-    Scheduler(size_t threadCount=1,bool useCaller=true,const std::string& name="Scheduler");
+    //Scheduler(size_t threadCount=1,bool useCaller=true,const std::string& name="Scheduler");
 
     virtual ~Scheduler();
 
@@ -35,8 +35,8 @@ public:
     static Scheduler* getThis();
 
     static Fiber* getMainFiber();
-    void start();
-    void stop();
+    //void start();
+    //void stop();
 
     std::string toString();
 
@@ -71,7 +71,7 @@ public:
 
 protected:
     virtual void tickle();
-    void run();
+    //void run();
     virtual bool stopping();
     virtual void idle();
 
@@ -87,7 +87,7 @@ private:
         //FiberAndThread fat(fc,thread);
         //FiberOrCb ft(fc);
         SchedulerTask task(t,thread);
-        if(task.fiber_ || task.cb_ ) {
+        if(task.fiber || task.cb ) {
             tasks_.push_back(task);
         }
         return need_tickle;
@@ -96,36 +96,36 @@ private:
 private:
     struct SchedulerTask {
         public:
-        Fiber::ptr fiber_;
-        std::function<void()> cb_;
-        int thread_;
-        SchedulerTask(Fiber::ptr fiber,int thread)
-                      :fiber_(fiber),thread_(thread)
+        Fiber::ptr fiber;
+        std::function<void()> cb;
+        int thread;
+        SchedulerTask(Fiber::ptr f,int thr)
+                      :fiber(f),thread(thr)
         {}
 
-        SchedulerTask(Fiber::ptr* fiber,int thread)
-                 :thread_(thread)
+        SchedulerTask(Fiber::ptr* f,int thr)
+                 :thread(thr)
         {
-            fiber_.swap(*fiber);
+            fiber.swap(*f);
         }
         /*FiberOrCb() {}
 
         FiberOrCb(Fiber::ptr f)
                  :fiber(f) {}
         */
-        SchedulerTask(std::function<void()> b,int thread)
-                 :cb_(cb)
-                 ,thread_(thread)
+        SchedulerTask(std::function<void()> c,int thr)
+                 :cb(c)
+                 ,thread(thr)
         {}
 
         SchedulerTask() {
-            thread_=-1;
+            thread=-1;
         }
 
         void reset() {
             fiber= nullptr;
             cb= nullptr;
-            thread_=-1;
+            thread=-1;
         }
     };
 private:

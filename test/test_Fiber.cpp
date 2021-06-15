@@ -11,6 +11,11 @@
 #include <vector>
 static bokket::Logger::ptr g_logger = BOKKET_LOG_NAME("test");
 
+void run_in_fiber2() {
+    BOKKET_LOG_INFO(g_logger) << "run_in_fiber2 begin";
+    BOKKET_LOG_INFO(g_logger) << "run_in_fiber2 end";
+}
+
 void run_in_fiber() {
     /*BOKKET_LOG_INFO(g_logger)<<"run in fiber 1";
     //bokket::Fiber::getThis()->back();
@@ -24,30 +29,35 @@ void run_in_fiber() {
 }
 
 void test_fiber() {
-    BOKKET_LOG_INFO(g_logger)<<"main begin 1";
+    BOKKET_LOG_INFO(g_logger)<<"main begin ";
 
 
     bokket::Fiber::getThis();
 
-    bokket::Fiber::ptr fiber(new bokket::Fiber(run_in_fiber));
+    bokket::Fiber::ptr fiber(new bokket::Fiber(run_in_fiber,0, false));
 
     BOKKET_LOG_INFO(g_logger)<<"fiber ptr use_count="<<fiber.use_count();
 
     //fiber->call();
-    fiber->resume();
+
     BOKKET_LOG_INFO(g_logger)<<"main after resume";
+    fiber->resume();
     //fiber->call();
     //BOKKET_LOG_INFO(g_logger)<<"main after call2";
     BOKKET_LOG_INFO(g_logger)<<"fiber ptr use_count="<<fiber.use_count();
 
-    //BOKKET_LOG_INFO(g_logger)<<"fiber status:"<<fiber->getStatus();
+    BOKKET_LOG_INFO(g_logger)<<"fiber status:"<<std::to_string(fiber->getStatus());
+
+    fiber->reset(run_in_fiber2);
+    fiber->resume();
     //fiber->swapIn();
     //BOKKET_LOG_INFO(g_logger)<<"main after swapIn";
     /*fiber->swapIn();
     BOKKET_LOG_INFO(g_logger)<<"main after end";
     fiber->swapIn();*/
+    BOKKET_LOG_INFO(g_logger)<<"fiber ptr use_count="<<fiber.use_count();
 
-    BOKKET_LOG_INFO(g_logger)<<"main after end 2";
+    BOKKET_LOG_INFO(g_logger)<<"test_fiber end ";
 }
 
 int main() {
@@ -61,7 +71,8 @@ int main() {
     }
     for(auto i:threads)
         i->join();
-        
+
+    BOKKET_LOG_INFO(g_logger) << "main end";
 }
 
 
