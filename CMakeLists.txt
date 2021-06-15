@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 project(bokket)
 
+include(cmake/utils.cmake)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CXX_FLAGS
@@ -34,6 +35,8 @@ set(CXX_FLAGS
 set(LIB_SRC
 		bokket/Log/Log.cpp
 		#bokket/Log/Log.h
+		bokket/Log/LogLevel.h
+		bokket/Log/FixedBuffer.h
 		bokket/Log/LogFile.cpp
 		#bokket/Log/AsyncFileLogAppender.h
 		bokket/Log/AsyncFileLogAppender.cpp
@@ -43,7 +46,6 @@ set(LIB_SRC
 		#bokket/thread/thread.h
 		bokket/thread/thread.cpp
 		bokket/thread/Assert.h
-		bokket/Log/FixedBuffer.h
 		#bokket/Config/config.h
 		bokket/Config/config.cpp
 
@@ -82,16 +84,22 @@ set(LIBS
 
 message("***", ${LIBS})
 
+if(BUILD_TEST)
+	bokket_add_executable(test_Log "test/test_log.cpp" bokket "${LIBS}")
+	bokket_add_executable(test_AsyncLog "test/test_AsyncFileLog.cpp" bokket "${LIBS}")
+	bokket_add_executable(test_Config "test/test_config.cpp" bokket "${LIBS}")
+	bokket_add_executable(test_Thread "test/test_thread.cpp" bokket "${LIBS}")
+	bokket_add_executable(test_Util "test/test_util.cpp" bokket "${LIBS}")
+	bokket_add_executable(test_Address "test/test_Address.cpp" bokket "${LIBS}")
+	#bokket_add_executable(test_Thread "test/test_thread.cpp" bokket "${LIBS}")
+endif()
+#add_executable(test_Log ./test/test_log.cpp)
+#add_dependencies(test_Log bokket)
+#target_link_libraries(test_Log ${LIBS})
 
-
-
-add_executable(test_Log ./test/test_log.cpp)
-add_dependencies(test_Log bokket)
-target_link_libraries(test_Log ${LIBS})
-
-add_executable(test_AsyncLog ./test/test_AsyncFileLog.cpp)
-add_dependencies(test_AsyncLog bokket)
-target_link_libraries(test_AsyncLog ${LIBS})
+#add_executable(test_AsyncLog ./test/test_AsyncFileLog.cpp)
+#add_dependencies(test_AsyncLog bokket)
+#target_link_libraries(test_AsyncLog ${LIBS})
 
 #add_executable(test_LogStream /test/test_LogStream.cpp)
 #add_dependencies(test_LogStream bokket)
@@ -101,22 +109,22 @@ target_link_libraries(test_AsyncLog ${LIBS})
 #add_dependencies(test_Yaml bokket)
 #target_link_libraries(test_Yaml ${LIBS})
 
-add_executable(test_Config ./test/test_config.cpp)
-add_dependencies(test_Config bokket)
-target_link_libraries(test_Config ${LIBS})
+#add_executable(test_Config ./test/test_config.cpp)
+#add_dependencies(test_Config bokket)
+#target_link_libraries(test_Config ${LIBS})
 
-add_executable(test_thread ./test/test_thread.cpp)
-add_dependencies(test_thread bokket)
-target_link_libraries(test_thread ${LIBS})
+#add_executable(test_thread ./test/test_thread.cpp)
+#add_dependencies(test_thread bokket)
+#target_link_libraries(test_thread ${LIBS})
 
 
-add_executable(test_Util ./test/test_util.cpp)
-add_dependencies(test_Util bokket)
-target_link_libraries(test_Util ${LIBS})
+#add_executable(test_Util ./test/test_util.cpp)
+#add_dependencies(test_Util bokket)
+#target_link_libraries(test_Util ${LIBS})
 
-add_executable(test_Address ./test/test_Address.cpp)
-add_dependencies(test_Address bokket)
-target_link_libraries(test_Address ${LIBS})
+#add_executable(test_Address ./test/test_Address.cpp)
+#add_dependencies(test_Address bokket)
+#target_link_libraries(test_Address ${LIBS})
 
 
 #add_executable(test_Fiber ./test/test_Fiber.cpp)

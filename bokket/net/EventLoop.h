@@ -14,7 +14,9 @@
 #include <thread>
 #include <functional>
 
-#include "../thread/thread.h"
+#include "Epoller.h"
+#include "TimerManager.h"
+
 #include "../base/noncopyable.h"
 
 
@@ -24,17 +26,19 @@ namespace bokket
 
 class Channel;
 class Epoller;
-class TimerQueue;
+class TimerManager;
 
 class EventLoop: public noncopyable
 {
 public:
-    using Task=function<void()>;
+    using Task=std::function<void()>;
 
 public:
     EventLoop();
     ~EventLoop();
 
+    uint64_t runAfter(const std::chrono::duration<double>& delay,const Task& cb);
+    uint64_t runEvery(const std::chrono::duration<double>& interval,const Task& cb);
 
     //Timestamp pollReturnTime() const { return pollReturnTime_; }
 
@@ -43,15 +47,17 @@ public:
     void loop();
     void quit();
 
-    void runInLoop(const Task& cb);
-    void runInLoop(Task && cb);
+    void runInLoop(const Task & cb);
+    //void runInLoop(Task && cb);
 
-    void setFrameTask(const Task cb);
+    //void setFrameTask(const Task cb);
 
     void queueInLoop(const Task& cb);
-    void queueInLoop(Task && cb);
+    //void queueInLoop(Task && cb);
 
-    void wakeup();
+    void wakeup() const;
+
+
     void updateChannel(Channel* channel);
     void removeChannel(Channel* channel);
     bool hasChannel(Channel* channel);
@@ -81,14 +87,15 @@ private:
 
     const pid_t tid_;
     //const thread::id threadId_;
-    int wakeupFd_;// 用于eventfd
+    int wakeupfd_;// 用于eventfd
+
     std::unique_ptr<Channel> wakeupChannel_;// 该通道将会纳入poller_来管理
     std::unique_ptr<Epoller> epoller_;
-    //unique_ptr<TimerQueue> timerQueue_;
+    std::unique_ptr<TimerManager> timerManager_;
 
     //mutable MutexLock mutex_;
     mutable std::mutex mutex_;
-    vector<Task> pendingTasks_;//小任务列表
+    std::vector<Task> pendingTasks_;//小任务列表
 
     using ChannelList=vector<Channel*>;
     ChannelList activeChannels_;//活跃通道列表 // Epoller返回的活动通道

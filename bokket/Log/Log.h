@@ -19,9 +19,10 @@
 #include <fstream>
 #include <functional>
 #include <condition_variable>
-#include "./LogLevel.h"
-#include "./LogFile.h"
-#include "./FixedBuffer.h"
+
+#include "LogLevel.h"
+#include "LogFile.h"
+#include "FixedBuffer.h"
 //#include "./LogStream.h"
 
 

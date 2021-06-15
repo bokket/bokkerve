@@ -6,8 +6,9 @@
 
 #include <atomic>
 
-#include "../Scheduler/scheduler.h"
 #include "../Log/Log.h"
+#include "../Scheduler/scheduler.h"
+
 
 namespace bokket
 {
@@ -88,22 +89,25 @@ uint64_t Fiber::totalFibers() {
 
 
 Fiber::Fiber() {
-    status_=Status::EXEC;
+
     setThis(this);
+
+    status_=Status::READY;
 
     if(getcontext(&ctx_))
         ASSERT_MSG(false,"getcontext");
 
     ++fiberCount_;
 
-    BOKKET_LOG_INFO(g_logger)<<"Fiber::Fiber private main,id= "<<id_;
+    BOKKET_LOG_DEBUG(g_logger)<<"Fiber::Fiber private main,id= "<<id_;
 }
 
 
-Fiber::Fiber(std::function<void()> cb, size_t stacksize, bool useCaller)
+Fiber::Fiber(std::function<void()> cb, size_t stacksize, bool runInScheduler)
 //Fiber::Fiber(std::function<void()> cb, size_t stacksize)
             :id_(++fiberId_)
-            ,cb_(cb) {
+            ,cb_(cb)
+            ,runInScheduler_(runInScheduler) {
 
     //std::lock_guard<std::mutex> lc(mutex_);
     ++fiberCount_;
@@ -123,14 +127,13 @@ Fiber::Fiber(std::function<void()> cb, size_t stacksize, bool useCaller)
 
     ctx_.uc_link = nullptr;
     ctx_.uc_stack.ss_sp = stack_;
-    //ctx_.uc_stack.ss_size = stackSize_;
     ctx_.uc_stack.ss_size=stackSize_;
 
     BOKKET_LOG_INFO(g_logger)<<"fiber Count="<<fiberCount_<<" id="<<id_;
 
     BOKKET_LOG_INFO(g_logger)<<"fiber Count="<<fiberCount_<<" id="<<id_;
 
-    if(!useCaller ) {
+    /*if(!useCaller ) {
         BOKKET_LOG_INFO(g_logger)<<"fiber Count="<<fiberCount_<<" id="<<id_;
 
         makecontext(&ctx_,&Fiber::run,0);
@@ -140,8 +143,8 @@ Fiber::Fiber(std::function<void()> cb, size_t stacksize, bool useCaller)
 
         makecontext(&ctx_,&Fiber::mainRun,0);
         BOKKET_LOG_INFO(g_logger)<<"Fiber::Fiber public main id="<<id_<<" (This is main Fiber run)";
-    }
-    //makecontext(&ctx_,&Fiber::mainRun,0);
+    }*/
+    makecontext(&ctx_,&Fiber::mainRun,0);
 
     BOKKET_LOG_INFO(g_logger)<<"fiber Count="<<fiberCount_<<" id="<<id_;
 
@@ -150,7 +153,7 @@ Fiber::Fiber(std::function<void()> cb, size_t stacksize, bool useCaller)
 }
 
 Fiber::~Fiber() {
-    BOKKET_LOG_INFO(g_logger)<<"Fiber::~Fiber:"<<id_;
+    BOKKET_LOG_DEBUG(g_logger)<<"Fiber::~Fiber:"<<id_;
     --fiberCount_;
 
 
@@ -159,11 +162,11 @@ Fiber::~Fiber() {
         //            ||  status_ == Status::EXCEPT
         //            ||  status_ == Status::INIT,"Fiber status ");
         ASSERT(      status_ == Status::TERM
-                    ||  status_ == Status::EXCEPT
-                    ||  status_ == Status::INIT);
+                    ||  status_ == Status::EXCEPT);
+                    //||  status_ == Status::INIT);
 
         StackAllocator::Free(stack_,stackSize_);
-        BOKKET_LOG_INFO(g_logger)<<"free stack:"<<id_;
+        BOKKET_LOG_DEBUG(g_logger)<<"free stack:"<<id_;
     } else {
         //static_assert(!cb_,"functional wrang");
         //static_assert(status_==Status::EXEC,"");
@@ -180,9 +183,9 @@ Fiber::~Fiber() {
 
 void Fiber::reset(std::function<void()> cb) {
     ASSERT(stack_);
-    ASSERT(  status_==Status::INIT
-            || status_==Status::TERM
+    ASSERT(    status_==Status::TERM
             || status_==Status::EXCEPT);
+            //|| status_==Status::READY);
 
     cb_=cb;
 
@@ -195,30 +198,51 @@ void Fiber::reset(std::function<void()> cb) {
     ctx_.uc_stack.ss_size=stackSize_;
 
     makecontext(&ctx_,&Fiber::mainRun,0);
-    status_=Status::INIT;
+    status_=Status::READY;
 
 }
-/*
+
 void Fiber::resume() {
+
+    ASSERT( status_!=Status::TERM
+         && status_!=Status::EXEC);
     setThis(this);
     status_=Status::EXEC;
-    BOKKET_LOG_INFO(g_logger)<<"Fiber::call"<<" fiber id="<<getFiberId();
+    BOKKET_LOG_DEBUG(g_logger)<<"Fiber::call"<<" fiber id="<<getFiberId();
 
-    if(swapcontext(&t_threadFiber->ctx_,&ctx_)) {
-        ASSERT_MSG(false,"swapcontext");
+    if(runInScheduler_) {
+        if (swapcontext(&(Scheduler::getMainFiber()->ctx_), &ctx_)) {
+            ASSERT_MSG(false, "swapcontext");
+        }
+    } else {
+        if (swapcontext(&(t_threadFiber->ctx_), &ctx_)) {
+            ASSERT_MSG(false, "swapcontext");
+        }
     }
 }
 
 void Fiber::yield() {
+    ASSERT( status_==Status::TERM
+            || status_!=Status::EXEC);
+
     setThis(t_threadFiber.get());
 
+    if(status_!=Status::TERM) {
+        status_=Status::READY;
+    }
 
-    if(swapcontext(&ctx_,&t_threadFiber->ctx_)) {
-        ASSERT_MSG(false,"swapcontext");
+    if(runInScheduler_) {
+        if (swapcontext(&ctx_,&(Scheduler::getMainFiber()->ctx_))) {
+            ASSERT_MSG(false, "swapcontext");
+        }
+    } else {
+        if(swapcontext(&ctx_,&t_threadFiber->ctx_)) {
+            ASSERT_MSG(false,"swapcontext");
+        }
     }
 }
-*/
 
+/*
 void Fiber::call() {
     setThis(this);
     status_=Status::EXEC;
@@ -286,7 +310,7 @@ void Fiber::run() {
 
 
     ASSERT_MSG(false,"never reach fiber id="+std::to_string(raw_ptr->getId()));
-}
+}*/
 
 
 void Fiber::mainRun() {
@@ -311,8 +335,10 @@ void Fiber::mainRun() {
     auto raw_ptr=cur.get();
 
     cur.reset();
-    raw_ptr->back();
-    //raw_ptr->yield();
+    //raw_ptr->back();
+    raw_ptr->yield();
+
+    BOKKET_LOG_DEBUG(g_logger)<<"Fiber::mainRun() id="<<raw_ptr->getId();
 
     ASSERT_MSG(false,"never reach fiber id="+std::to_string(raw_ptr->getId()));
 }

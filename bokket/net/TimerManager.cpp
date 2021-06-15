@@ -6,8 +6,8 @@
 
 
 #include "../Log/Log.h"
-#include "./Channel.h"
-#include "./EventLoop.h"
+#include "Channel.h"
+#include "EventLoop.h"
 
 
 #include <unistd.h>
@@ -21,7 +21,7 @@
 namespace bokket::detail
 {
 
-static bokket::Logger::ptr g_logger = BOKKET_LOG_NAME("system");
+static bokket::Logger::ptr g_logger = BOKKET_LOG_NAME("net");
 
 
 

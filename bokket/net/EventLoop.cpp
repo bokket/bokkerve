@@ -5,61 +5,78 @@
 #include "EventLoop.h"
 #include "Channel.h"
 #include "Epoller.h"
-#include <signal.h>
-#include <sys/eventfd.h>
+
 #include <iostream>
 #include <sstream>
 
+#include <signal.h>
+#include <sys/eventfd.h>
 
-using namespace bokket;
-using namespace bokket::net;
 
-namespace
+#include "../Log/Log.h"
+#include "../thread/util.h"
+#include "../thread/thread.h"
+
+
+
+namespace bokket
 {
-    thread_local EventLoop *t_EventLoop = nullptr;
+
+static thread_local EventLoop *t_EventLoop = nullptr;
+
+static bokket::Logger::ptr g_logger=BOKKET_LOG_NAME("net");
 
 
 
-    int CreateEventFd() {
-        int evfd = ::eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC);
-        if (evfd < 0) {}
-        return evfd;
+int createEventfd() {
+    int evfd = ::eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC);
+    if (evfd < 0) {
+        BOKKET_LOG_FATAL(g_logger)<<"eventfd create fail";
     }
-
-    class IgnoreSigPipe {
-    public:
-        IgnoreSigPipe() {
-            ::signal(SIGPIPE, SIG_IGN);
-        }
-    };
-    IgnoreSigPipe ignore;
+    return evfd;
 }
 
-EventLoop * EventLoop::getEventLoopOfCurrentThread()
-{
+class IgnoreSigPipe {
+public:
+    IgnoreSigPipe() {
+        ::signal(SIGPIPE, SIG_IGN);
+    }
+};
+    
+IgnoreSigPipe ignore;
+
+
+EventLoop * EventLoop::getEventLoopOfCurrentThread() {
     return t_EventLoop;
 }
 
 
 EventLoop::EventLoop()
-           :threadId_(bokket::CurrentThread::tid())
+           :tid_(bokket::getThreadId())
            ,looping_(false)
            ,quit_(false)
-           ,callingPendingFunctors_(false)
+           ,callingPendingTasks_(false)
            ,eventHandling_(false)
-           ,epoller_(std::make_unique<Epoller>(this))
-           ,wakeupFd_(CreateEventFd())
-           ,wakeupChannel_(std::make_unique<Channel>(this,wakeupFd_))
+           ,epoller_(new Epoller(this))
+           ,timerManager_(new TimerManager(this))
+           //,epoller_(std::make_unique<Epoller>(this))
+           ,wakeupfd_(createEventfd())
+           ,wakeupChannel_(new Channel(this,wakeupfd_))
+           //,wakeupChannel_(std::make_unique<Channel>(this,wakeupFd_))
            ,currentActiveChannel_(nullptr)
 {
 
-    if(t_EventLoop)
-    {}
-    else
-    {
+    if(t_EventLoop) {
+        BOKKET_LOG_FATAL(g_logger)<<"Another event Loop "<<t_EventLoop
+        <<"exists in this thread"<<tid_;
+    }
+    else {
         t_EventLoop=this;
     }
-    wakeupChannel_->setReadCallback(std::bind(&EventLoop::handleRead,this));
+    //wakeupChannel_->setReadCallback(std::bind(&EventLoop::handleRead,this));
+    wakeupChannel_->setReadCallback(
+            [this] { handleRead(); }
+            );
     wakeupChannel_->enableReading();
 }
 
@@ -68,7 +85,7 @@ EventLoop::~EventLoop()
 {
     wakeupChannel_->disableAll();
     wakeupChannel_->remove();
-    ::close(wakeupFd_);
+    ::close(wakeupfd_);
 
     t_EventLoop= nullptr;
 }
@@ -76,7 +93,7 @@ EventLoop::~EventLoop()
 
 size_t EventLoop::queueSize() const
 {
-    return pendingFunctors_.size();
+    return pendingTasks_.size();
 }
 
 // 事件循环，该函数不能跨线程调用
@@ -109,7 +126,7 @@ void EventLoop::loop()
         currentActiveChannel_= nullptr;
         eventHandling_= false;
 
-        doPendingFunctors();
+        doPendingTasks();
 
     }
     looping_= false;
@@ -129,7 +146,7 @@ void EventLoop::quit()
         wakeup();
 }
 
-void EventLoop::runInLoop(Functor cb)
+void EventLoop::runInLoop(const Task &cb)
 {
     if(isInLoopThread())
         cb();
@@ -206,8 +223,7 @@ void EventLoop::handleRead()
     {}
 }
 
-void EventLoop::doPendingFunctors()
-{
+void EventLoop::doPendingTasks() {
     assertInLoopThread();
     vector<Functor> functors;
 
@@ -222,10 +238,11 @@ void EventLoop::doPendingFunctors()
     callingPendingFunctors_=false;
 }
 
-void EventLoop::printActiveChannels() const
-{
+void EventLoop::printActiveChannels() const {
     for(auto item:activeChannels_)
     {
         <<item->reventsToString()<<"}  ";
     }
+}
+
 }

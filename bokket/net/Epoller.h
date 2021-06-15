@@ -5,16 +5,19 @@
 #ifndef BOKKET_EPOLLER_H
 #define BOKKET_EPOLLER_H
 
-#include "../base/Timestamp.h"
-#include "Channel.h"
-#include "EventLoop.h"
-#include "../base/noncopyable.h"
+
+
 
 #include <map>
 #include <sys/epoll.h>
 #include <vector>
 
-using namespace std;
+
+#include "Channel.h"
+#include "EventLoop.h"
+#include "../base/noncopyable.h"
+
+
 
 namespace bokket
 {

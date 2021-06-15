@@ -65,11 +65,11 @@ functional
 -
 condition_variable
 -
-./LogLevel.h
+LogLevel.h
 /home/bokket/bokkerve-plus-plus/bokket/Log/LogLevel.h
-./LogFile.h
+LogFile.h
 /home/bokket/bokkerve-plus-plus/bokket/Log/LogFile.h
-./FixedBuffer.h
+FixedBuffer.h
 /home/bokket/bokkerve-plus-plus/bokket/Log/FixedBuffer.h
 ../base/noncopyable.h
 /home/bokket/bokkerve-plus-plus/bokket/base/noncopyable.h

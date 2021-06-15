@@ -21,10 +21,11 @@ class Fiber: public std::enable_shared_from_this<Fiber>
     friend class Scheduler;
 public:
     using ptr = std::shared_ptr<Fiber>;
-    enum class Status :uint8_t
+    enum class Status
     {
-        INIT,
+        //INIT,
         //HOLD,
+        READY,
         EXEC,
         TERM,
         //READY,
@@ -36,8 +37,8 @@ private:
     Fiber();
 
 public:
-    //Fiber(std::function<void()>cb, size_t stacksize =0,bool useCaller = false);
-    Fiber(std::function<void()>cb, size_t stacksize =0);
+    Fiber(std::function<void()>cb, size_t stacksize =0,bool runInScheduler = false);
+    //Fiber(std::function<void()>cb, size_t stacksize =0);
     ~Fiber();
 
     void reset(std::function<void()> cb);
@@ -51,7 +52,7 @@ public:
     void call();
 
     void back();*/
-   void yield();
+    void yield();
     void resume();
 
     uint64_t getId() const { return id_; }
@@ -80,12 +81,14 @@ private:
     uint64_t id_ ;
     uint32_t stackSize_;
 
-    Status status_ = Status::INIT;
+    Status status_ = Status::READY;
 
     ucontext_t ctx_;
 
     void *stack_ = nullptr;
     std::function<void()> cb_;
+
+    bool runInScheduler_;
 };
 }
 
