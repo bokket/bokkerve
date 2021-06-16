@@ -4,7 +4,7 @@
 
 #include "util.h"
 
-
+#include <string_view>
 #include <execinfo.h>
 
 #include "./thread.h"
@@ -12,6 +12,7 @@
 
 namespace bokket
 {
+
 
 static bokket::Logger::ptr g_logger=BOKKET_LOG_NAME("system");
 
@@ -26,13 +27,24 @@ uint32_t getFiberId() {
     //return 0;
 }
 
+
+
 uint64_t getElapsed() {
-    ::timespec ts={0};
-    // 系统运行时间，从系统启动时开始计时，系统休眠时不再计时
+    //::timespec ts={0};
+    //提供最高精度的计时周期
+
+    std::chrono::milliseconds ms=std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::system_clock::now().time_since_epoch()
+            );
+
+    return ms.count();
+
+    
+    //系统运行时间，从系统启动时开始计时，系统休眠时不再计时
     //单调的时钟？从某个不确定的时刻开始跳动，不受非连续跳跃的影响，但是受增量的调整影响。
     //CLOCK_MONOTONIC_RAW：与CLOCK_MONOTONIC类似，但输出的是原始的时钟，不受其他调整影响
-    clock_gettime(CLOCK_MONOTONIC_RAW,&ts);
-    return ts.tv_sec*1000+ ts.tv_nsec/1000000.0;
+    //clock_gettime(CLOCK_MONOTONIC_RAW,&ts);
+    //return ts.tv_sec*1000+ ts.tv_nsec/1000000.0;
 }
 
 uint64_t getCurrentMs() {

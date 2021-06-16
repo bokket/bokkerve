@@ -91,7 +91,7 @@ public:
     LogEvent(std::shared_ptr<Logger> logger,LogLevel level
              ,const std::string& filename,const std::string& func,int32_t line
              ,int threadId,uint32_t fiberId
-             ,uint32_t elapse,std::time_t time
+             ,uint64_t elapse,std::time_t time
              ,const std::string& threadName);
              //thread::id threadId
     //uint32_t fiberId
@@ -102,7 +102,7 @@ public:
 
     const std::string& getFunc()            const { return func_; }
 
-    uint32_t getElapse()                    const { return elapse_; }
+    uint64_t getElapse()                    const { return elapse_; }
 
     //thread::id getThreadId() const { return threadId_; }
     int getThreadId()                       const { return threadId_; }
@@ -159,7 +159,7 @@ private:
     int threadId_;
     uint32_t fiberId_;
 
-    uint32_t elapse_;
+    uint64_t elapse_;
     std::time_t time_;
 
     std::stringstream stringStream_;

@@ -261,7 +261,7 @@ LogFormatter::ptr Logger::getLogFormatter()
                    const std::string &func, int32_t line, int threadId, uint32_t fiberId, uint32_t elapse,
                    std::time_t time)*/
 LogEvent::LogEvent(std::shared_ptr <Logger> logger, LogLevel level, const std::string &filename,
-                   const std::string &func, int32_t line, int threadId, uint32_t fiberId, uint32_t elapse,
+                   const std::string &func, int32_t line, int threadId, uint32_t fiberId, uint64_t elapse,
                    std::time_t time, const std::string &threadName)
                    :logger_(logger)
                    ,level_(level)
@@ -322,10 +322,10 @@ std::string LogFormatter::format(LogEvent::ptr event) {
     std::string prefix;
 
 
-
     prefix.append(" ");
     prefix.append("[");
     prefix.append(std::to_string(event->getElapse()));
+    prefix.append("ms");
     prefix.append("]");
 
     prefix.append("  ");
@@ -383,6 +383,7 @@ std::ostream & LogFormatter::format(std::ostream &ostream, LogEvent::ptr event) 
     prefix.append(" ");
     prefix.append("[");
     prefix.append(std::to_string(event->getElapse()));
+    prefix.append("ms");
     prefix.append("]");
 
     prefix.append("  ");

@@ -19,8 +19,6 @@
 #include <sys/time.h>
 
 
-
-
 namespace bokket
 {
 
@@ -45,7 +43,6 @@ int threadId() {
     }
     return t_cachedThreadId;
 }*/
-
 
 pid_t getThreadId();
 

@@ -6,9 +6,6 @@
 
 static bokket::Logger::ptr g_logger = BOKKET_LOG_NAME("test");
 
-/**
- * @brief 演示协程主动yield情况下应该如何操作
- */
 void test_fiber1() {
     BOKKET_LOG_INFO(g_logger) << "test_fiber1 begin";
 
@@ -26,9 +23,7 @@ void test_fiber1() {
     BOKKET_LOG_INFO(g_logger) << "test_fiber1 end";
 }
 
-/**
- * @brief 演示协程睡眠对主程序的影响
- */
+
 void test_fiber2() {
     BOKKET_LOG_INFO(g_logger) << "test_fiber2 begin";
 
@@ -56,9 +51,7 @@ void test_fiber5() {
     count++;
 }
 
-/**
- * @brief 演示指定执行线程的情况
- */
+
 void test_fiber4() {
     BOKKET_LOG_INFO(g_logger) << "test_fiber4 begin";
 

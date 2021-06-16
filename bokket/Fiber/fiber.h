@@ -29,7 +29,7 @@ public:
         EXEC,
         TERM,
         //READY,
-        EXCEPT
+        //EXCEPT
     };
 
 private:
