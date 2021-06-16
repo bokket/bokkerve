@@ -12,7 +12,7 @@ static Logger::ptr g_logger=BOKKET_LOG_NAME("system");
 static thread_local Scheduler* t_scheduler= nullptr;
 static thread_local Fiber* t_scheduler_fiber= nullptr;
 
-/*
+
 Scheduler::Scheduler(size_t threadCount, bool useCaller, const std::string &name)
                     :name_(name)
 {
@@ -31,15 +31,16 @@ Scheduler::Scheduler(size_t threadCount, bool useCaller, const std::string &name
         bokket::Thread::setName(name_);
 
         t_scheduler_fiber=rootFiber_.get();
-        rootThread_=static_cast<int>(bokket::getThreadId());
-        //rootThread_=bokket::getThreadId();
+        //rootThread_=static_cast<int>(bokket::Thread::getId());
+        
+        rootThread_=bokket::getThreadId();
         threadIds_.emplace_back(rootThread_);
     } else
         rootThread_=-1;
 
 
     threadCount_=threadCount;
-}*/
+}
 
 Scheduler::~Scheduler() {
     BOKKET_LOG_DEBUG(g_logger)<<"Scheduler::~Scheduler()";
@@ -48,11 +49,14 @@ Scheduler::~Scheduler() {
         t_scheduler= nullptr;
 }
 
-/*
+
 void Scheduler::start() {
+    BOKKET_LOG_DEBUG(g_logger)<<"Scheduler::start()";
     std::lock_guard<std::mutex> lc(mutex_);
-    if(!stopping_)
+    if(stopping_) {
+        BOKKET_LOG_ERROR(g_logger) << "Scheduler stop";
         return;
+    }
 
     stopping_= false;
 
@@ -65,13 +69,20 @@ void Scheduler::start() {
                                      name_+"_"+std::to_string(i)));
         threadIds_.emplace_back(static_cast<int>(threads_[i]->getId()));
     }
-}*/
+}
 
-/*
+
 void Scheduler::stop() {
-    autoStop_= true;
 
-    if(rootFiber_
+    BOKKET_LOG_DEBUG(g_logger)<<"Scheduler::stop";
+    //autoStop_= true;
+    if(stopping()) {
+        return;
+    }
+
+    stopping_= true;
+
+    /*if(rootFiber_
     &&threadCount_==0
     && (rootFiber_->getStatus()==Fiber::Status::TERM
     || rootFiber_->getStatus()==Fiber::Status::INIT)) {
@@ -80,15 +91,16 @@ void Scheduler::stop() {
 
         if(stopping())
             return;
-    }
+    }*/
 
-    if(rootThread_!=-1)
+    //if(rootThread_!=-1)
+    if(useCaller_)
         ASSERT(getThis()==this);
     else
         ASSERT(getThis()!=this);
 
 
-    stopping_= true;
+    //stopping_= true;
 
     for(auto i=0;i<threadCount_;++i)
         tickle();
@@ -97,8 +109,12 @@ void Scheduler::stop() {
         tickle();
 
 
-    if(rootFiber_ && !stopping_)
-        rootFiber_->call();
+    /*if(rootFiber_ && !stopping_)
+        rootFiber_->call();*/
+    if(rootFiber_) {
+        rootFiber_->resume();
+        BOKKET_LOG_DEBUG(g_logger)<<"rootFiber_ end";
+    }
 
     std::vector<Thread::ptr> threads;
     {
@@ -108,7 +124,7 @@ void Scheduler::stop() {
 
     for(auto& i:threads)
         i->join();
-}*/
+}
 
 std::string Scheduler::toString() {
     std::stringstream ss;
@@ -137,7 +153,7 @@ Fiber * Scheduler::getMainFiber() {
 
 
 void Scheduler::tickle() {
-    BOKKET_LOG_INFO(g_logger)<<"Scheduler tickle";
+    BOKKET_LOG_DEBUG(g_logger)<<"Scheduler tickle";
 }
 
 
@@ -153,12 +169,12 @@ bool Scheduler::stopping() {
 }
 
 void Scheduler::idle() {
-    BOKKET_LOG_INFO(g_logger)<<name_<<"idle running";
+    BOKKET_LOG_DEBUG(g_logger)<<name_<<" idle running";
     while(!stopping())
         Fiber::getThis()->yield();
         //Fiber::yieldToHold();
 }
-/*
+
 void Scheduler::run() {
     BOKKET_LOG_DEBUG(g_logger)<<name_<<"running";
 
@@ -175,54 +191,76 @@ void Scheduler::run() {
     while(true) {
         task.reset();
 
-        bool tickle_me=false;
+        bool tickle_me = false;
         //bool is_active=false;
 
         {
-            std::lock_guard<std::mutex> lc(mutex_);
+            std::lock_guard <std::mutex> lc(mutex_);
 
-            auto it=tasks_.begin();
+            auto it = tasks_.begin();
 
-            while(it!=fibers_.end()) {
-                ASSERT(it->fiber_ || it->cb_);
-
+            while (it != tasks_.end()) {
 
 
-                if(it->fiber && it->fiber->getStatus()==Fiber::Status::EXEC) {
+
+                //if(it->fiber && it->fiber->getStatus()==Fiber::Status::EXEC) {
+                if (it->thread != -1 && it->thread != bokket::getThreadId()) {
                     ++it;
-                    tickle_me= true;
+                    tickle_me = true;
                     continue;
                 }
-                ft=*it;
-                fibers_.erase(it++);
+
+                ASSERT(it->fiber || it->cb);
+                if (it->fiber) {
+                    ASSERT(it->fiber->getStatus() == Fiber::Status::READY);
+                }
+
+                task = *it;
+                tasks_.erase(it++);
                 ++activeThreadCount;
-                is_active=true;
+                //is_active=true;
                 break;
             }
-            tickle_me= it!=fibers_.end();
+            tickle_me |= (it != tasks_.end());
         }
-        if(tickle_me)
+        if (tickle_me)
             tickle();
 
-        if(ft.fiber && ft.fiber->getStatus()!=Fiber::Status::TERM
-                     && ft.fiber->getStatus()!=Fiber::Status::EXCEPT) {
-            ft.fiber->swapIn();
-            activeThreadCount--;
-            if(ft.fiber->getStatus()!=Fiber::Status::TERM)
-                //schedule(ft.fiber);
-                ft.fiber->setStatus(Fiber::Status::INIT);
-                //ft.fiber_->getStatus()==Fiber::Status::INIT;
-        } else if(ft.cb) {
-            if(cb_fiber)
-                cb_fiber->reset(ft.cb);
+        /*if(task.fiber && ft.fiber->getStatus()!=Fiber::Status::TERM
+                     && ft.fiber->getStatus()!=Fiber::Status::EXCEPT) {*/
+        if (task.fiber) {
+            //ft.fiber->swapIn();
+            task.fiber->resume();
+            --activeThreadCount;
+            task.reset();
+            //if(ft.fiber->getStatus()!=Fiber::Status::TERM)
+            //schedule(ft.fiber);
+            //ft.fiber->setStatus(Fiber::Status::INIT);
+            //ft.fiber_->getStatus()==Fiber::Status::INIT;
+        } else if (task.cb) {
+            if (cb_fiber)
+                cb_fiber->reset(task.cb);
             else
-                cb_fiber.reset(new Fiber(ft.cb));
+                cb_fiber.reset(new Fiber(task.cb));
 
-            //ft.reset();
-            cb_fiber->swapIn();
-            activeThreadCount--;
+            task.reset();
+            cb_fiber->resume();
+            //cb_fiber->swapIn();
+            --activeThreadCount;
+            cb_fiber.reset();
+        } else {
+            if (idle_fiber->getStatus() == Fiber::Status::TERM) {
+                BOKKET_LOG_DEBUG(g_logger) << "idle fiber terminate";
+                break;
+            }
+            ++idleThreadCount;
+            //idle_fiber->swapIn();
+            idle_fiber->resume();
+            --idleThreadCount;
+        }
+    }
 
-            if(cb_fiber->getStatus()==Fiber::Status::TERM)
+            /*if(cb_fiber->getStatus()==Fiber::Status::TERM)
                 cb_fiber->reset(nullptr);
             else {
                // cb_fiber->getStatus()=Fiber::Status::INIT;
@@ -245,9 +283,9 @@ void Scheduler::run() {
             //if(idle_fiber->getStatus()!=Fiber::Status::TERM)
             //    idle_fiber->getStatus()==Fiber::Status::READY;
         }
-    }
+    }*/
     BOKKET_LOG_DEBUG(g_logger)<<"Scheduler::run() exit";
-}*/
+}
 
 
 }

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 project(bokket)
 
-include(cmake/utils.cmake)
+#include(cmake/utils.cmake)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CXX_FLAGS
@@ -13,7 +13,6 @@ set(CXX_FLAGS
 		-Wextra
 		-Werror
 		-std=c++17
-		-pthread
 		)
 
 
@@ -80,26 +79,31 @@ set(LIBS
 		bokket
 		pthread
 		yaml-cpp
+		dl
 		gtest)
 
 message("***", ${LIBS})
 
-if(BUILD_TEST)
-	bokket_add_executable(test_Log "test/test_log.cpp" bokket "${LIBS}")
-	bokket_add_executable(test_AsyncLog "test/test_AsyncFileLog.cpp" bokket "${LIBS}")
-	bokket_add_executable(test_Config "test/test_config.cpp" bokket "${LIBS}")
-	bokket_add_executable(test_Thread "test/test_thread.cpp" bokket "${LIBS}")
-	bokket_add_executable(test_Util "test/test_util.cpp" bokket "${LIBS}")
-	bokket_add_executable(test_Address "test/test_Address.cpp" bokket "${LIBS}")
-	bokket_add_executable(test_Fiber "test/test_Fiber.cpp" bokket "${LIBS}")
-endif()
-#add_executable(test_Log ./test/test_log.cpp)
-#add_dependencies(test_Log bokket)
-#target_link_libraries(test_Log ${LIBS})
+#if(BUILD_TEST)
+#	bokket_add_executable(test_Log "test/test_log.cpp" bokket "${LIBS}")
+#	bokket_add_executable(test_AsyncLog "test/test_AsyncFileLog.cpp" bokket "${LIBS}")
+#	bokket_add_executable(test_Config "test/test_config.cpp" bokket "${LIBS}")
+#	bokket_add_executable(test_Thread "test/test_thread.cpp" bokket "${LIBS}")
+#	bokket_add_executable(test_Util "test/test_util.cpp" bokket "${LIBS}")
+#	bokket_add_executable(test_Address "test/test_Address.cpp" bokket "${LIBS}")
+#	bokket_add_executable(test_Fiber "test/test_Fiber.cpp" bokket "${LIBS}")
+#	bokket_add_executable(test_Scheduler "test/test_Scheduler.cpp" bokket "${LIBS}")
+#endif()
 
-#add_executable(test_AsyncLog ./test/test_AsyncFileLog.cpp)
-#add_dependencies(test_AsyncLog bokket)
-#target_link_libraries(test_AsyncLog ${LIBS})
+
+
+add_executable(test_Log ./test/test_log.cpp)
+add_dependencies(test_Log bokket)
+target_link_libraries(test_Log ${LIBS})
+
+add_executable(test_AsyncLog ./test/test_AsyncFileLog.cpp)
+add_dependencies(test_AsyncLog bokket)
+target_link_libraries(test_AsyncLog ${LIBS})
 
 #add_executable(test_LogStream /test/test_LogStream.cpp)
 #add_dependencies(test_LogStream bokket)
@@ -109,38 +113,41 @@ endif()
 #add_dependencies(test_Yaml bokket)
 #target_link_libraries(test_Yaml ${LIBS})
 
-#add_executable(test_Config ./test/test_config.cpp)
-#add_dependencies(test_Config bokket)
-#target_link_libraries(test_Config ${LIBS})
+add_executable(test_Config ./test/test_config.cpp)
+add_dependencies(test_Config bokket)
+target_link_libraries(test_Config ${LIBS})
 
-#add_executable(test_thread ./test/test_thread.cpp)
-#add_dependencies(test_thread bokket)
-#target_link_libraries(test_thread ${LIBS})
-
-
-#add_executable(test_Util ./test/test_util.cpp)
-#add_dependencies(test_Util bokket)
-#target_link_libraries(test_Util ${LIBS})
-
-#add_executable(test_Address ./test/test_Address.cpp)
-#add_dependencies(test_Address bokket)
-#target_link_libraries(test_Address ${LIBS})
+add_executable(test_thread ./test/test_thread.cpp)
+add_dependencies(test_thread bokket)
+target_link_libraries(test_thread ${LIBS})
 
 
-#add_executable(test_Fiber ./test/test_Fiber.cpp)
-#add_dependencies(test_Fiber bokket)
-#target_link_libraries(test_Fiber ${LIBS})
+add_executable(test_Util ./test/test_util.cpp)
+add_dependencies(test_Util bokket)
+target_link_libraries(test_Util ${LIBS})
+
+add_executable(test_Address ./test/test_Address.cpp)
+add_dependencies(test_Address bokket)
+target_link_libraries(test_Address ${LIBS})
+
+
+add_executable(test_Fiber ./test/test_Fiber.cpp)
+add_dependencies(test_Fiber bokket)
+target_link_libraries(test_Fiber ${LIBS})
+
+
+add_executable(test_Scheduler ./test/test_Scheduler.cpp)
+add_dependencies(test_Scheduler bokket)
+target_link_libraries(test_Scheduler ${LIBS})
 
 
 #add_executable(test_Ucontext ./test/test_ucontext.cpp)
 #add_dependencies(test_Ucontext bokket)
 #target_link_libraries(test_Ucontext ${LIBS})
 
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
-
-
-SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
-SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 
 #add_executable(../test/logtest test/LogStream_test.cpp Log/LogStream.cpp )

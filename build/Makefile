@@ -128,6 +128,58 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named test_Config
+
+# Build rule for target.
+test_Config: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_Config
+.PHONY : test_Config
+
+# fast build rule for target.
+test_Config/fast:
+	$(MAKE) -f CMakeFiles/test_Config.dir/build.make CMakeFiles/test_Config.dir/build
+.PHONY : test_Config/fast
+
+#=============================================================================
+# Target rules for targets named test_Log
+
+# Build rule for target.
+test_Log: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_Log
+.PHONY : test_Log
+
+# fast build rule for target.
+test_Log/fast:
+	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/build
+.PHONY : test_Log/fast
+
+#=============================================================================
+# Target rules for targets named test_AsyncLog
+
+# Build rule for target.
+test_AsyncLog: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_AsyncLog
+.PHONY : test_AsyncLog
+
+# fast build rule for target.
+test_AsyncLog/fast:
+	$(MAKE) -f CMakeFiles/test_AsyncLog.dir/build.make CMakeFiles/test_AsyncLog.dir/build
+.PHONY : test_AsyncLog/fast
+
+#=============================================================================
+# Target rules for targets named test_Fiber
+
+# Build rule for target.
+test_Fiber: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_Fiber
+.PHONY : test_Fiber
+
+# fast build rule for target.
+test_Fiber/fast:
+	$(MAKE) -f CMakeFiles/test_Fiber.dir/build.make CMakeFiles/test_Fiber.dir/build
+.PHONY : test_Fiber/fast
+
+#=============================================================================
 # Target rules for targets named bokket
 
 # Build rule for target.
@@ -139,6 +191,58 @@ bokket: cmake_check_build_system
 bokket/fast:
 	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/build
 .PHONY : bokket/fast
+
+#=============================================================================
+# Target rules for targets named test_thread
+
+# Build rule for target.
+test_thread: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_thread
+.PHONY : test_thread
+
+# fast build rule for target.
+test_thread/fast:
+	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/build
+.PHONY : test_thread/fast
+
+#=============================================================================
+# Target rules for targets named test_Util
+
+# Build rule for target.
+test_Util: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_Util
+.PHONY : test_Util
+
+# fast build rule for target.
+test_Util/fast:
+	$(MAKE) -f CMakeFiles/test_Util.dir/build.make CMakeFiles/test_Util.dir/build
+.PHONY : test_Util/fast
+
+#=============================================================================
+# Target rules for targets named test_Address
+
+# Build rule for target.
+test_Address: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_Address
+.PHONY : test_Address
+
+# fast build rule for target.
+test_Address/fast:
+	$(MAKE) -f CMakeFiles/test_Address.dir/build.make CMakeFiles/test_Address.dir/build
+.PHONY : test_Address/fast
+
+#=============================================================================
+# Target rules for targets named test_Scheduler
+
+# Build rule for target.
+test_Scheduler: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_Scheduler
+.PHONY : test_Scheduler
+
+# fast build rule for target.
+test_Scheduler/fast:
+	$(MAKE) -f CMakeFiles/test_Scheduler.dir/build.make CMakeFiles/test_Scheduler.dir/build
+.PHONY : test_Scheduler/fast
 
 bokket/Config/config.o: bokket/Config/config.cpp.o
 
@@ -383,6 +487,222 @@ bokket/thread/util.cpp.s:
 	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/thread/util.cpp.s
 .PHONY : bokket/thread/util.cpp.s
 
+test/test_Address.o: test/test_Address.cpp.o
+
+.PHONY : test/test_Address.o
+
+# target to build an object file
+test/test_Address.cpp.o:
+	$(MAKE) -f CMakeFiles/test_Address.dir/build.make CMakeFiles/test_Address.dir/test/test_Address.cpp.o
+.PHONY : test/test_Address.cpp.o
+
+test/test_Address.i: test/test_Address.cpp.i
+
+.PHONY : test/test_Address.i
+
+# target to preprocess a source file
+test/test_Address.cpp.i:
+	$(MAKE) -f CMakeFiles/test_Address.dir/build.make CMakeFiles/test_Address.dir/test/test_Address.cpp.i
+.PHONY : test/test_Address.cpp.i
+
+test/test_Address.s: test/test_Address.cpp.s
+
+.PHONY : test/test_Address.s
+
+# target to generate assembly for a file
+test/test_Address.cpp.s:
+	$(MAKE) -f CMakeFiles/test_Address.dir/build.make CMakeFiles/test_Address.dir/test/test_Address.cpp.s
+.PHONY : test/test_Address.cpp.s
+
+test/test_AsyncFileLog.o: test/test_AsyncFileLog.cpp.o
+
+.PHONY : test/test_AsyncFileLog.o
+
+# target to build an object file
+test/test_AsyncFileLog.cpp.o:
+	$(MAKE) -f CMakeFiles/test_AsyncLog.dir/build.make CMakeFiles/test_AsyncLog.dir/test/test_AsyncFileLog.cpp.o
+.PHONY : test/test_AsyncFileLog.cpp.o
+
+test/test_AsyncFileLog.i: test/test_AsyncFileLog.cpp.i
+
+.PHONY : test/test_AsyncFileLog.i
+
+# target to preprocess a source file
+test/test_AsyncFileLog.cpp.i:
+	$(MAKE) -f CMakeFiles/test_AsyncLog.dir/build.make CMakeFiles/test_AsyncLog.dir/test/test_AsyncFileLog.cpp.i
+.PHONY : test/test_AsyncFileLog.cpp.i
+
+test/test_AsyncFileLog.s: test/test_AsyncFileLog.cpp.s
+
+.PHONY : test/test_AsyncFileLog.s
+
+# target to generate assembly for a file
+test/test_AsyncFileLog.cpp.s:
+	$(MAKE) -f CMakeFiles/test_AsyncLog.dir/build.make CMakeFiles/test_AsyncLog.dir/test/test_AsyncFileLog.cpp.s
+.PHONY : test/test_AsyncFileLog.cpp.s
+
+test/test_Fiber.o: test/test_Fiber.cpp.o
+
+.PHONY : test/test_Fiber.o
+
+# target to build an object file
+test/test_Fiber.cpp.o:
+	$(MAKE) -f CMakeFiles/test_Fiber.dir/build.make CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.o
+.PHONY : test/test_Fiber.cpp.o
+
+test/test_Fiber.i: test/test_Fiber.cpp.i
+
+.PHONY : test/test_Fiber.i
+
+# target to preprocess a source file
+test/test_Fiber.cpp.i:
+	$(MAKE) -f CMakeFiles/test_Fiber.dir/build.make CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.i
+.PHONY : test/test_Fiber.cpp.i
+
+test/test_Fiber.s: test/test_Fiber.cpp.s
+
+.PHONY : test/test_Fiber.s
+
+# target to generate assembly for a file
+test/test_Fiber.cpp.s:
+	$(MAKE) -f CMakeFiles/test_Fiber.dir/build.make CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.s
+.PHONY : test/test_Fiber.cpp.s
+
+test/test_Scheduler.o: test/test_Scheduler.cpp.o
+
+.PHONY : test/test_Scheduler.o
+
+# target to build an object file
+test/test_Scheduler.cpp.o:
+	$(MAKE) -f CMakeFiles/test_Scheduler.dir/build.make CMakeFiles/test_Scheduler.dir/test/test_Scheduler.cpp.o
+.PHONY : test/test_Scheduler.cpp.o
+
+test/test_Scheduler.i: test/test_Scheduler.cpp.i
+
+.PHONY : test/test_Scheduler.i
+
+# target to preprocess a source file
+test/test_Scheduler.cpp.i:
+	$(MAKE) -f CMakeFiles/test_Scheduler.dir/build.make CMakeFiles/test_Scheduler.dir/test/test_Scheduler.cpp.i
+.PHONY : test/test_Scheduler.cpp.i
+
+test/test_Scheduler.s: test/test_Scheduler.cpp.s
+
+.PHONY : test/test_Scheduler.s
+
+# target to generate assembly for a file
+test/test_Scheduler.cpp.s:
+	$(MAKE) -f CMakeFiles/test_Scheduler.dir/build.make CMakeFiles/test_Scheduler.dir/test/test_Scheduler.cpp.s
+.PHONY : test/test_Scheduler.cpp.s
+
+test/test_config.o: test/test_config.cpp.o
+
+.PHONY : test/test_config.o
+
+# target to build an object file
+test/test_config.cpp.o:
+	$(MAKE) -f CMakeFiles/test_Config.dir/build.make CMakeFiles/test_Config.dir/test/test_config.cpp.o
+.PHONY : test/test_config.cpp.o
+
+test/test_config.i: test/test_config.cpp.i
+
+.PHONY : test/test_config.i
+
+# target to preprocess a source file
+test/test_config.cpp.i:
+	$(MAKE) -f CMakeFiles/test_Config.dir/build.make CMakeFiles/test_Config.dir/test/test_config.cpp.i
+.PHONY : test/test_config.cpp.i
+
+test/test_config.s: test/test_config.cpp.s
+
+.PHONY : test/test_config.s
+
+# target to generate assembly for a file
+test/test_config.cpp.s:
+	$(MAKE) -f CMakeFiles/test_Config.dir/build.make CMakeFiles/test_Config.dir/test/test_config.cpp.s
+.PHONY : test/test_config.cpp.s
+
+test/test_log.o: test/test_log.cpp.o
+
+.PHONY : test/test_log.o
+
+# target to build an object file
+test/test_log.cpp.o:
+	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/test/test_log.cpp.o
+.PHONY : test/test_log.cpp.o
+
+test/test_log.i: test/test_log.cpp.i
+
+.PHONY : test/test_log.i
+
+# target to preprocess a source file
+test/test_log.cpp.i:
+	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/test/test_log.cpp.i
+.PHONY : test/test_log.cpp.i
+
+test/test_log.s: test/test_log.cpp.s
+
+.PHONY : test/test_log.s
+
+# target to generate assembly for a file
+test/test_log.cpp.s:
+	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/test/test_log.cpp.s
+.PHONY : test/test_log.cpp.s
+
+test/test_thread.o: test/test_thread.cpp.o
+
+.PHONY : test/test_thread.o
+
+# target to build an object file
+test/test_thread.cpp.o:
+	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/test/test_thread.cpp.o
+.PHONY : test/test_thread.cpp.o
+
+test/test_thread.i: test/test_thread.cpp.i
+
+.PHONY : test/test_thread.i
+
+# target to preprocess a source file
+test/test_thread.cpp.i:
+	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/test/test_thread.cpp.i
+.PHONY : test/test_thread.cpp.i
+
+test/test_thread.s: test/test_thread.cpp.s
+
+.PHONY : test/test_thread.s
+
+# target to generate assembly for a file
+test/test_thread.cpp.s:
+	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/test/test_thread.cpp.s
+.PHONY : test/test_thread.cpp.s
+
+test/test_util.o: test/test_util.cpp.o
+
+.PHONY : test/test_util.o
+
+# target to build an object file
+test/test_util.cpp.o:
+	$(MAKE) -f CMakeFiles/test_Util.dir/build.make CMakeFiles/test_Util.dir/test/test_util.cpp.o
+.PHONY : test/test_util.cpp.o
+
+test/test_util.i: test/test_util.cpp.i
+
+.PHONY : test/test_util.i
+
+# target to preprocess a source file
+test/test_util.cpp.i:
+	$(MAKE) -f CMakeFiles/test_Util.dir/build.make CMakeFiles/test_Util.dir/test/test_util.cpp.i
+.PHONY : test/test_util.cpp.i
+
+test/test_util.s: test/test_util.cpp.s
+
+.PHONY : test/test_util.s
+
+# target to generate assembly for a file
+test/test_util.cpp.s:
+	$(MAKE) -f CMakeFiles/test_Util.dir/build.make CMakeFiles/test_Util.dir/test/test_util.cpp.s
+.PHONY : test/test_util.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -392,6 +712,14 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... bokket"
+	@echo "... test_Address"
+	@echo "... test_AsyncLog"
+	@echo "... test_Config"
+	@echo "... test_Fiber"
+	@echo "... test_Log"
+	@echo "... test_Scheduler"
+	@echo "... test_Util"
+	@echo "... test_thread"
 	@echo "... bokket/Config/config.o"
 	@echo "... bokket/Config/config.i"
 	@echo "... bokket/Config/config.s"
@@ -419,6 +747,30 @@ help:
 	@echo "... bokket/thread/util.o"
 	@echo "... bokket/thread/util.i"
 	@echo "... bokket/thread/util.s"
+	@echo "... test/test_Address.o"
+	@echo "... test/test_Address.i"
+	@echo "... test/test_Address.s"
+	@echo "... test/test_AsyncFileLog.o"
+	@echo "... test/test_AsyncFileLog.i"
+	@echo "... test/test_AsyncFileLog.s"
+	@echo "... test/test_Fiber.o"
+	@echo "... test/test_Fiber.i"
+	@echo "... test/test_Fiber.s"
+	@echo "... test/test_Scheduler.o"
+	@echo "... test/test_Scheduler.i"
+	@echo "... test/test_Scheduler.s"
+	@echo "... test/test_config.o"
+	@echo "... test/test_config.i"
+	@echo "... test/test_config.s"
+	@echo "... test/test_log.o"
+	@echo "... test/test_log.i"
+	@echo "... test/test_log.s"
+	@echo "... test/test_thread.o"
+	@echo "... test/test_thread.i"
+	@echo "... test/test_thread.s"
+	@echo "... test/test_util.o"
+	@echo "... test/test_util.i"
+	@echo "... test/test_util.s"
 .PHONY : help
 
 

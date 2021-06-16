@@ -19,7 +19,6 @@ CMakeFiles/bokket.dir/bokket/Config/config.cpp.o: ../bokket/thread/util.h
 CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/Config/config.h
 CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/Fiber/fiber.cpp
 CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/Fiber/fiber.h
-CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/Hook/hook.h
 CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/Log/FixedBuffer.h
 CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/Log/Log.h
 CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o: ../bokket/Log/LogFile.h
@@ -67,7 +66,6 @@ CMakeFiles/bokket.dir/bokket/Log/LogFile.cpp.o: ../bokket/Log/LogFile.h
 
 CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.o: ../bokket/Config/config.h
 CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.o: ../bokket/Fiber/fiber.h
-CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.o: ../bokket/Hook/hook.h
 CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.o: ../bokket/Log/FixedBuffer.h
 CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.o: ../bokket/Log/Log.h
 CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.o: ../bokket/Log/LogFile.h

@@ -11,7 +11,7 @@
 #include <mutex>
 
 
-#include "../Hook/hook.h"
+//#include "../Hook/hook.h"
 #include "../Fiber/fiber.h"
 #include "../thread/thread.h"
 
@@ -26,7 +26,7 @@ public:
     using ptr= std::shared_ptr<Scheduler>;
 
 public:
-    //Scheduler(size_t threadCount=1,bool useCaller=true,const std::string& name="Scheduler");
+    Scheduler(size_t threadCount=1,bool useCaller=true,const std::string& name="Scheduler");
 
     virtual ~Scheduler();
 
@@ -35,8 +35,8 @@ public:
     static Scheduler* getThis();
 
     static Fiber* getMainFiber();
-    //void start();
-    //void stop();
+    void start();
+    void stop();
 
     std::string toString();
 
@@ -46,14 +46,14 @@ public:
         bool need_tickle= false;
         {
             std::lock_guard<std::mutex> lockGuard(mutex_);
-            need_tickle=scheduleNoLock(fc);
+            need_tickle=scheduleNoLock(fc,thread);
         }
         if(need_tickle) {
             tickle();
         }
     }
 
-    template<class Iterator>
+   /* template<class Iterator>
     void schedule(Iterator begin,Iterator end) {
         bool need_tickle= false;
         {
@@ -66,16 +66,16 @@ public:
         if(need_tickle) {
             tickle();
         }
-    }
+    }*/
 
 
 protected:
     virtual void tickle();
-    //void run();
+    void run();
     virtual bool stopping();
     virtual void idle();
 
-    //void setThis(Scheduler* scheduler);
+    void setThis(Scheduler* scheduler);
     void setThis();
 
     bool hasIdleThreads() { return idleThreadCount>0; }

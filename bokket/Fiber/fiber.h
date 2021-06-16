@@ -78,7 +78,7 @@ public:
     static uint64_t getFiberId();
 private:
     
-    uint64_t id_ ;
+    uint64_t id_;
     uint32_t stackSize_;
 
     Status status_ = Status::READY;

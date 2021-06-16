@@ -91,6 +91,7 @@ std::ostream & LogEventWrap::stream()
 Logger::Logger(const std::string &basename)
               :basename_(basename)
               ,level_(LogLevel::DEBUG)
+              ,createTime_(bokket::getElapsed())
 {
     //formatter_.reset(new LogFormatter("%Y-%m-));
     //formatter_.reset(new LogFormatter);
@@ -134,6 +135,7 @@ void Logger::append(LogLevel level, LogEvent::ptr event)
     }
 }
 
+/*
 void Logger::unkown(LogEvent::ptr event)
 {
     append(LogLevel::UNKNOW,event);
@@ -162,7 +164,7 @@ void Logger::error(LogEvent::ptr event)
 void Logger::fatal(LogEvent::ptr event)
 {
     append(LogLevel::FATAL,event);
-}
+}*/
 
 
 
@@ -319,6 +321,13 @@ std::string LogFormatter::format(LogEvent::ptr event) {
 
     std::string prefix;
 
+
+
+    prefix.append(" ");
+    prefix.append("[");
+    prefix.append(std::to_string(event->getElapse()));
+    prefix.append("]");
+
     prefix.append("  ");
     prefix.append(std::to_string(event->getThreadId()));
 
@@ -370,6 +379,11 @@ std::ostream & LogFormatter::format(std::ostream &ostream, LogEvent::ptr event) 
     ostream<<std::put_time(::localtime_r(&time,&tm),"%Y-%m-%d %H:%M:%S");
 
     std::string prefix;
+
+    prefix.append(" ");
+    prefix.append("[");
+    prefix.append(std::to_string(event->getElapse()));
+    prefix.append("]");
 
     prefix.append("  ");
     prefix.append(std::to_string(event->getThreadId()));

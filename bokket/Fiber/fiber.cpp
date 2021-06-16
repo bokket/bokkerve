@@ -99,7 +99,7 @@ Fiber::Fiber() {
 
     ++fiberCount_;
 
-    BOKKET_LOG_DEBUG(g_logger)<<"Fiber::Fiber private main,id= "<<id_;
+    BOKKET_LOG_DEBUG(g_logger)<<"Fiber::Fiber private main,id="<<id_;
 }
 
 

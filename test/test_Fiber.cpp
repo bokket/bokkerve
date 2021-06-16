@@ -2,8 +2,10 @@
 // Created by bokket on 2021/6/3.
 //
 
-#include "../bokket/Fiber/fiber.h"
-#include "../bokket/thread/thread.h"
+/*#include "../bokket/Fiber/fiber.h"
+#include "../bokket/thread/thread.h"*/
+#include "../bokket/bokket.h"
+//#include "../bokket/Scheduler/scheduler.h"
 
 #include "../bokket/Log/Log.h"
 
@@ -29,7 +31,7 @@ void run_in_fiber() {
 }
 
 void test_fiber() {
-    BOKKET_LOG_INFO(g_logger)<<"main begin ";
+    BOKKET_LOG_INFO(g_logger)<<"test_fiber begin ";
 
 
     bokket::Fiber::getThis();
@@ -46,7 +48,7 @@ void test_fiber() {
     //BOKKET_LOG_INFO(g_logger)<<"main after call2";
     BOKKET_LOG_INFO(g_logger)<<"fiber ptr use_count="<<fiber.use_count();
 
-    BOKKET_LOG_INFO(g_logger)<<"fiber status:"<<std::to_string(fiber->getStatus());
+    //BOKKET_LOG_INFO(g_logger)<<"fiber status:"<<std::to_string(fiber->getStatus());
 
     fiber->reset(run_in_fiber2);
     fiber->resume();

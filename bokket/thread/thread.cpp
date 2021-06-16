@@ -10,11 +10,11 @@
 namespace bokket
 {
 
-std::atomic<int> threadCount(0);
+std::atomic<int> threadCount {0};
 
-thread_local Thread* t_thread= nullptr;
-thread_local pid_t t_cachedThreadId = 0;
-thread_local std::string t_threadName= "UNKNOW";
+static thread_local Thread* t_thread= nullptr;
+static thread_local pid_t t_cachedThreadId = 0;
+static thread_local std::string t_threadName= "UNKNOW";
 
 pid_t Thread::currentThreadTid() {
     if(t_cachedThreadId==0) {
@@ -38,6 +38,7 @@ const std::string & Thread::getNowThreadName() {
 
 void Thread::setName(const std::string &name) {
     if(name.empty()) {
+        BOKKET_LOG_DEBUG(g_logger)<<"Thread::setName()";
         return ;
     }
     if(t_thread) {

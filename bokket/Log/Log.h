@@ -41,7 +41,7 @@
     if(logger->getLevel() <= level )   \
         bokket::LogEventWrap(bokket::LogEvent::ptr (new bokket::LogEvent(logger,level,\
                 __FILE__,__FUNCTION__,__LINE__,bokket::Thread::currentThreadTid(),bokket::getFiberId(),\
-                0,std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) ,bokket::Thread::getNowThreadName() ) )).stream()
+                bokket::getElapsed() - logger->getCreateTime(),std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) ,bokket::Thread::getNowThreadName() ) )).stream()
 //bokket::getFiberId()
 
 
@@ -56,7 +56,7 @@
     if(logger->getLevel() <= level )   \
         bokket::LogEventWrap(bokket::LogEvent::ptr (new bokket::LogEvent(logger,level,\
                 __FILE__,__FUNCTION__,__LINE__,bokket::Thread::currentThreadTid(),bokket::getFiberId(),\
-                0,std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) ,bokket::Thread::getNowThreadName() ) )).getEvent()->format(fmt, __VA_ARGS__)
+                bokket::getElapsed() - logger->getCreateTime(),std::chrono::system_clock::to_time_t(std::chrono::system_clock::now()) ,bokket::Thread::getNowThreadName() ) )).getEvent()->format(fmt, __VA_ARGS__)
 
 //bokket::getFiberId()
 #define BOKKET_LOG_FMT_DEBUG(logger,fmt,...) BOKKET_LOG_FMT_LEVEL(logger,bokket::LogLevel::DEBUG,fmt,__VA_ARGS__)
@@ -258,13 +258,13 @@ public:
 
     void append(LogLevel level,LogEvent::ptr event);
 
-    void unkown(LogEvent::ptr event);
+    /*void unkown(LogEvent::ptr event);
     void debug(LogEvent::ptr event);
     void info(LogEvent::ptr event);
     void warn(LogEvent::ptr event);
     void error(LogEvent::ptr event);
     void fatal(LogEvent::ptr event);
-
+*/
     /*void addAppender(const std::string& appendername
                      ,LogAppender::ptr appender);
 
@@ -286,6 +286,8 @@ public:
 
     std::string& getBaseName() { return basename_; }
 
+    const uint64_t & getCreateTime() const { return createTime_; }
+
     //LogEvent::ptr getLogEvent() { return event_; }
 
     LogFormatter::ptr getLogFormatter();
@@ -296,7 +298,7 @@ private:
 
 
     //std::string filename_;
-
+    uint64_t createTime_;
     // 日志名称
     std::string basename_;
     std::stringstream  ss_;
