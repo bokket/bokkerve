@@ -145,52 +145,71 @@ void EventLoop::loop()
     looping_= false;
 
 
-    std::ostringstream oss;
-    oss<<std::this_thread::get_id();
-    std::string stid=oss.str();
-
     //LOG " Exiting Loop , EventLoop object : 0x%x, threadID: %s ",this,stid.str();
 }
 
 void EventLoop::quit()
 {
+    ASSERT(!quit_);
     quit_= true;
     if(!isInLoopThread())
         wakeup();
 }
 
-void EventLoop::runInLoop(const Task &cb)
+void EventLoop::runInLoop(const Task &task)
 {
     if(isInLoopThread())
-        cb();
+        task();
     else
     {
-        queueInLoop(std::move(cb));
+        queueInLoop(task);
     }
 }
 
-void EventLoop::queueInLoop(const Functor& cb)
+void EventLoop::runInLoop(Task &&task) {
+    if(isInLoopThread())
+        task();
+    else
+    {
+        queueInLoop(std::move(task));
+    }
+}
+
+void EventLoop::queueInLoop(const Task& task)
 {
     {
         //std::lock_guard <std::mutex> guard(mutex_);
         std::scoped_lock<std::mutex> scopedLock(mutex_);
-        pendingFunctors_.emplace_back(cb);
+        pendingTasks_.emplace_back(task);
     }
 
 
     // 调用queueInLoop的线程不是IO线程需要唤醒
     // 或者调用queueInLoop的线程是IO线程，并且此时正在调用pending functor，需要唤醒
     //只有IO线程的事件回调中调用queueInLoop才不需要唤醒
-    if(!isInLoopThread() || callingPendingFunctors_)
+    if(!isInLoopThread() || callingPendingTasks_)
     {
         wakeup();
     }
 }
 
-void EventLoop::setFrameFunctor(const Functor cb)
-{
-    functor_=cb;
+void EventLoop::queueInLoop(Task &&task) {
+    {
+        //std::lock_guard <std::mutex> guard(mutex_);
+        std::scoped_lock<std::mutex> scopedLock(mutex_);
+        pendingTasks_.emplace_back(std::move(task));
+    }
+
+
+    // 调用queueInLoop的线程不是IO线程需要唤醒
+    // 或者调用queueInLoop的线程是IO线程，并且此时正在调用pending functor，需要唤醒
+    //只有IO线程的事件回调中调用queueInLoop才不需要唤醒
+    if(!isInLoopThread() || callingPendingTasks_)
+    {
+        wakeup();
+    }
 }
+
 
 
 
@@ -266,25 +285,25 @@ void EventLoop::handleRead()
 
 void EventLoop::doPendingTasks() {
     assertInLoopThread();
-    std::vector<Functor> functors;
+    std::vector<Task> functors;
     callingPendingTasks_=true;
 
     {
         //std::lock_guard<std::mutex> guard(mutex_);
         std::scoped_lock<std::mutex> scopedLock(mutex_);
-        functors.swap(pendingFunctors_);
+        functors.swap(pendingTasks_);
     }
 
     for(const Task & task:functors)
         task();
 
-    callingPendingFunctors_=false;
+    callingPendingTasks_=false;
 }
 
 void EventLoop::printActiveChannels() const {
-    for(auto item:activeChannels_)
+    for(auto const & it:activeChannels_)
     {
-        <<item->reventsToString()<<"}  ";
+        BOKKET_LOG_INFO(g_logger)<<"{"<<it->reventsToString()<<"}";
     }
 }
 

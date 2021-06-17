@@ -37,8 +37,8 @@ public:
     EventLoop();
     ~EventLoop();
 
-    uint64_t runAfter(const std::chrono::duration<double>& delay,const Task& cb);
-    uint64_t runEvery(const std::chrono::duration<double>& interval,const Task& cb);
+    uint64_t runAfter(const std::chrono::duration<double>& delay,const Task& task);
+    uint64_t runEvery(const std::chrono::duration<double>& interval,const Task& task);
 
     //Timestamp pollReturnTime() const { return pollReturnTime_; }
 
@@ -49,13 +49,13 @@ public:
     void loop();
     void quit();
 
-    void runInLoop(const Task & cb);
-    //void runInLoop(Task && cb);
+    void runInLoop(const Task & task);
+    void runInLoop(Task && task);
 
-    //void setFrameTask(const Task cb);
+    //void setFrameTask(const Task& task);
 
-    void queueInLoop(const Task& cb);
-    //void queueInLoop(Task && cb);
+    void queueInLoop(const Task& task);
+    void queueInLoop(Task && task);
 
     void wakeup() const;
 
