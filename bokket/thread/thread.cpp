@@ -113,7 +113,7 @@ void * Thread::run(void *arg) {
     t_threadName = thread->threadName_;
     //::prctl(PR_SET_NAME,bokket::t_threadName.c_str());
 
-    thread->tid_ = Thread::currentThreadTid();
+    //thread->tid_ = Thread::currentThreadTid();
 
     //设置该进程线程的名字
     ::pthread_setname_np(::pthread_self(),thread->threadName_.substr(0,15).c_str());

@@ -16,6 +16,7 @@
 #include "../Log/Log.h"
 #include "../thread/util.h"
 #include "../thread/thread.h"
+#include "../thread/Assert.h"
 
 
 
@@ -52,7 +53,7 @@ EventLoop * EventLoop::getEventLoopOfCurrentThread() {
 
 
 EventLoop::EventLoop()
-           :tid_(bokket::getThreadId())
+           :tid_(bokket::Thread::currentThreadTid())
            ,looping_(false)
            ,quit_(false)
            ,callingPendingTasks_(false)
@@ -83,11 +84,15 @@ EventLoop::EventLoop()
 
 EventLoop::~EventLoop()
 {
+    quit();
+    ASSERT(!looping_);
+
+    t_EventLoop= nullptr;
+
     wakeupChannel_->disableAll();
     wakeupChannel_->remove();
     ::close(wakeupfd_);
 
-    t_EventLoop= nullptr;
 }
 
 
@@ -96,11 +101,19 @@ size_t EventLoop::queueSize() const
     return pendingTasks_.size();
 }
 
+void EventLoop::resetTimerManager() {
+    assertInLoopThread();
+    ASSERT(!looping_);
+    timerManager_->reset();
+
+}
+
 // 事件循环，该函数不能跨线程调用
 // 只能在创建该对象的线程中调用
 void EventLoop::loop()
 {
-    assert(!looping_);
+    //assert(!looping_);
+    ASSERT(!looping_);
 
     // 断言当前处于创建该对象的线程中
     assertInLoopThread();
@@ -111,7 +124,7 @@ void EventLoop::loop()
     {
         activeChannels_.clear();
         //epoller_->poll(10s);
-        epoller_->poll(&activeChannels_);
+        epoller_->poll(kPollTimeMs,&activeChannels_);
 
         printActiveChannels();
 
@@ -156,53 +169,59 @@ void EventLoop::runInLoop(const Task &cb)
     }
 }
 
-void EventLoop::setFrameFunctor(const Functor cb)
-{
-    functor_=cb;
-}
-
 void EventLoop::queueInLoop(const Functor& cb)
 {
     {
-        std::lock_guard <std::mutex> guard(mutex_);
+        //std::lock_guard <std::mutex> guard(mutex_);
+        std::scoped_lock<std::mutex> scopedLock(mutex_);
         pendingFunctors_.emplace_back(cb);
     }
 
+
     // 调用queueInLoop的线程不是IO线程需要唤醒
     // 或者调用queueInLoop的线程是IO线程，并且此时正在调用pending functor，需要唤醒
-    // 只有IO线程的事件回调中调用queueInLoop才不需要唤醒
+    //只有IO线程的事件回调中调用queueInLoop才不需要唤醒
     if(!isInLoopThread() || callingPendingFunctors_)
     {
         wakeup();
     }
 }
 
-void EventLoop::wakeup()
+void EventLoop::setFrameFunctor(const Functor cb)
 {
-    uint64_t one=1;
-
-    ssize_t n=::write(wakeupFd_,&one,sizeof(one));
-    if(n!=sizeof(one))
-    {}
+    functor_=cb;
 }
+
+
 
 void EventLoop::updateChannel(Channel *channel)
 {
-    assert(channel->ownerLoop()== this);
+    //assert(channel->ownerLoop()== this);
+    ASSERT(channel->ownerLoop()==this);
     assertInLoopThread();
     epoller_->updateChannel(channel);
 }
 
 void EventLoop::removeChannel(Channel *channel)
 {
-    assert(channel->ownerLoop()==this);
+    //assert(channel->ownerLoop()==this);
+    ASSERT(channel->ownerLoop()==this);
     assertInLoopThread();
+
+    if(eventHandling_) {
+        ASSERT(currentActiveChannel_==channel
+               || std::find(activeChannels_.begin(),
+                            activeChannels_.end(),
+                            channel==activeChannels_.end()));
+    }
+
     epoller_->removeChannel(channel);
 }
 
 bool EventLoop::hasChannel(Channel *channel)
 {
-    assert(channel->ownerLoop()==this);
+    //assert(channel->ownerLoop()==this);
+    ASSERT(channel->ownerLoop()==this);
     assertInLoopThread();
     return epoller_->hasChannel(channel);
 }
@@ -210,7 +229,28 @@ bool EventLoop::hasChannel(Channel *channel)
 
 void EventLoop::assertInLoopThread()
 {
-    assert(isInLoopThread());
+    //assert(isInLoopThread());
+    //ASSERT(isInLoopThread());
+    if(!isInLoopThread()) {
+        abortNotInLoopThread();
+    }
+}
+
+
+void EventLoop::abortNotInLoopThread() {
+    BOKKET_LOG_FATAL(g_logger)<<"EventLoop::abortNotInLoopThread() "<<"EventLoop="<< this
+    <<" was created in threadId_="<<tid_
+    <<" ,current thread id="<<bokket::getThreadId();
+}
+
+void EventLoop::wakeup() const
+{
+    uint64_t one=1;
+
+    ssize_t n=::write(wakeupfd_,&one,sizeof(one));
+    if(n!=sizeof(one)) {
+        BOKKET_LOG_ERROR(g_logger)<<"eventLoop::wakeup() writes another bytes instread of 8";
+    }
 }
 
 
@@ -218,22 +258,25 @@ void EventLoop::handleRead()
 {
     uint64_t one=1;
 
-    ssize_t n=::read(wakeupFd_,&one,sizeof(one));
-    if(n!=sizeof(one))
-    {}
+    ssize_t n=::read(wakeupfd_,&one,sizeof(one));
+    if(n!=sizeof(one)) {
+        BOKKET_LOG_ERROR(g_logger)<<"eventLoop::handleRead() read another bytes instread of 8";
+    }
 }
 
 void EventLoop::doPendingTasks() {
     assertInLoopThread();
-    vector<Functor> functors;
+    std::vector<Functor> functors;
+    callingPendingTasks_=true;
 
     {
-        std::lock_guard<std::mutex> guard(mutex_);
+        //std::lock_guard<std::mutex> guard(mutex_);
+        std::scoped_lock<std::mutex> scopedLock(mutex_);
         functors.swap(pendingFunctors_);
     }
 
-    for(Functor& functor:functors)
-        functor();
+    for(const Task & task:functors)
+        task();
 
     callingPendingFunctors_=false;
 }

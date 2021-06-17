@@ -208,7 +208,7 @@ void Fiber::resume() {
          && status_!=Status::EXEC);
     setThis(this);
     status_=Status::EXEC;
-    BOKKET_LOG_DEBUG(g_logger)<<"Fiber::call"<<" fiber id="<<getFiberId();
+    BOKKET_LOG_DEBUG(g_logger)<<"Fiber::resume()"<<" fiber id="<<getFiberId();
 
     if(runInScheduler_) {
         if (swapcontext(&(Scheduler::getMainFiber()->ctx_), &ctx_)) {
@@ -230,6 +230,7 @@ void Fiber::yield() {
     if(status_!=Status::TERM) {
         status_=Status::READY;
     }
+    BOKKET_LOG_DEBUG(g_logger)<<"Fiber::yield()"<<" fiber id="<<getFiberId();
 
     if(runInScheduler_) {
         if (swapcontext(&ctx_,&(Scheduler::getMainFiber()->ctx_))) {

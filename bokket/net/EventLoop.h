@@ -44,6 +44,8 @@ public:
 
     size_t queueSize() const;
 
+    void resetTimerManager();
+
     void loop();
     void quit();
 
@@ -75,6 +77,7 @@ public:
 private:
     void handleRead();
     void doPendingTasks();
+    void abortNotInLoopThread();
 
 
     bool looping_;
