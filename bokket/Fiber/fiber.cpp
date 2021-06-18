@@ -166,7 +166,7 @@ Fiber::~Fiber() {
                     //||  status_ == Status::INIT);
 
         StackAllocator::Free(stack_,stackSize_);
-        BOKKET_LOG_DEBUG(g_logger)<<"free stack:"<<id_;
+        BOKKET_LOG_DEBUG(g_logger)<<"free stack="<<stackSize_<<" fiber id="<<id_;
     } else {
         //static_assert(!cb_,"functional wrang");
         //static_assert(status_==Status::EXEC,"");

@@ -42,11 +42,11 @@ public:
 
 
     template<class T>
-    void schedule(T fc,int thread=-1) {
+    void schedule(T task,int thread=-1) {
         bool need_tickle= false;
         {
             std::lock_guard<std::mutex> lockGuard(mutex_);
-            need_tickle=scheduleNoLock(fc,thread);
+            need_tickle=scheduleNoLock(task,thread);
         }
         if(need_tickle) {
             tickle();
@@ -75,7 +75,6 @@ protected:
     virtual bool stopping();
     virtual void idle();
 
-    void setThis(Scheduler* scheduler);
     void setThis();
 
     bool hasIdleThreads() { return idleThreadCount>0; }
@@ -104,9 +103,10 @@ private:
         {}
 
         SchedulerTask(Fiber::ptr* f,int thr)
-                 :thread(thr)
+                 //:thread(thr)
         {
             fiber.swap(*f);
+            thread=thr;
         }
         /*FiberOrCb() {}
 
@@ -114,7 +114,7 @@ private:
                  :fiber(f) {}
         */
         SchedulerTask(std::function<void()> c,int thr)
-                 :cb(c)
+                 :cb(std::move(c))
                  ,thread(thr)
         {}
 

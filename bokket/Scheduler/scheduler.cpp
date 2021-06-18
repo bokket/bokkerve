@@ -15,6 +15,7 @@ static thread_local Fiber* t_scheduler_fiber= nullptr;
 
 Scheduler::Scheduler(size_t threadCount, bool useCaller, const std::string &name)
                     :name_(name)
+                    ,useCaller_(useCaller)
 {
     ASSERT(threadCount>0);
 
@@ -29,6 +30,9 @@ Scheduler::Scheduler(size_t threadCount, bool useCaller, const std::string &name
         //rootFiber_.reset(new Fiber(std::bind(&Scheduler::run,this), true));
         rootFiber_.reset(new Fiber(std::bind(&Scheduler::run,this), 0, false));
         bokket::Thread::setName(name_);
+
+        BOKKET_LOG_INFO(g_logger)<<"Scheduler::Scheduler() SetName="<<name_<<" thread getNowThreadName="<<Thread::getNowThreadName()
+                                 <<" SchedulerName="<<getName();
 
         t_scheduler_fiber=rootFiber_.get();
         //rootThread_=static_cast<int>(bokket::Thread::getId());
