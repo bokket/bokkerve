@@ -36,9 +36,13 @@ public:
     explicit TimerManager(EventLoop* loop);
     ~TimerManager();
 
-    uint64_t addTimer(const std::function<void()> & cb
+    /*uint64_t addTimer(const std::function<void()> & cb
                       ,const std::chrono::steady_clock::time_point & when
-                      ,const std::chrono::microseconds & interval);
+                      ,const std::chrono::microseconds & interval);*/
+
+    uint64_t addTimer(std::function<void()> cb
+            ,const std::chrono::steady_clock::time_point & when
+            ,const std::chrono::microseconds & interval);
 
 
     void addTimerInLoop(const Timer::ptr& timer);

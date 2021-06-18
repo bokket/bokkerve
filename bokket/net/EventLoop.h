@@ -37,8 +37,12 @@ public:
     EventLoop();
     ~EventLoop();
 
-    uint64_t runAfter(const std::chrono::duration<double>& delay,const Task& task);
-    uint64_t runEvery(const std::chrono::duration<double>& interval,const Task& task);
+
+    uint64_t runAt(const std::chrono::steady_clock::time_point & when ,Task task);
+    uint64_t runAfter(const std::chrono::duration<std::chrono::microseconds>& interval,Task task);
+    uint64_t runEvery(const std::chrono::duration<std::chrono::microseconds>& interval,Task task);
+
+    uint64_t invalidateTimer(uint64_t id);
 
     //Timestamp pollReturnTime() const { return pollReturnTime_; }
 
@@ -63,6 +67,11 @@ public:
     void updateChannel(Channel* channel);
     void removeChannel(Channel* channel);
     bool hasChannel(Channel* channel);
+
+    bool isRunning() {
+        return looping_ && (!quit_);
+    }
+
 
     void assertInLoopThread();
 

@@ -37,6 +37,8 @@ int createEventfd() {
     return evfd;
 }
 
+constexpr int kPollTimeMs = 10000;
+
 class IgnoreSigPipe {
 public:
     IgnoreSigPipe() {
@@ -228,10 +230,14 @@ void EventLoop::removeChannel(Channel *channel)
     assertInLoopThread();
 
     if(eventHandling_) {
-        ASSERT(currentActiveChannel_==channel
+        /*ASSERT(currentActiveChannel_==channel
                || std::find(activeChannels_.begin(),
                             activeChannels_.end(),
-                            channel==activeChannels_.end()));
+                            channel==activeChannels_.end()));*/
+        assert(currentActiveChannel_ == channel ||
+               std::find(activeChannels_.begin(),
+                         activeChannels_.end(),
+                         channel) == activeChannels_.end());
     }
 
     epoller_->removeChannel(channel);
@@ -244,6 +250,7 @@ bool EventLoop::hasChannel(Channel *channel)
     assertInLoopThread();
     return epoller_->hasChannel(channel);
 }
+
 
 
 void EventLoop::assertInLoopThread()
@@ -306,5 +313,25 @@ void EventLoop::printActiveChannels() const {
         BOKKET_LOG_INFO(g_logger)<<"{"<<it->reventsToString()<<"}";
     }
 }
+
+uint64_t EventLoop::runAt(const std::chrono::steady_clock::time_point &when, Task task) {
+    return timerManager_->addTimer(std::move(task),when,std::chrono::microseconds::zero());
+}
+
+uint64_t EventLoop::runAfter(const std::chrono::duration <std::chrono::microseconds> &interval, Task task) {
+    return runAt(std::chrono::steady_clock::now()+interval.count(),std::move(task));
+}
+
+uint64_t EventLoop::runEvery(const std::chrono::duration <std::chrono::microseconds> &interval, Task task) {
+    return timerManager_->addTimer(std::move(task),std::chrono::steady_clock::now()+interval.count(),interval);
+}
+
+
+uint64_t EventLoop::invalidateTimer(uint64_t id) {
+    if( isRunning() && timerManager_ ) {
+        timerManager_->invalidTimer(id);
+    }
+}
+
 
 }

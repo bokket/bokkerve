@@ -26,8 +26,11 @@ public:
     //using TimerCallback=std::function<void()>;
 public:
 
-    Timer(const std::function<void()>& cb,const std::chrono::steady_clock::time_point & when
-          ,const std::chrono::microseconds & interval);
+    /*Timer(const std::function<void()>& cb,const std::chrono::steady_clock::time_point & when
+          ,const std::chrono::microseconds & interval);*/
+
+    Timer(std::function<void()> cb,const std::chrono::steady_clock::time_point & when
+            ,const std::chrono::microseconds & interval);
 
     ~Timer();
 

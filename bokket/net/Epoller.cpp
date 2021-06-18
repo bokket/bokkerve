@@ -3,13 +3,19 @@
 //
 
 #include "Epoller.h"
+
+#include "Channel.h"
+
+#include "../Log/Log.h"
+#include "../thread/Assert.h"
 #include <cerrno>
 #include <cstring>
 
-using namespace bokket;
-using namespace bokket::net;
 
+namespace bokket 
+{
 
+static Logger::ptr g_logger=BOKKET_LOG_NAME("net");
 
 //使用epoll_create1的优点是它允许你指定标志,这些标志目前限于close-on-exec(因此在执行另一个进程时文件描述符会自动关闭).
 /*
@@ -27,8 +33,8 @@ Epoller::Epoller(EventLoop *loop)
                 ,events_(kInitEventListSize)
                 ,epollfd_(::epoll_create1(EPOLL_CLOEXEC))
 {
-    if(epollfd_==-1)
-    {
+    if(epollfd_==-1) {
+        BOKKET_LOG_FATAL(g_logger)<<"Epoll::Epoll()";
     }
 }
 
@@ -37,64 +43,44 @@ Epoller::~Epoller()
     ::close(epollfd_);
 }
 
-Timestamp Epoller::poll(int timeoutMs, ChannelList &activeChannels)
+void Epoller::poll(int timeoutMs, ChannelList *activeChannels)
 {
-    loop_->assertInLoopThread();
-    int maxEvents=static_cast<int>(events_.size());
-    int numEvents=epoll_wait(epollfd_,events_.data(),maxEvents,timeoutMs);
+    //loop_->assertInLoopThread();
+    //int maxEvents=static_cast<int>(events_.size());
 
-    Timestamp now(Timestamp::now());
+    //int numEvents=epoll_wait(epollfd_,events_.data(),maxEvents,timeoutMs);
 
-    if(numEvents!=-1)
-    {
-        if(errno!=EINTR)
-        {}
-    }
-    else if(numEvents==0)
-    {
+    int numEvents=::epoll_wait(epollfd_,
+                               &*events_.begin(),
+                               static_cast<int>(events_.size()),
+                               -1);
 
-    }
-    else
-    {
+    int saveErrno=errno;
+
+    if(numEvents>0) {
+        BOKKET_LOG_DEBUG(g_logger)<<"Epoll::poll()"<<" event happened "<<numEvents;
         fillActiveChannels(numEvents,activeChannels);
-
-        if(static_cast<size_t>(numEvents)==maxEvents)
+        if(static_cast<size_t>(numEvents)==events_.size())
             events_.resize(events_.size()*2);
     }
-
-
-    return now;
-}
-
-void Epoller::poll(ChannelList &activeChannels)
-{
-    loop_->assertInLoopThread();
-    int maxEvents=static_cast<int>(events_.size());
-    int numEvents=epoll_wait(epollfd_,events_.data(),maxEvents,-1);
-
-    if(numEvents!=-1)
-    {
-        if(errno!=EINTR)
-        {}
+    else if(numEvents==0) {
+        BOKKET_LOG_DEBUG(g_logger)<<"Epoll::poll() nothing happended";
     }
-    else if(numEvents==0)
-    {
-
+    else {
+        if(saveErrno!=EINTR) {
+            errno=saveErrno;
+            BOKKET_LOG_FATAL(g_logger)<<"Epoll::poll()"<<" error="<<errno;
+        }
     }
-    else
-    {
-        fillActiveChannels(numEvents,activeChannels);
-
-        if(static_cast<size_t>(numEvents)==maxEvents)
-            events_.resize(events_.size()*2);
-    }
+    return;
 }
 
 
-void Epoller::fillActiveChannels(int numEvents, ChannelList& activeChannels) const
+
+void Epoller::fillActiveChannels(int numEvents, ChannelList* activeChannels) const 
 {
     //ChannelMap::const_iterator it=channels_.find()
-    assert(static_cast<size_t>(numEvents)<=events_.size());
+    ASSERT(static_cast<size_t>(numEvents)<=events_.size());
 
     for(int i=0;i<numEvents;i++)
     {
@@ -103,42 +89,46 @@ void Epoller::fillActiveChannels(int numEvents, ChannelList& activeChannels) con
 
         channel->setRevents(events_[i].events);
 
-        activeChannels.push_back(channel);
+        activeChannels->emplace_back(channel);
     }
 }
 
 
-void Epoller::update(int op, Channel *channel)
+void Epoller::update(int op,Channel *channel)
 {
     struct epoll_event event;
+    ::memset(&event,0,sizeof(event));
     event.events=channel->getEvents();
     event.data.ptr=channel;
     auto fd=channel->getFd();
 
     if(::epoll_ctl(epollfd_,op,fd,&event) <0)
     {
-        if(op==EPOLL_CTL_DEL)
-        {}
-        else
-        {}
+        if(op==EPOLL_CTL_DEL) {
+            BOKKET_LOG_ERROR(g_logger)<<"Epoll::update() op="<<op
+                                      <<" fd="<<fd;
+        }
+        else {
+            BOKKET_LOG_ERROR(g_logger)<<"Epoll::update() op="<<op
+                                      <<" fd="<<fd;
+        }
     }
-
 }
 
 void Epoller::updateChannel(Channel *channel)
 {
-    loop_->assertInLoopThread();
-    int op=0;
+    //loop_->assertInLoopThread();
+    assertInLoopThread();
 
     auto fd=channel->getFd();
-    auto status=channel->getStatusInEpoll();
+    const auto status=channel->getStatusInEpoll();
 
 
-    if(status==net::Channel::kNew || status==net::Channel::kDelete )
+    if(status==Status::kNew || status==Status::kDelete )
     {
-        if(status==net::Channel::kNew)
+        if(status==Status::kNew)
         {
-            assert(channels_.find(fd)!=channels_.end());
+            ASSERT(channels_.find(fd)!=channels_.end());
             channels_[fd]=channel;
         }
         else
@@ -146,20 +136,20 @@ void Epoller::updateChannel(Channel *channel)
             assert(channels_.find(fd)!=channels_.end());
             assert(channels_[fd]==channel);
         }
-        channel->setStatusInEpoll(Channel::kAdded);
+        channel->setStatusInEpoll(Status::kAdded);
         update(EPOLL_CTL_ADD,channel);
     }
     else
     {
-        assert(channels_.find(fd)!=channels_.end());
-        assert(channels_[fd]==channel);
-        assert(status==net::Channel::kAdded);
+        ASSERT(channels_.find(fd)!=channels_.end());
+        ASSERT(channels_[fd]==channel);
+        ASSERT(status==Status::kAdded);
 
 
         if(channel->isNoneEvent())
         {
             update(EPOLL_CTL_DEL,channel);
-            channel->setStatusInEpoll(Channel::kDelete);
+            channel->setStatusInEpoll(Status::kDelete);
         }
         else
         {
@@ -172,15 +162,16 @@ void Epoller::updateChannel(Channel *channel)
 void Epoller::removeChannel(Channel *channel)
 {
     assertInLoopThread();
+
     auto fd=channel->getFd();
 
     channels_.erase(fd);
 
-    if(channel->getStatusInEpoll()==net::Channel::kAdded)
+    if(channel->getStatusInEpoll()==Status::kAdded)
     {
         update(EPOLL_CTL_DEL,channel);
     }
-    channel->setStatusInEpoll(Channel::kNew);
+    channel->setStatusInEpoll(Status::kNew);
 }
 
 bool Epoller::hasChannel(Channel *channel) const
@@ -193,4 +184,6 @@ bool Epoller::hasChannel(Channel *channel) const
 void Epoller::assertInLoopThread() const
 {
     loop_->assertInLoopThread();
+}
+
 }

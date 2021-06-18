@@ -162,9 +162,11 @@ TimerManager::~TimerManager() {
         );
 }
 
-uint64_t TimerManager::addTimer(const std::function<void()> &cb, const std::chrono::steady_clock::time_point &when,
+//uint64_t TimerManager::addTimer(const std::function<void()> &cb, const std::chrono::steady_clock::time_point &when,
+//                                const std::chrono::microseconds &interval) {
+uint64_t TimerManager::addTimer(std::function<void()> cb, const std::chrono::steady_clock::time_point &when,
                                 const std::chrono::microseconds &interval) {
-    Timer::ptr timerPtr=std::make_shared<Timer>(cb,when,interval);
+    Timer::ptr timerPtr=std::make_shared<Timer>(std::move(cb),when,interval);
 
     loop_->runInLoop(
             [this,timerPtr]() {

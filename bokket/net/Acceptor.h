@@ -5,24 +5,28 @@
 #ifndef BOKKET_ACCEPTOR_H
 #define BOKKET_ACCEPTOR_H
 
-#include "../base/noncopyable.h"
+
+#include <functional>
+#include <atomic>
+
 #include "Channel.h"
 #include "Socket.h"
 #include "InetAddress.h"
 #include "EventLoop.h"
-#include <functional>
-#include <atomic>
+
+
+#include "../base/noncopyable.h"
+
 namespace bokket
 {
-namespace net
-{
+
 class EventLoop;
 class InetAddress;
 
 class Acceptor: public noncopyable
 {
 public:
-    using NewConnectionCallback=function<void (int sockfd,const InetAddress &) >;
+    using NewConnectionCallback=std::function<void (int sockfd,const InetAddress &) >;
 public:
     Acceptor(EventLoop* loop,const InetAddress& listenAddr);
     ~Acceptor();
@@ -64,7 +68,7 @@ private:
     std::atomic<int> clinetCount_;
 };
 
-}
+
 }
 
 

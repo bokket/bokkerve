@@ -10,9 +10,11 @@ namespace bokket
 std::atomic<uint64_t> Timer::timersCreated_={0};
 
 
-Timer::Timer(const std::function<void()> &cb, const std::chrono::steady_clock::time_point &when,
+/*Timer::Timer(const std::function<void()> &cb, const std::chrono::steady_clock::time_point &when,
+             const std::chrono::microseconds &interval)*/
+Timer::Timer(std::function<void()> cb, const std::chrono::steady_clock::time_point &when,
              const std::chrono::microseconds &interval)
-             :cb_(cb)
+             :cb_(std::move(cb))
              ,when_(when)
              ,interval_(interval)
              ,repeat_(interval.count()>std::chrono::microseconds::zero().count())

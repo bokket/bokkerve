@@ -3,12 +3,18 @@
 //
 
 #include "Channel.h"
-#include "EventLoop.h"
-#include <sys/epoll.h>
-#include <cassert>
 
-using namespace bokket;
-using namespace bokket::net;
+#include "EventLoop.h"
+
+#include <unistd.h>
+#include <cassert>
+#include <sys/epoll.h>
+
+
+
+namespace bokket 
+{
+
 const int Channel::kNoneEvent=0;
                                 //0x001 | 0x002
 const int Channel::kReadEvent = POLLIN | POLLPRI;//有紧迫数据可读
@@ -21,7 +27,7 @@ Channel::Channel(EventLoop *loop, int fd)
                 ,fd_(fd)
                 ,events_(0)
                 ,revents_(0)
-                ,status_(kNew)
+                ,status_(Epoller::Status::kNew)
                 ,tied_(false)
                 ,eventHandling_(false)
 {}
@@ -30,17 +36,13 @@ Channel::~Channel()
 {
     //是否处于处理事件中
     assert(!eventHandling_);
-}
-
-
-EventLoop * Channel::ownerLoop()
-{
-    return loop_;
+    ::close(fd_);
 }
 
 void Channel::handleEvent()
 {
     loop_->assertInLoopThread();
+    //eventHandling_= true;
 
     if(tied_)
     {
@@ -78,12 +80,6 @@ void Channel::handleEventsWithGuard()
     eventHandling_= false;
 }
 
-void Channel::tie(const shared_ptr<void> & obj)
-{
-    //weak_ptr来管理
-    tie_=obj;
-    tied_= true;
-}
 
 void Channel::update()
 {
@@ -98,19 +94,19 @@ void Channel::remove()
     loop_->removeChannel(this);
 }
 
-string Channel::eventsToString() const
+std::string Channel::eventsToString() const
 {
     return eventsToString(fd_,events_);
 }
 
-string Channel::reventsToString() const
+std::string Channel::reventsToString() const
 {
     return eventsToString(fd_,revents_);
 }
 
-string Channel::eventsToString(int fd, int event) const
+std::string Channel::eventsToString(int fd, int event) const
 {
-    ostringstream oss;
+    std::ostringstream oss;
     oss<<fd<<": ";
     oss << "IN ";
     //0x002
@@ -133,4 +129,8 @@ string Channel::eventsToString(int fd, int event) const
         oss << "IN ";
 
     return oss.str().c_str();
+}
+
+
+
 }

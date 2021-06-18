@@ -9,28 +9,39 @@
 #include <memory>
 #include <sstream>
 
+
+#include "Epoller.h"
 #include "../base/noncopyable.h"
 
 
 namespace bokket
 {
 
+class Epoll;
 class EventLoop;
 
+
+extern const int Channel::kNoneEvent=0;
+                                //0x001 | 0x002
+extern const int Channel::kReadEvent = POLLIN | POLLPRI;//有紧迫数据可读
+                               //0x004
+extern const int Channel::kWriteEvent = POLLOUT;//写数据不会导致阻塞
+
+
 //Channel通道 表示一个请求 或者是一个链接
-class Channel: public std::enable_shared_from_this<Channel>
+class Channel:std::enable_shared_from_this<Channel>
 {
 public:
     using EventCallback=std::function<void()>;
     using ptr=std::shared_ptr<Channel>;
 
-public:
+/*public:
     enum Status
     {
         kNew=0,// 表示还没添加到 ChannelMap 中
         kAdded,// 已添加到 ChannelMap 中
         kDelete,// 无关心事件，已从 epoll 中删除相应文件描述符，但 ChannelMap 中有记录
-    };
+    };*/
 public:
 
 
@@ -38,7 +49,9 @@ public:
     ~Channel();
 
 
-    EventLoop* ownerLoop();
+    EventLoop* ownerLoop() {
+        return loop_;
+    }
 
     void setReadCallback(EventCallback cb) { readCallback_=std::move(cb); }
     void setWriteCallback(EventCallback cb) { writeCallback_=std::move(cb); }
@@ -47,7 +60,10 @@ public:
 
 
     //防止主连接在handleEvent时被销毁
-    void tie(const std::shared_ptr<void>&);
+    void tie(const std::shared_ptr<void>& obj) {
+        tie_=obj;
+        tied_= true;
+    }
 
 
     void enableReading()
@@ -104,20 +120,23 @@ public:
 
     void handleEvent();
 
-    int getStatusInEpoll() const { return status_; }
-    void setStatusInEpoll(Status status) { status_=status; }
+    Epoller::Status getStatusInEpoll() const { return status_; }
+    void setStatusInEpoll(Epoller::Status status) { status_=status; }
 
     // for debug
     std::string eventsToString(int fd,int event) const;
     std::string eventsToString() const;
     std::string reventsToString() const;
 
+
+    //void channelReset(int sockId);
+
 private:
     void update();
 
     void handleEventsWithGuard();
 
-    Status status_;
+    Epoller::Status status_;
 
     static const int kNoneEvent;
     static const int kReadEvent;
@@ -134,6 +153,8 @@ private:
     同时，因为weak_ptr指向某个对象，并不会使该对象的shared_ptr的use_count()改变，
     因此weak_ptr用的比较多的场景就是查看某个shared_ptr指向的对象。
     */
+    bool eventHandling_;
+    bool tied_;
     std::weak_ptr<void> tie_;
     EventCallback readCallback_;
     EventCallback writeCallback_;
