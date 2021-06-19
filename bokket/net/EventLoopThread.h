@@ -29,7 +29,7 @@ public:
 
 
     EventLoop* getLoop() const {
-
+        return loop_;
     }
 
     void run();
