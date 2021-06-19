@@ -62,7 +62,7 @@ void Scheduler::start() {
         return;
     }
 
-    stopping_= false;
+    //stopping_= false;
 
     ASSERT(threads_.empty());
 

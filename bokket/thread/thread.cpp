@@ -90,6 +90,10 @@ bool Thread::isStarted() {
     return started_;
 }
 
+bool Thread::joinable() {
+    return joined_;
+}
+
 void Thread::join() {
     if(thread_) {
         joined_= true;

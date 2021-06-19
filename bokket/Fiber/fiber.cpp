@@ -98,9 +98,10 @@ Fiber::Fiber() {
         ASSERT_MSG(false,"getcontext");
 
     ++fiberCount_;
-    id_=fiberId_++;
+    ++fiberId_;
+    id_=fiberId_;
 
-    BOKKET_LOG_DEBUG(g_logger)<<"Fiber::Fiber private main,id="<<id_;
+    BOKKET_LOG_DEBUG(g_logger)<<"Fiber::Fiber private main,id="<<getFiberId();
 }
 
 
@@ -113,7 +114,7 @@ Fiber::Fiber(std::function<void()> cb, size_t stacksize, bool runInScheduler)
     //std::lock_guard<std::mutex> lc(mutex_);
     ++fiberCount_;
 
-    BOKKET_LOG_DEBUG(g_logger)<<"fiber Count="<<fiberCount_<<" id="<<id_;
+    BOKKET_LOG_DEBUG(g_logger)<<"fiber Count="<<fiberCount_<<" id="<<getFiberId();
 
     //BOKKET_LOG_INFO(g_logger)<<"fiber stack size="<<g_fiber_stack_size->getValue();
 
@@ -131,7 +132,7 @@ Fiber::Fiber(std::function<void()> cb, size_t stacksize, bool runInScheduler)
     ctx_.uc_stack.ss_size=stackSize_;
 
 
-    BOKKET_LOG_DEBUG(g_logger)<<"fiber Count="<<fiberCount_<<" id="<<id_;
+    //BOKKET_LOG_DEBUG(g_logger)<<"fiber Count="<<fiberCount_<<" id="<<t_fiber->getId();
 
     /*if(!useCaller ) {
         BOKKET_LOG_INFO(g_logger)<<"fiber Count="<<fiberCount_<<" id="<<id_;
@@ -149,11 +150,11 @@ Fiber::Fiber(std::function<void()> cb, size_t stacksize, bool runInScheduler)
     //BOKKET_LOG_INFO(g_logger)<<"fiber Count="<<fiberCount_<<" id="<<id_;
 
 
-    BOKKET_LOG_DEBUG(g_logger)<<"Fiber::Fiber id="<<id_;
+    BOKKET_LOG_DEBUG(g_logger)<<"Fiber::Fiber id="<<getFiberId();
 }
 
 Fiber::~Fiber() {
-    BOKKET_LOG_DEBUG(g_logger)<<"Fiber::~Fiber() id="<<id_;
+    BOKKET_LOG_DEBUG(g_logger)<<"Fiber::~Fiber() id="<<getFiberId();
     --fiberCount_;
 
 
@@ -166,7 +167,7 @@ Fiber::~Fiber() {
                     //||  status_ == Status::INIT);
 
         StackAllocator::Free(stack_,stackSize_);
-        BOKKET_LOG_DEBUG(g_logger)<<"free stack="<<stackSize_<<" fiber id="<<id_;
+        BOKKET_LOG_DEBUG(g_logger)<<"free stack="<<stackSize_<<" fiber id="<<getFiberId();
     } else {
         //static_assert(!cb_,"functional wrang");
         //static_assert(status_==Status::EXEC,"");
@@ -178,7 +179,7 @@ Fiber::~Fiber() {
             setThis(nullptr);
         }
     }
-    BOKKET_LOG_DEBUG(g_logger)<<"Fiber::~Fiber id="<<id_ <<" ,fiber total="<<fiberCount_;
+    BOKKET_LOG_DEBUG(g_logger)<<"Fiber::~Fiber id="<<getFiberId() <<" ,fiber total="<<fiberCount_;
 }
 
 void Fiber::reset(std::function<void()> cb) {

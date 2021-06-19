@@ -17,7 +17,7 @@ class IOManager: public Scheduler, public TimerManager
 public:
     using ptr = std::shared_ptr<IOManager>;
 public:
-    IOManager(size_t threads=-1,bool useCaller=true
+    IOManager(size_t threads=1,bool useCaller=true
              ,const std::string& name="UNKNOW");
     ~IOManager();
 

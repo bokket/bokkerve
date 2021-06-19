@@ -24,11 +24,12 @@ IOManager * IOManager::getThis() {
 }
 
 void IOManager::tickle() {
-    if(hasIdleThreads()) {
+    BOKKET_LOG_DEBUG(g_logger)<<"IOManager::tickle()";
+    if(!hasIdleThreads()) {
         return;
     }
     int rt=write(tickleFds_[1],"T",1);
-    //
+    ASSERT(rt==1);
 }
 
 bool IOManager::stopping(uint64_t &timeout) {
@@ -44,7 +45,8 @@ bool IOManager::stopping() {
 }
 
 void IOManager::idle() {
-    epoll_event* events=new epoll_event[64]();
+    BOKKET_LOG_DEBUG(g_logger)<<"IOManager::idle()";
+    epoll_event* events=new epoll_event[256]();
     std::shared_ptr<epoll_event> shared_events(events,[](epoll_event* ptr){
         delete[] ptr;
     });
@@ -75,18 +77,12 @@ void IOManager::idle() {
             }
         }
 
-    std::vector<std::function<void()>> cbs;
-    listExpiredCb(cbs);
-    if(!cbs.empty()) {
-        schedule(cbs.begin(),cbs.end());
-        cbs.clear();
-    }
 
     for(int i=0;i<rt;++i) {
         epoll_event& event=events[i];
         if(event.data.fd==tickleFds_[0]) {
             uint8_t dummy;
-            while(read(tickleFds_[0],&dummy,1)==1);
+            while(read(tickleFds_[0],&dummy,sizeof(dummy))>0);
             continue;
         }
 

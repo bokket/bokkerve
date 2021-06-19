@@ -34,9 +34,9 @@ void IOContext::resetContext(Event event) {
             context_[0].cb = nullptr;
             break;
         case Event::WRITE:
-            context_[0].scheduler= nullptr;
-            context_[0].fiber.reset();
-            context_[0].cb = nullptr;
+            context_[1].scheduler= nullptr;
+            context_[1].fiber.reset();
+            context_[1].cb = nullptr;
             break;
         default:
             ASSERT_MSG(false,"IOContext::resetContext");
@@ -59,9 +59,10 @@ void IOContext::triggerEvent(Event event) {
     Context& ctx=getContext(event);
 
     if(ctx.cb) {
-        ctx.scheduler->schedule(&ctx.cb);
+        ctx.scheduler->schedule(ctx.cb);
     } else {
-        ctx.scheduler->schedule(&ctx.fiber);
+        ctx.scheduler->schedule(ctx.fiber);
+        //ctx.fiber.reset();
     }
 
     ctx.scheduler= nullptr;

@@ -35,6 +35,7 @@ public:
 
 
     bool isStarted();
+    bool joinable();
     void start();
     void join();
 

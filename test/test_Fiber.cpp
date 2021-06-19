@@ -79,7 +79,7 @@ int main() {
 
     std::vector<bokket::Thread::ptr> threads;
 
-    for(auto i=0;i<10000;++i) {
+    for(auto i=0;i<1;++i) {
         threads.emplace_back(bokket::Thread::ptr(
             new bokket::Thread(&test_fiber,"name_"+std::to_string(i))));
     }

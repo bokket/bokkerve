@@ -21,20 +21,20 @@ class IOContext
 friend class IOManager;
 
 public:
-    enum class Event:int64_t
+    enum class Event:
     {
         NONE    = 0x0,
         READ    = 0x1,
         WRITE   = 0x4,
     };
 
-    struct Context
-    {
-    public:
-        Scheduler *scheduler = nullptr;
-        Fiber::ptr fiber;
-        std::function<void()> cb;
-    };
+   struct Context
+   {
+       Scheduler *scheduler = nullptr;
+       Fiber::ptr fiber;
+       std::function<void()> cb;
+   };
+
 
 public:
     IOContext(int fd);
