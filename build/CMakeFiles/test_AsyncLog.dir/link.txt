@@ -1,1 +1,1 @@
-/usr/bin/c++    -rdynamic CMakeFiles/test_AsyncLog.dir/test/test_AsyncFileLog.cpp.o  -o ../bin/test_AsyncLog   -L/usr/local/lib  -Wl,-rpath,/usr/local/lib:/home/bokket/bokkerve-plus-plus/lib ../lib/libbokket.so -lpthread -lyaml-cpp -ldl -lgtest 
+/usr/bin/c++    -rdynamic CMakeFiles/test_AsyncLog.dir/test/test_AsyncFileLog.cpp.o  -o ../bin/test_AsyncLog   -L/usr/local/lib  -Wl,-rpath,/usr/local/lib:/home/bokket/bokkerve/lib ../lib/libbokket.so -lpthread -lyaml-cpp -ldl -lgtest 
