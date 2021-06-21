@@ -4,6 +4,8 @@
 
 #include "iocontext.h"
 
+#include "../thread/Assert.h"
+
 namespace bokket
 {
 
@@ -13,12 +15,15 @@ IOContext::IOContext(int fd)
                     :fd_(fd)
 {}
 
+
 Context & IOContext::getContext(Event event) {
     switch (event) {
         case Event::READ:
-            return context_[0];
+            return read_;
+            //return context_[0];
         case Event::WRITE:
-            return context_[1];
+            return write_;
+            //return context_[1];
         default:
             ASSERT_MSG(false,"IOContext::getContext");
             break;
@@ -26,7 +31,7 @@ Context & IOContext::getContext(Event event) {
     throw std::invalid_argument("IOContext::get invalid event");
 }
 
-void IOContext::resetContext(Event event) {
+/*void IOContext::resetContext(Event event) {
     switch (event) {
         case Event::READ:
             context_[0].scheduler= nullptr;
@@ -43,18 +48,24 @@ void IOContext::resetContext(Event event) {
             break;
     }
     throw std::invalid_argument("IOContext::reset invalid event");
+}*/
+
+void IOContext::resetContext(Context &ctx) {
+    ctx.scheduler= nullptr;
+    ctx.cb= nullptr;
+    ctx.fiber.reset();
 }
 
-IOContext::reset() {
-    reset(Event::READ);
-    reset(Event::WRITE);
-}
+/*IOContext::reset() {
+    resetContext(Event::READ);
+    resetContext(Event::WRITE);
+}*/
 
 void IOContext::triggerEvent(Event event) {
 
     ASSERT(events_&event);
 
-    events_=events_& ~ event;
+    events_=(IOContext::Event)(events_& ~ event);
 
     Context& ctx=getContext(event);
 
@@ -65,7 +76,9 @@ void IOContext::triggerEvent(Event event) {
         //ctx.fiber.reset();
     }
 
-    ctx.scheduler= nullptr;
+    resetContext(ctx);
+    //resetContext(event);
+    //ctx.scheduler= nullptr;
     return;
 }
 

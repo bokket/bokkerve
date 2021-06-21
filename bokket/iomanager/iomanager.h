@@ -8,6 +8,8 @@
 #include <memory>
 #include <shared_mutex>
 
+#include "iocontext.h"
+#include "../time/timer.h"
 
 namespace bokket
 {
@@ -18,7 +20,7 @@ public:
     using ptr = std::shared_ptr<IOManager>;
 public:
     IOManager(size_t threads=1,bool useCaller=true
-             ,const std::string& name="UNKNOW");
+             ,const std::string& name="IOManager");
     ~IOManager();
 
     int addEvent(int fd,IOContext::Event event,std::function<void()> cb= nullptr);

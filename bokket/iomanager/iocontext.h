@@ -21,7 +21,7 @@ class IOContext
 friend class IOManager;
 
 public:
-    enum class Event:
+    enum Event
     {
         NONE    = 0x0,
         READ    = 0x1,
@@ -43,9 +43,10 @@ public:
 
     Context& getContext(Event event);
 
-    void resetContext(Event event);
+    //void resetContext(Event event);
+    void resetContext(Context& ctx);
 
-    void reset();
+    //void reset();
 
     void triggerEvent(Event event);
 
@@ -54,7 +55,9 @@ private:
     //std::mutex mutex_;
     std::shared_mutex mutex_;
     int fd_;
-    Context context_[2];
+    //Context context_[2];
+    Context read_;
+    Context write_;
 
     Event events_=Event::NONE;
 };
@@ -62,10 +65,6 @@ private:
 
 }
 
-
-class iocontext {
-
-};
 
 
 #endif //BOKKERVE_PLUS_PLUS_IOCONTEXT_H

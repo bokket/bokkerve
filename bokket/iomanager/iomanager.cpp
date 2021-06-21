@@ -129,8 +129,8 @@ void IOManager::idle() {
     auto raw_ptr=cur.get();
     cur.reset();
 
-    raw_ptr->swapOut();
-
+    //raw_ptr->swapOut();
+        raw_ptr->yield();
 
     }
 }
@@ -217,11 +217,11 @@ int IOManager::addEvent(int fd, IOContext::Event event, std::function<void()> cb
 
     std::unique_lock<std::shared_mutex> uniqueLock1(io_context->mutex_);
 
-    if(io_context->events_ & event) {
+    if(UNLIKELY(io_context->events_ & event)) {
         BOKKET_LOG_ERROR(g_logger)<<"addEvent assert fd="<<fd
                                 <<" event="<<event
                                 <<" io_context.event="<<io_context->events_;
-
+        ASSERT(!(io_context->events_ & event));
     }
 
     int op=io_context->events_ ? EPOLL_CTL_MOD:EPOLL_CTL_ADD;
@@ -235,15 +235,18 @@ int IOManager::addEvent(int fd, IOContext::Event event, std::function<void()> cb
     if(rt) {
         BOKKET_LOG_ERROR(g_logger)<<"epoll_ctl("<<epfd_<<","
                                 <<op<<","<<fd<<","<<epevent.events<<"):"
-                                <<rt<<"("<<errno<<")("<<::strerror(errno)<<")";
+                                <<rt<<"("<<errno<<")("<<::strerror(errno)<<") io_context->events_="
+                                <<io_context->events_;
         return -1;
     }
 
     ++pendingEventCount;
-    io_context->events_=io_context->events_ | event;
+
+
+    io_context->events_=(IOContext::Event)(io_context->events_ | event);
 
     IOContext::Context& event_context=io_context->getContext(event);
-
+    ASSERT(!event_context.scheduler&& !event_context.fiber && !event_context.cb);
 
     event_context.scheduler=Scheduler::getThis();
 
@@ -272,13 +275,14 @@ bool IOManager::delEvent(int fd, IOContext::Event event) {
     std::unique_lock<std::shared_mutex> uniqueLock1(io_context->mutex_);
 
 
-    if(!(io_context->events_ & event)) {
+    if(UNLIKELY(!(io_context->events_ & event))) {
         return false;
     }
 
 
-    IOContext::Event new_event=(io_context->events_ & ~event);
+    IOContext::Event new_event=(IOContext::Event)(io_context->events_ & ~event);
     int op=new_event ? EPOLL_CTL_MOD:EPOLL_CTL_DEL;
+
     epoll_event epevent;
     epevent.events=EPOLLET | new_event;
     epevent.data.ptr=io_context;
@@ -293,6 +297,7 @@ bool IOManager::delEvent(int fd, IOContext::Event event) {
     }
 
     --pendingEventCount;
+
     io_context->events_=new_event;
 
     IOContext::Context& event_context=io_context->getContext(event);
@@ -316,7 +321,7 @@ bool IOManager::cancelEvent(int fd, IOContext::Event event) {
         return false;
     }
 
-    IOContext::Event new_event=(io_context->events_ & ~event);
+    IOContext::Event new_event=(IOContext::Event)(io_context->events_ & ~event);
     int op=new_event ? EPOLL_CTL_MOD:EPOLL_CTL_DEL;
     epoll_event epevent;
     epevent.events=EPOLLET | new_event;
