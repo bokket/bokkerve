@@ -8,8 +8,11 @@ file(REMOVE_RECURSE
   "CMakeFiles/bokket.dir/bokket/Log/LogFile.cpp.o"
   "CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.o"
   "CMakeFiles/bokket.dir/bokket/address/address.cpp.o"
+  "CMakeFiles/bokket.dir/bokket/iomanager/iocontext.cpp.o"
+  "CMakeFiles/bokket.dir/bokket/iomanager/iomanager.cpp.o"
   "CMakeFiles/bokket.dir/bokket/thread/thread.cpp.o"
   "CMakeFiles/bokket.dir/bokket/thread/util.cpp.o"
+  "CMakeFiles/bokket.dir/bokket/time/timer.cpp.o"
 )
 
 # Per-language clean rules from dependency scanning.

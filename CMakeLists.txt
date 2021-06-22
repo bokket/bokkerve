@@ -56,8 +56,12 @@ set(LIB_SRC
 		#bokket/Fiber/fiber.h
 		bokket/Fiber/fiber.cpp
 
+		bokket/time/timer.cpp
+
 		bokket/Scheduler/scheduler.cpp
 		#bokket/Scheduler/scheduler.h
+		bokket/iomanager/iocontext.cpp
+		bokket/iomanager/iomanager.cpp
 
 		)
 
@@ -144,6 +148,10 @@ target_link_libraries(test_Scheduler ${LIBS})
 #add_executable(test_Ucontext ./test/test_ucontext.cpp)
 #add_dependencies(test_Ucontext bokket)
 #target_link_libraries(test_Ucontext ${LIBS})
+
+add_executable(test_IOManager ./test/test_iomanager.cpp)
+add_dependencies(test_IOManager bokket)
+target_link_libraries(test_IOManager ${LIBS})
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)

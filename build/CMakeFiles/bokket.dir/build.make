@@ -178,9 +178,22 @@ CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/bokket/bokkerve/bokket/Fiber/fiber.cpp -o CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.s
 
+CMakeFiles/bokket.dir/bokket/time/timer.cpp.o: CMakeFiles/bokket.dir/flags.make
+CMakeFiles/bokket.dir/bokket/time/timer.cpp.o: ../bokket/time/timer.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/bokket.dir/bokket/time/timer.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bokket.dir/bokket/time/timer.cpp.o -c /home/bokket/bokkerve/bokket/time/timer.cpp
+
+CMakeFiles/bokket.dir/bokket/time/timer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bokket.dir/bokket/time/timer.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/bokket/bokkerve/bokket/time/timer.cpp > CMakeFiles/bokket.dir/bokket/time/timer.cpp.i
+
+CMakeFiles/bokket.dir/bokket/time/timer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bokket.dir/bokket/time/timer.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/bokket/bokkerve/bokket/time/timer.cpp -o CMakeFiles/bokket.dir/bokket/time/timer.cpp.s
+
 CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.o: CMakeFiles/bokket.dir/flags.make
 CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.o: ../bokket/Scheduler/scheduler.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.o -c /home/bokket/bokkerve/bokket/Scheduler/scheduler.cpp
 
 CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.i: cmake_force
@@ -190,6 +203,32 @@ CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.i: cmake_force
 CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/bokket/bokkerve/bokket/Scheduler/scheduler.cpp -o CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.s
+
+CMakeFiles/bokket.dir/bokket/iomanager/iocontext.cpp.o: CMakeFiles/bokket.dir/flags.make
+CMakeFiles/bokket.dir/bokket/iomanager/iocontext.cpp.o: ../bokket/iomanager/iocontext.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/bokket.dir/bokket/iomanager/iocontext.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bokket.dir/bokket/iomanager/iocontext.cpp.o -c /home/bokket/bokkerve/bokket/iomanager/iocontext.cpp
+
+CMakeFiles/bokket.dir/bokket/iomanager/iocontext.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bokket.dir/bokket/iomanager/iocontext.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/bokket/bokkerve/bokket/iomanager/iocontext.cpp > CMakeFiles/bokket.dir/bokket/iomanager/iocontext.cpp.i
+
+CMakeFiles/bokket.dir/bokket/iomanager/iocontext.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bokket.dir/bokket/iomanager/iocontext.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/bokket/bokkerve/bokket/iomanager/iocontext.cpp -o CMakeFiles/bokket.dir/bokket/iomanager/iocontext.cpp.s
+
+CMakeFiles/bokket.dir/bokket/iomanager/iomanager.cpp.o: CMakeFiles/bokket.dir/flags.make
+CMakeFiles/bokket.dir/bokket/iomanager/iomanager.cpp.o: ../bokket/iomanager/iomanager.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/bokket.dir/bokket/iomanager/iomanager.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/bokket.dir/bokket/iomanager/iomanager.cpp.o -c /home/bokket/bokkerve/bokket/iomanager/iomanager.cpp
+
+CMakeFiles/bokket.dir/bokket/iomanager/iomanager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bokket.dir/bokket/iomanager/iomanager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/bokket/bokkerve/bokket/iomanager/iomanager.cpp > CMakeFiles/bokket.dir/bokket/iomanager/iomanager.cpp.i
+
+CMakeFiles/bokket.dir/bokket/iomanager/iomanager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bokket.dir/bokket/iomanager/iomanager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/bokket/bokkerve/bokket/iomanager/iomanager.cpp -o CMakeFiles/bokket.dir/bokket/iomanager/iomanager.cpp.s
 
 # Object files for target bokket
 bokket_OBJECTS = \
@@ -201,7 +240,10 @@ bokket_OBJECTS = \
 "CMakeFiles/bokket.dir/bokket/Config/config.cpp.o" \
 "CMakeFiles/bokket.dir/bokket/address/address.cpp.o" \
 "CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o" \
-"CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.o"
+"CMakeFiles/bokket.dir/bokket/time/timer.cpp.o" \
+"CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.o" \
+"CMakeFiles/bokket.dir/bokket/iomanager/iocontext.cpp.o" \
+"CMakeFiles/bokket.dir/bokket/iomanager/iomanager.cpp.o"
 
 # External object files for target bokket
 bokket_EXTERNAL_OBJECTS =
@@ -214,10 +256,13 @@ bokket_EXTERNAL_OBJECTS =
 ../lib/libbokket.so: CMakeFiles/bokket.dir/bokket/Config/config.cpp.o
 ../lib/libbokket.so: CMakeFiles/bokket.dir/bokket/address/address.cpp.o
 ../lib/libbokket.so: CMakeFiles/bokket.dir/bokket/Fiber/fiber.cpp.o
+../lib/libbokket.so: CMakeFiles/bokket.dir/bokket/time/timer.cpp.o
 ../lib/libbokket.so: CMakeFiles/bokket.dir/bokket/Scheduler/scheduler.cpp.o
+../lib/libbokket.so: CMakeFiles/bokket.dir/bokket/iomanager/iocontext.cpp.o
+../lib/libbokket.so: CMakeFiles/bokket.dir/bokket/iomanager/iomanager.cpp.o
 ../lib/libbokket.so: CMakeFiles/bokket.dir/build.make
 ../lib/libbokket.so: CMakeFiles/bokket.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX shared library ../lib/libbokket.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX shared library ../lib/libbokket.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/bokket.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

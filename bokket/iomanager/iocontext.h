@@ -41,7 +41,7 @@ public:
 
     ~IOContext()=default;
 
-    Context& getContext(Event event);
+    IOContext::Context& getContext(Event event);
 
     //void resetContext(Event event);
     void resetContext(Context& ctx);

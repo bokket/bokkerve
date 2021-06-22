@@ -24,7 +24,7 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 64,
+				"line" : 68,
 				"parent" : 0
 			}
 		]
@@ -35,7 +35,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -fPIC  "
+					"fragment" : "-fPIC  "
 				},
 				{
 					"fragment" : "-std=gnu++17"
@@ -58,7 +58,10 @@
 				8,
 				9,
 				11,
-				12
+				12,
+				13,
+				14,
+				15
 			]
 		}
 	],
@@ -95,7 +98,10 @@
 				8,
 				9,
 				11,
-				12
+				12,
+				13,
+				14,
+				15
 			]
 		},
 		{
@@ -182,7 +188,25 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
+			"path" : "bokket/time/timer.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
 			"path" : "bokket/Scheduler/scheduler.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "bokket/iomanager/iocontext.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "bokket/iomanager/iomanager.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

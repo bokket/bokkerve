@@ -16,7 +16,7 @@ IOContext::IOContext(int fd)
 {}
 
 
-Context & IOContext::getContext(Event event) {
+IOContext::Context & IOContext::getContext(Event event) {
     switch (event) {
         case Event::READ:
             return read_;

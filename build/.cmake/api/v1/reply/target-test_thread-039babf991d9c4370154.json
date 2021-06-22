@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "/home/bokket/bokkerve/bin/test_Config"
+			"path" : "/home/bokket/bokkerve/bin/test_thread"
 		}
 	],
 	"backtrace" : 1,
@@ -27,25 +27,25 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 116,
+				"line" : 124,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 68,
+				"line" : 72,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 118,
+				"line" : 126,
 				"parent" : 0
 			},
 			{
 				"command" : 3,
 				"file" : 0,
-				"line" : 117,
+				"line" : 125,
 				"parent" : 0
 			}
 		]
@@ -56,7 +56,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g  "
+					"fragment" : " "
 				},
 				{
 					"fragment" : "-std=gnu++17"
@@ -76,15 +76,11 @@
 			"id" : "bokket::@6890427a1f51a3e7e1df"
 		}
 	],
-	"id" : "test_Config::@6890427a1f51a3e7e1df",
+	"id" : "test_thread::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
 		[
-			{
-				"fragment" : "-g",
-				"role" : "flags"
-			},
 			{
 				"fragment" : "-rdynamic",
 				"role" : "flags"
@@ -126,8 +122,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "test_Config",
-	"nameOnDisk" : "test_Config",
+	"name" : "test_thread",
+	"nameOnDisk" : "test_thread",
 	"paths" : 
 	{
 		"build" : ".",
@@ -148,7 +144,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "test/test_config.cpp",
+			"path" : "test/test_thread.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

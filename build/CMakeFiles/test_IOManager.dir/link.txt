@@ -1,0 +1,1 @@
+/usr/bin/c++    -rdynamic CMakeFiles/test_IOManager.dir/test/test_iomanager.cpp.o  -o ../bin/test_IOManager   -L/usr/local/lib  -Wl,-rpath,/usr/local/lib:/home/bokket/bokkerve/lib ../lib/libbokket.so -lpthread -lyaml-cpp -ldl -lgtest 

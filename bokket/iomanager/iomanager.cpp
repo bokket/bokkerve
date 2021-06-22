@@ -6,6 +6,7 @@
 
 
 #include "iocontext.h"
+#include "../Scheduler/scheduler.h"
 
 #include <cerrno>
 #include <cstdint>
@@ -53,30 +54,40 @@ void IOManager::idle() {
 
     while(true) {
         uint64_t next_timeout=0;
-        if(stopping(next_timeout)) {
-            BOKKET_LOG_INFO(g_logger)<<"name="<<getName()
+        if(UNLIKELY(stopping(next_timeout))) {
+            BOKKET_LOG_DEBUG(g_logger)<<"name="<<getName()
                                     <<" idle stopping exit";
             break;
         }
 
         int rt=0;
-        while(true) {
-            static const int MAT_TIMEOUT=3000;
+        do {
+            static const int MAX_TIMEOUT=3000;
             if(next_timeout!=~0ull) {
-                next_timeout=static_cast<int>(next_timeout>MAT_TIMEOUT
-                                                ? MAT_TIMEOUT:next_timeout);
+                /*next_timeout=static_cast<int>(next_timeout>MAT_TIMEOUT
+                                                ? MAT_TIMEOUT:next_timeout);*/
+                next_timeout=std::min(static_cast<int>(next_timeout),MAX_TIMEOUT);
             } else {
-                next_timeout=MAT_TIMEOUT;
+                next_timeout=MAX_TIMEOUT;
             }
-            rt=epoll_wait(epfd_,events,64,static_cast<int>(next_timeout));
+            rt=epoll_wait(epfd_,events,256,static_cast<int>(next_timeout));
 
             if(rt<0 && errno==EINTR) {
                 continue;
             } else {
                 break;
             }
-        }
+        }while(true);
 
+
+        std::vector<std::function<void()>> cbs;
+        listExpiredCb(cbs);
+        if(!cbs.empty()) {
+            for(const auto & cb : cbs) {
+                Scheduler::schedule(cb);
+            }
+            cbs.clear();
+        }
 
     for(int i=0;i<rt;++i) {
         epoll_event& event=events[i];
@@ -86,17 +97,19 @@ void IOManager::idle() {
             continue;
         }
 
-        IOContext* io_context=(IOContext*)event.data.ptr;
+        IOContext* io_context= static_cast<IOContext*>(event.data.ptr);
         std::unique_lock<std::shared_mutex> uniqueLock(io_context->mutex_);
+
         if(event.events & (EPOLLERR | EPOLLHUP))
-            event.events |= EPOLLIN | EPOLLOUT;
-        int real_events=IOContext::Event::NONE;
+            event.events |= (EPOLLIN | EPOLLOUT)& io_context->events_;
+
+        IOContext::Event real_events=IOContext::Event::NONE;
 
         if(event.events & EPOLLIN) 
-            real_events|=IOContext::Event::READ;
+            real_events =(IOContext::Event) (real_events | IOContext::Event::READ);
 
         if(event.events & EPOLLOUT) 
-            real_events|=IOContext::Event::WRITE;
+            real_events =(IOContext::Event) (real_events | IOContext::Event::WRITE);
 
         //if(io_context->events_ & IOContext::Event::NONE) 
         if((io_context->events_ &real_events)==IOContext::Event::NONE)
@@ -111,15 +124,16 @@ void IOManager::idle() {
 
         if(rt2) {
             BOKKET_LOG_ERROR(g_logger) << "epoll_ctl(" << epfd_ << ","
-                                       << op << "," << io_context->fd_ << "," << epevent.events << "):"
+                                       << op << "," << io_context->fd_ << "," << event.events << "):"
                                        << rt << "(" << errno << ")(" << ::strerror(errno) << ")";
             continue;
         }
-        if(real_events&IOContext::Event::READ) {
+
+        if(real_events & IOContext::Event::READ) {
             io_context->triggerEvent(IOContext::Event::READ);
             --pendingEventCount;
         }
-        if(real_events&IOContext::Event::WRITE) {
+        if(real_events & IOContext::Event::WRITE) {
             io_context->triggerEvent(IOContext::Event::WRITE);
             --pendingEventCount;
         }
@@ -317,12 +331,13 @@ bool IOManager::cancelEvent(int fd, IOContext::Event event) {
     uniqueLock.unlock();
 
     std::unique_lock<std::shared_mutex> uniqueLock1(io_context->mutex_);
-    if(!(io_context->events_ & event)) {
+    if(UNLIKELY(!(io_context->events_ & event))) {
         return false;
     }
 
     IOContext::Event new_event=(IOContext::Event)(io_context->events_ & ~event);
     int op=new_event ? EPOLL_CTL_MOD:EPOLL_CTL_DEL;
+
     epoll_event epevent;
     epevent.events=EPOLLET | new_event;
     epevent.data.ptr=io_context;
@@ -356,6 +371,7 @@ bool IOManager::cancelAll(int fd) {
     }
 
     int op=EPOLL_CTL_DEL;
+
     epoll_event epevent;
     epevent.events=0;
     epevent.data.ptr=io_context;
@@ -378,7 +394,7 @@ bool IOManager::cancelAll(int fd) {
         --pendingEventCount;
     }
 
-    //
+    ASSERT(io_context->events_==0);
     return true;
 
 }

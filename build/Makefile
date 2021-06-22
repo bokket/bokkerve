@@ -73,17 +73,6 @@ CMAKE_BINARY_DIR = /home/bokket/bokkerve/build
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/opt/cmake-3.17/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
@@ -94,6 +83,17 @@ edit_cache:
 edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/opt/cmake-3.17/bin/cmake --regenerate-during-build -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -180,6 +180,19 @@ test_Fiber/fast:
 .PHONY : test_Fiber/fast
 
 #=============================================================================
+# Target rules for targets named test_thread
+
+# Build rule for target.
+test_thread: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_thread
+.PHONY : test_thread
+
+# fast build rule for target.
+test_thread/fast:
+	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/build
+.PHONY : test_thread/fast
+
+#=============================================================================
 # Target rules for targets named bokket
 
 # Build rule for target.
@@ -193,17 +206,17 @@ bokket/fast:
 .PHONY : bokket/fast
 
 #=============================================================================
-# Target rules for targets named test_thread
+# Target rules for targets named test_IOManager
 
 # Build rule for target.
-test_thread: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 test_thread
-.PHONY : test_thread
+test_IOManager: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_IOManager
+.PHONY : test_IOManager
 
 # fast build rule for target.
-test_thread/fast:
-	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/build
-.PHONY : test_thread/fast
+test_IOManager/fast:
+	$(MAKE) -f CMakeFiles/test_IOManager.dir/build.make CMakeFiles/test_IOManager.dir/build
+.PHONY : test_IOManager/fast
 
 #=============================================================================
 # Target rules for targets named test_Util
@@ -433,6 +446,60 @@ bokket/address/address.cpp.s:
 	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/address/address.cpp.s
 .PHONY : bokket/address/address.cpp.s
 
+bokket/iomanager/iocontext.o: bokket/iomanager/iocontext.cpp.o
+
+.PHONY : bokket/iomanager/iocontext.o
+
+# target to build an object file
+bokket/iomanager/iocontext.cpp.o:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/iomanager/iocontext.cpp.o
+.PHONY : bokket/iomanager/iocontext.cpp.o
+
+bokket/iomanager/iocontext.i: bokket/iomanager/iocontext.cpp.i
+
+.PHONY : bokket/iomanager/iocontext.i
+
+# target to preprocess a source file
+bokket/iomanager/iocontext.cpp.i:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/iomanager/iocontext.cpp.i
+.PHONY : bokket/iomanager/iocontext.cpp.i
+
+bokket/iomanager/iocontext.s: bokket/iomanager/iocontext.cpp.s
+
+.PHONY : bokket/iomanager/iocontext.s
+
+# target to generate assembly for a file
+bokket/iomanager/iocontext.cpp.s:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/iomanager/iocontext.cpp.s
+.PHONY : bokket/iomanager/iocontext.cpp.s
+
+bokket/iomanager/iomanager.o: bokket/iomanager/iomanager.cpp.o
+
+.PHONY : bokket/iomanager/iomanager.o
+
+# target to build an object file
+bokket/iomanager/iomanager.cpp.o:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/iomanager/iomanager.cpp.o
+.PHONY : bokket/iomanager/iomanager.cpp.o
+
+bokket/iomanager/iomanager.i: bokket/iomanager/iomanager.cpp.i
+
+.PHONY : bokket/iomanager/iomanager.i
+
+# target to preprocess a source file
+bokket/iomanager/iomanager.cpp.i:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/iomanager/iomanager.cpp.i
+.PHONY : bokket/iomanager/iomanager.cpp.i
+
+bokket/iomanager/iomanager.s: bokket/iomanager/iomanager.cpp.s
+
+.PHONY : bokket/iomanager/iomanager.s
+
+# target to generate assembly for a file
+bokket/iomanager/iomanager.cpp.s:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/iomanager/iomanager.cpp.s
+.PHONY : bokket/iomanager/iomanager.cpp.s
+
 bokket/thread/thread.o: bokket/thread/thread.cpp.o
 
 .PHONY : bokket/thread/thread.o
@@ -486,6 +553,33 @@ bokket/thread/util.s: bokket/thread/util.cpp.s
 bokket/thread/util.cpp.s:
 	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/thread/util.cpp.s
 .PHONY : bokket/thread/util.cpp.s
+
+bokket/time/timer.o: bokket/time/timer.cpp.o
+
+.PHONY : bokket/time/timer.o
+
+# target to build an object file
+bokket/time/timer.cpp.o:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/time/timer.cpp.o
+.PHONY : bokket/time/timer.cpp.o
+
+bokket/time/timer.i: bokket/time/timer.cpp.i
+
+.PHONY : bokket/time/timer.i
+
+# target to preprocess a source file
+bokket/time/timer.cpp.i:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/time/timer.cpp.i
+.PHONY : bokket/time/timer.cpp.i
+
+bokket/time/timer.s: bokket/time/timer.cpp.s
+
+.PHONY : bokket/time/timer.s
+
+# target to generate assembly for a file
+bokket/time/timer.cpp.s:
+	$(MAKE) -f CMakeFiles/bokket.dir/build.make CMakeFiles/bokket.dir/bokket/time/timer.cpp.s
+.PHONY : bokket/time/timer.cpp.s
 
 test/test_Address.o: test/test_Address.cpp.o
 
@@ -622,6 +716,33 @@ test/test_config.cpp.s:
 	$(MAKE) -f CMakeFiles/test_Config.dir/build.make CMakeFiles/test_Config.dir/test/test_config.cpp.s
 .PHONY : test/test_config.cpp.s
 
+test/test_iomanager.o: test/test_iomanager.cpp.o
+
+.PHONY : test/test_iomanager.o
+
+# target to build an object file
+test/test_iomanager.cpp.o:
+	$(MAKE) -f CMakeFiles/test_IOManager.dir/build.make CMakeFiles/test_IOManager.dir/test/test_iomanager.cpp.o
+.PHONY : test/test_iomanager.cpp.o
+
+test/test_iomanager.i: test/test_iomanager.cpp.i
+
+.PHONY : test/test_iomanager.i
+
+# target to preprocess a source file
+test/test_iomanager.cpp.i:
+	$(MAKE) -f CMakeFiles/test_IOManager.dir/build.make CMakeFiles/test_IOManager.dir/test/test_iomanager.cpp.i
+.PHONY : test/test_iomanager.cpp.i
+
+test/test_iomanager.s: test/test_iomanager.cpp.s
+
+.PHONY : test/test_iomanager.s
+
+# target to generate assembly for a file
+test/test_iomanager.cpp.s:
+	$(MAKE) -f CMakeFiles/test_IOManager.dir/build.make CMakeFiles/test_IOManager.dir/test/test_iomanager.cpp.s
+.PHONY : test/test_iomanager.cpp.s
+
 test/test_log.o: test/test_log.cpp.o
 
 .PHONY : test/test_log.o
@@ -716,6 +837,7 @@ help:
 	@echo "... test_AsyncLog"
 	@echo "... test_Config"
 	@echo "... test_Fiber"
+	@echo "... test_IOManager"
 	@echo "... test_Log"
 	@echo "... test_Scheduler"
 	@echo "... test_Util"
@@ -741,12 +863,21 @@ help:
 	@echo "... bokket/address/address.o"
 	@echo "... bokket/address/address.i"
 	@echo "... bokket/address/address.s"
+	@echo "... bokket/iomanager/iocontext.o"
+	@echo "... bokket/iomanager/iocontext.i"
+	@echo "... bokket/iomanager/iocontext.s"
+	@echo "... bokket/iomanager/iomanager.o"
+	@echo "... bokket/iomanager/iomanager.i"
+	@echo "... bokket/iomanager/iomanager.s"
 	@echo "... bokket/thread/thread.o"
 	@echo "... bokket/thread/thread.i"
 	@echo "... bokket/thread/thread.s"
 	@echo "... bokket/thread/util.o"
 	@echo "... bokket/thread/util.i"
 	@echo "... bokket/thread/util.s"
+	@echo "... bokket/time/timer.o"
+	@echo "... bokket/time/timer.i"
+	@echo "... bokket/time/timer.s"
 	@echo "... test/test_Address.o"
 	@echo "... test/test_Address.i"
 	@echo "... test/test_Address.s"
@@ -762,6 +893,9 @@ help:
 	@echo "... test/test_config.o"
 	@echo "... test/test_config.i"
 	@echo "... test/test_config.s"
+	@echo "... test/test_iomanager.o"
+	@echo "... test/test_iomanager.i"
+	@echo "... test/test_iomanager.s"
 	@echo "... test/test_log.o"
 	@echo "... test/test_log.i"
 	@echo "... test/test_log.s"
