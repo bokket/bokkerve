@@ -145,6 +145,10 @@ add_dependencies(test_Scheduler bokket)
 target_link_libraries(test_Scheduler ${LIBS})
 
 
+add_executable(test_Timer ./test/test_Timer.cpp)
+add_dependencies(test_Timer bokket)
+target_link_libraries(test_Timer ${LIBS})
+
 #add_executable(test_Ucontext ./test/test_ucontext.cpp)
 #add_dependencies(test_Ucontext bokket)
 #target_link_libraries(test_Ucontext ${LIBS})

@@ -70,13 +70,14 @@ CMAKE_BINARY_DIR = /home/bokket/bokkerve/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/test_Config.dir/all
 all: CMakeFiles/test_Log.dir/all
+all: CMakeFiles/test_Config.dir/all
+all: CMakeFiles/test_Timer.dir/all
 all: CMakeFiles/test_AsyncLog.dir/all
 all: CMakeFiles/test_Fiber.dir/all
-all: CMakeFiles/test_thread.dir/all
-all: CMakeFiles/bokket.dir/all
 all: CMakeFiles/test_IOManager.dir/all
+all: CMakeFiles/bokket.dir/all
+all: CMakeFiles/test_thread.dir/all
 all: CMakeFiles/test_Util.dir/all
 all: CMakeFiles/test_Address.dir/all
 all: CMakeFiles/test_Scheduler.dir/all
@@ -89,18 +90,46 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/test_Config.dir/clean
 clean: CMakeFiles/test_Log.dir/clean
+clean: CMakeFiles/test_Config.dir/clean
+clean: CMakeFiles/test_Timer.dir/clean
 clean: CMakeFiles/test_AsyncLog.dir/clean
 clean: CMakeFiles/test_Fiber.dir/clean
-clean: CMakeFiles/test_thread.dir/clean
-clean: CMakeFiles/bokket.dir/clean
 clean: CMakeFiles/test_IOManager.dir/clean
+clean: CMakeFiles/bokket.dir/clean
+clean: CMakeFiles/test_thread.dir/clean
 clean: CMakeFiles/test_Util.dir/clean
 clean: CMakeFiles/test_Address.dir/clean
 clean: CMakeFiles/test_Scheduler.dir/clean
 
 .PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/test_Log.dir
+
+# All Build rule for target.
+CMakeFiles/test_Log.dir/all: CMakeFiles/bokket.dir/all
+	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/depend
+	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=24,25 "Built target test_Log"
+.PHONY : CMakeFiles/test_Log.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/test_Log.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve/build/CMakeFiles 15
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/test_Log.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve/build/CMakeFiles 0
+.PHONY : CMakeFiles/test_Log.dir/rule
+
+# Convenience name for target.
+test_Log: CMakeFiles/test_Log.dir/rule
+
+.PHONY : test_Log
+
+# clean rule for target.
+CMakeFiles/test_Log.dir/clean:
+	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/clean
+.PHONY : CMakeFiles/test_Log.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/test_Config.dir
@@ -130,31 +159,31 @@ CMakeFiles/test_Config.dir/clean:
 .PHONY : CMakeFiles/test_Config.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/test_Log.dir
+# Target rules for target CMakeFiles/test_Timer.dir
 
 # All Build rule for target.
-CMakeFiles/test_Log.dir/all: CMakeFiles/bokket.dir/all
-	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/depend
-	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=24,25 "Built target test_Log"
-.PHONY : CMakeFiles/test_Log.dir/all
+CMakeFiles/test_Timer.dir/all: CMakeFiles/bokket.dir/all
+	$(MAKE) -f CMakeFiles/test_Timer.dir/build.make CMakeFiles/test_Timer.dir/depend
+	$(MAKE) -f CMakeFiles/test_Timer.dir/build.make CMakeFiles/test_Timer.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=28,29 "Built target test_Timer"
+.PHONY : CMakeFiles/test_Timer.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/test_Log.dir/rule: cmake_check_build_system
+CMakeFiles/test_Timer.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve/build/CMakeFiles 15
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/test_Log.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/test_Timer.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve/build/CMakeFiles 0
-.PHONY : CMakeFiles/test_Log.dir/rule
+.PHONY : CMakeFiles/test_Timer.dir/rule
 
 # Convenience name for target.
-test_Log: CMakeFiles/test_Log.dir/rule
+test_Timer: CMakeFiles/test_Timer.dir/rule
 
-.PHONY : test_Log
+.PHONY : test_Timer
 
 # clean rule for target.
-CMakeFiles/test_Log.dir/clean:
-	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/clean
-.PHONY : CMakeFiles/test_Log.dir/clean
+CMakeFiles/test_Timer.dir/clean:
+	$(MAKE) -f CMakeFiles/test_Timer.dir/build.make CMakeFiles/test_Timer.dir/clean
+.PHONY : CMakeFiles/test_Timer.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/test_AsyncLog.dir
@@ -211,31 +240,31 @@ CMakeFiles/test_Fiber.dir/clean:
 .PHONY : CMakeFiles/test_Fiber.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/test_thread.dir
+# Target rules for target CMakeFiles/test_IOManager.dir
 
 # All Build rule for target.
-CMakeFiles/test_thread.dir/all: CMakeFiles/bokket.dir/all
-	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/depend
-	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=30,31 "Built target test_thread"
-.PHONY : CMakeFiles/test_thread.dir/all
+CMakeFiles/test_IOManager.dir/all: CMakeFiles/bokket.dir/all
+	$(MAKE) -f CMakeFiles/test_IOManager.dir/build.make CMakeFiles/test_IOManager.dir/depend
+	$(MAKE) -f CMakeFiles/test_IOManager.dir/build.make CMakeFiles/test_IOManager.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=22,23 "Built target test_IOManager"
+.PHONY : CMakeFiles/test_IOManager.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/test_thread.dir/rule: cmake_check_build_system
+CMakeFiles/test_IOManager.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve/build/CMakeFiles 15
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/test_thread.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/test_IOManager.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve/build/CMakeFiles 0
-.PHONY : CMakeFiles/test_thread.dir/rule
+.PHONY : CMakeFiles/test_IOManager.dir/rule
 
 # Convenience name for target.
-test_thread: CMakeFiles/test_thread.dir/rule
+test_IOManager: CMakeFiles/test_IOManager.dir/rule
 
-.PHONY : test_thread
+.PHONY : test_IOManager
 
 # clean rule for target.
-CMakeFiles/test_thread.dir/clean:
-	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/clean
-.PHONY : CMakeFiles/test_thread.dir/clean
+CMakeFiles/test_IOManager.dir/clean:
+	$(MAKE) -f CMakeFiles/test_IOManager.dir/build.make CMakeFiles/test_IOManager.dir/clean
+.PHONY : CMakeFiles/test_IOManager.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/bokket.dir
@@ -265,31 +294,31 @@ CMakeFiles/bokket.dir/clean:
 .PHONY : CMakeFiles/bokket.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/test_IOManager.dir
+# Target rules for target CMakeFiles/test_thread.dir
 
 # All Build rule for target.
-CMakeFiles/test_IOManager.dir/all: CMakeFiles/bokket.dir/all
-	$(MAKE) -f CMakeFiles/test_IOManager.dir/build.make CMakeFiles/test_IOManager.dir/depend
-	$(MAKE) -f CMakeFiles/test_IOManager.dir/build.make CMakeFiles/test_IOManager.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=22,23 "Built target test_IOManager"
-.PHONY : CMakeFiles/test_IOManager.dir/all
+CMakeFiles/test_thread.dir/all: CMakeFiles/bokket.dir/all
+	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/depend
+	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=32,33 "Built target test_thread"
+.PHONY : CMakeFiles/test_thread.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/test_IOManager.dir/rule: cmake_check_build_system
+CMakeFiles/test_thread.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve/build/CMakeFiles 15
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/test_IOManager.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/test_thread.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/bokket/bokkerve/build/CMakeFiles 0
-.PHONY : CMakeFiles/test_IOManager.dir/rule
+.PHONY : CMakeFiles/test_thread.dir/rule
 
 # Convenience name for target.
-test_IOManager: CMakeFiles/test_IOManager.dir/rule
+test_thread: CMakeFiles/test_thread.dir/rule
 
-.PHONY : test_IOManager
+.PHONY : test_thread
 
 # clean rule for target.
-CMakeFiles/test_IOManager.dir/clean:
-	$(MAKE) -f CMakeFiles/test_IOManager.dir/build.make CMakeFiles/test_IOManager.dir/clean
-.PHONY : CMakeFiles/test_IOManager.dir/clean
+CMakeFiles/test_thread.dir/clean:
+	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/clean
+.PHONY : CMakeFiles/test_thread.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/test_Util.dir
@@ -298,7 +327,7 @@ CMakeFiles/test_IOManager.dir/clean:
 CMakeFiles/test_Util.dir/all: CMakeFiles/bokket.dir/all
 	$(MAKE) -f CMakeFiles/test_Util.dir/build.make CMakeFiles/test_Util.dir/depend
 	$(MAKE) -f CMakeFiles/test_Util.dir/build.make CMakeFiles/test_Util.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=28,29 "Built target test_Util"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/bokket/bokkerve/build/CMakeFiles --progress-num=30,31 "Built target test_Util"
 .PHONY : CMakeFiles/test_Util.dir/all
 
 # Build rule for subdir invocation for target.

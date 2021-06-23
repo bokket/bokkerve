@@ -14,10 +14,13 @@ CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.o: ../bokket/base/Singleton.h
 CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.o: ../bokket/base/SpinLock.h
 CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.o: ../bokket/base/noncopyable.h
 CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.o: ../bokket/bokket.h
+CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.o: ../bokket/iomanager/iocontext.h
+CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.o: ../bokket/iomanager/iomanager.h
 CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.o: ../bokket/net/CountDownLatch.h
 CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.o: ../bokket/thread/Assert.h
 CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.o: ../bokket/thread/Semaphore.h
 CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.o: ../bokket/thread/thread.h
 CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.o: ../bokket/thread/util.h
+CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.o: ../bokket/time/timer.h
 CMakeFiles/test_Fiber.dir/test/test_Fiber.cpp.o: ../test/test_Fiber.cpp
 

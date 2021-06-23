@@ -17,6 +17,8 @@ static bokket::Logger::ptr g_logger = BOKKET_LOG_NAME("test");
 
 int sockfd;
 
+void watch_io_read();
+
 // 写事件回调，只执行一次，用于判断非阻塞套接字connect成功
 void do_io_write() {
     BOKKET_LOG_INFO(g_logger) << "write callback";

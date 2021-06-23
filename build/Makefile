@@ -128,6 +128,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named test_Log
+
+# Build rule for target.
+test_Log: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_Log
+.PHONY : test_Log
+
+# fast build rule for target.
+test_Log/fast:
+	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/build
+.PHONY : test_Log/fast
+
+#=============================================================================
 # Target rules for targets named test_Config
 
 # Build rule for target.
@@ -141,17 +154,17 @@ test_Config/fast:
 .PHONY : test_Config/fast
 
 #=============================================================================
-# Target rules for targets named test_Log
+# Target rules for targets named test_Timer
 
 # Build rule for target.
-test_Log: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 test_Log
-.PHONY : test_Log
+test_Timer: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_Timer
+.PHONY : test_Timer
 
 # fast build rule for target.
-test_Log/fast:
-	$(MAKE) -f CMakeFiles/test_Log.dir/build.make CMakeFiles/test_Log.dir/build
-.PHONY : test_Log/fast
+test_Timer/fast:
+	$(MAKE) -f CMakeFiles/test_Timer.dir/build.make CMakeFiles/test_Timer.dir/build
+.PHONY : test_Timer/fast
 
 #=============================================================================
 # Target rules for targets named test_AsyncLog
@@ -180,17 +193,17 @@ test_Fiber/fast:
 .PHONY : test_Fiber/fast
 
 #=============================================================================
-# Target rules for targets named test_thread
+# Target rules for targets named test_IOManager
 
 # Build rule for target.
-test_thread: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 test_thread
-.PHONY : test_thread
+test_IOManager: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_IOManager
+.PHONY : test_IOManager
 
 # fast build rule for target.
-test_thread/fast:
-	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/build
-.PHONY : test_thread/fast
+test_IOManager/fast:
+	$(MAKE) -f CMakeFiles/test_IOManager.dir/build.make CMakeFiles/test_IOManager.dir/build
+.PHONY : test_IOManager/fast
 
 #=============================================================================
 # Target rules for targets named bokket
@@ -206,17 +219,17 @@ bokket/fast:
 .PHONY : bokket/fast
 
 #=============================================================================
-# Target rules for targets named test_IOManager
+# Target rules for targets named test_thread
 
 # Build rule for target.
-test_IOManager: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 test_IOManager
-.PHONY : test_IOManager
+test_thread: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_thread
+.PHONY : test_thread
 
 # fast build rule for target.
-test_IOManager/fast:
-	$(MAKE) -f CMakeFiles/test_IOManager.dir/build.make CMakeFiles/test_IOManager.dir/build
-.PHONY : test_IOManager/fast
+test_thread/fast:
+	$(MAKE) -f CMakeFiles/test_thread.dir/build.make CMakeFiles/test_thread.dir/build
+.PHONY : test_thread/fast
 
 #=============================================================================
 # Target rules for targets named test_Util
@@ -689,6 +702,33 @@ test/test_Scheduler.cpp.s:
 	$(MAKE) -f CMakeFiles/test_Scheduler.dir/build.make CMakeFiles/test_Scheduler.dir/test/test_Scheduler.cpp.s
 .PHONY : test/test_Scheduler.cpp.s
 
+test/test_Timer.o: test/test_Timer.cpp.o
+
+.PHONY : test/test_Timer.o
+
+# target to build an object file
+test/test_Timer.cpp.o:
+	$(MAKE) -f CMakeFiles/test_Timer.dir/build.make CMakeFiles/test_Timer.dir/test/test_Timer.cpp.o
+.PHONY : test/test_Timer.cpp.o
+
+test/test_Timer.i: test/test_Timer.cpp.i
+
+.PHONY : test/test_Timer.i
+
+# target to preprocess a source file
+test/test_Timer.cpp.i:
+	$(MAKE) -f CMakeFiles/test_Timer.dir/build.make CMakeFiles/test_Timer.dir/test/test_Timer.cpp.i
+.PHONY : test/test_Timer.cpp.i
+
+test/test_Timer.s: test/test_Timer.cpp.s
+
+.PHONY : test/test_Timer.s
+
+# target to generate assembly for a file
+test/test_Timer.cpp.s:
+	$(MAKE) -f CMakeFiles/test_Timer.dir/build.make CMakeFiles/test_Timer.dir/test/test_Timer.cpp.s
+.PHONY : test/test_Timer.cpp.s
+
 test/test_config.o: test/test_config.cpp.o
 
 .PHONY : test/test_config.o
@@ -840,6 +880,7 @@ help:
 	@echo "... test_IOManager"
 	@echo "... test_Log"
 	@echo "... test_Scheduler"
+	@echo "... test_Timer"
 	@echo "... test_Util"
 	@echo "... test_thread"
 	@echo "... bokket/Config/config.o"
@@ -890,6 +931,9 @@ help:
 	@echo "... test/test_Scheduler.o"
 	@echo "... test/test_Scheduler.i"
 	@echo "... test/test_Scheduler.s"
+	@echo "... test/test_Timer.o"
+	@echo "... test/test_Timer.i"
+	@echo "... test/test_Timer.s"
 	@echo "... test/test_config.o"
 	@echo "... test/test_config.i"
 	@echo "... test/test_config.s"

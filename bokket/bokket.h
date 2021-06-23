@@ -5,6 +5,8 @@
 #ifndef BOKKERVE_BOKKET_H
 #define BOKKERVE_BOKKET_H
 
+#include "./base/noncopyable.h"
+
 #include "./Log/Log.h"
 #include "./Log/LogFile.h"
 #include "./Log/LogLevel.h"
