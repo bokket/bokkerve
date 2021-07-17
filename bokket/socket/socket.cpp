@@ -34,7 +34,7 @@ Socket::~Socket() {
 int64_t Socket::getSendTimeout() {
     FdData::ptr data=FdMgr::GetInstance()->get(sock_);
     if(data)
-        return data->getTimeOut(SO_SEND);
+        return data->getTimeOut(SO_SNDTIMEO);
     return -1;
 }
 
